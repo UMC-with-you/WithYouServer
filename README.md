@@ -1,7 +1,8 @@
 # WithYouServer
 
 ### ERD
-![image](https://github.com/UMC-with-you/WithYouServer/assets/96376539/b6c0effd-7c78-494c-8069-487380d1d708)
+![WithYou](https://github.com/UMC-with-you/WithYouServer/assets/96376539/6b7d9c46-dc62-4b3e-b651-ee8a630b6b04)
+
 
 
 ### API Documents
