@@ -1,12 +1,13 @@
 # WithYouServer
 
 ### ERD
-![WithYou](https://github.com/UMC-with-you/WithYouServer/assets/96376539/6b7d9c46-dc62-4b3e-b651-ee8a630b6b04)
+![image](https://github.com/UMC-with-you/WithYouServer/assets/96376539/03a52f6c-f628-4836-9a52-44b123c65874)
+
 
 
 
 ### API Documents
-https://with-you.gitbook.io/api-documentation/rewind
+https://with-you.gitbook.io/api-documentation
 
 <br></br>
 Commit Convention
