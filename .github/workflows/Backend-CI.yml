@@ -52,3 +52,13 @@ jobs:
         if: ${{ always() }}
         with:
           files: '**/build/test-results/**/*.xml'
+          
+      - name: notificate on slack if build failed
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: 백엔드 빌드 결과 알림
+          fields: repo, message, commit, author, action, eventName, ref, workflow, job, took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_BACKEND }}
+        if: always()
