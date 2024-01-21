@@ -1,6 +1,6 @@
 package UMC.WithYou.support;
 
-import UMC.WithYou.service.TokenProvider;
+import UMC.WithYou.service.auth.TokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

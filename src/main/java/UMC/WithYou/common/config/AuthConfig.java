@@ -1,6 +1,6 @@
-package UMC.WithYou.config;
+package UMC.WithYou.common.config;
 
-import UMC.WithYou.service.JwtTokenProvider;
+import UMC.WithYou.service.auth.JwtTokenProvider;
 import UMC.WithYou.support.AuthFilter;
 import UMC.WithYou.support.TokenAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;

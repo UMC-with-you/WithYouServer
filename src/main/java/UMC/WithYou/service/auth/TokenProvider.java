@@ -1,4 +1,4 @@
-package UMC.WithYou.service;
+package UMC.WithYou.service.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;

@@ -1,4 +1,4 @@
-package UMC.WithYou.service;
+package UMC.WithYou.service.auth;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider implements TokenProvider{
+public class JwtTokenProvider implements TokenProvider {
     @Value("${jwt.secret}")
     private String secret;
     private SecretKey key;
