@@ -1,4 +1,4 @@
-package UMC.WithYou.auth.config;
+package UMC.WithYou.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
