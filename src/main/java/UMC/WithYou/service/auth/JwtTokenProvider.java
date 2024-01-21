@@ -82,6 +82,7 @@ public class JwtTokenProvider implements TokenProvider{
                     .getSubject();
         } catch (JwtException | IllegalArgumentException e) {
             //throw new AuthException(AuthExceptionType.INVALID_AUTHORIZATION);
+            return null;
         }
     }
 

@@ -1,6 +1,8 @@
 package UMC.WithYou.config;
 
 import UMC.WithYou.service.JwtTokenProvider;
+import UMC.WithYou.support.AuthFilter;
+import UMC.WithYou.support.TokenAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +28,6 @@ import java.util.List;
 @EnableWebSecurity
 public class AuthConfig {
 
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
     private final JwtTokenProvider tokenProvider;
 
@@ -44,10 +43,6 @@ public class AuthConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/login","/api/members","/auth/**", "/oauth2/**","/login/oauth2/code/**").permitAll()
                         .anyRequest().authenticated())
-                .oauth2Login(oauth -> oauth
-                        .userInfoEndpoint(e-> e.userService(customOAuth2UserService))
-                        .successHandler(oAuth2AuthenticationSuccessHandler)
-                        .failureHandler(oAuth2AuthenticationFailureHandler))
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .getOrBuild();
     }
