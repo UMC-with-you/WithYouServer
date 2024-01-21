@@ -18,6 +18,12 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    
+    env:
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      JWT_EXPIRATION_PERIOD: ${{ secrets.JWT_EXPIRATION_PERIOD }}
+      JWT_HEADER: ${{ secrets.JWT_HEADER }}
+      JWT_PREFIX: ${{ secrets.JWT_PREFIX }}
 
     steps:
       - name: Set up Repository
