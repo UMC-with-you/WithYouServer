@@ -23,11 +23,9 @@ public class Member extends BaseEntity {
     private MemberType memberType;
 
     @Builder
-    public Member(Long id, String email, String name,String phoneNumber,MemberType memberType) {
-        super(id);
+    public Member(String email, String name,String phoneNumber,MemberType memberType) {
         this.email=new Email(email);
         this.name = new Name(name);
-        this.phoneNumber = new PhoneNumber(phoneNumber);
         this.memberType=memberType;
     }
 
@@ -39,15 +37,8 @@ public class Member extends BaseEntity {
         return this.name.getValue();
     }
 
-    public String getPhoneNumber() {
-        return this.phoneNumber.getValue();
-    }
-
     public void changeName(String name){
         this.name = new Name(name);
-    }
-    public void changePhoneNumber(String phoneNumber){
-        this.phoneNumber=new PhoneNumber(phoneNumber);
     }
 
     @Override
@@ -60,13 +51,13 @@ public class Member extends BaseEntity {
             return false;
         }
         Member member = (Member) o;
-        return  Objects.equals(name, member.name) && Objects.equals(email, member.email)
-                && Objects.equals(phoneNumber, member.phoneNumber);
+        return  Objects.equals(name, member.name)
+                && Objects.equals(email, member.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, name,phoneNumber);
+        return Objects.hash(email, name );
     }
 
     public boolean isSameId(Long memberId) {
