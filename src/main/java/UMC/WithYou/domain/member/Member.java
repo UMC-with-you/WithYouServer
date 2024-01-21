@@ -17,8 +17,6 @@ public class Member extends BaseEntity {
     private Email email;
     @Embedded
     private Name name;
-    @Embedded
-    private PhoneNumber phoneNumber;
 
     @Getter
     @Enumerated(EnumType.STRING)
