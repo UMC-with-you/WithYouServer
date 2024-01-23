@@ -18,6 +18,10 @@ public class RewindQna {
     @JoinColumn(name = "rewind_id")
     private Rewind rewind;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rewind_question_id")
+    private RewindQuestion rewindQuestion;
+
     @Column(length = 255)
     private String answer;
 
