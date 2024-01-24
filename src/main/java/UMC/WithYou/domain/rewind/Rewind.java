@@ -29,9 +29,8 @@ public class Rewind extends BaseEntity {
     @Column
     private Integer day;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member mvpCandidate;
+    @Column
+    private Long mvpCandidateId;
 
     @Enumerated(EnumType.STRING)
     @Column
