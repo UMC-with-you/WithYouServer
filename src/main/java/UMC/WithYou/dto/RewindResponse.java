@@ -13,7 +13,7 @@ public class RewindResponse {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CreateRewindResultDTO {
+    public static class CreateRewindResultDto {
         Long rewindId;
         LocalDateTime createdAt;
     }

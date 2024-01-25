@@ -16,7 +16,12 @@ public enum ErrorStatus implements BaseErrorCode {
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"COMMON401","인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "권한이 없습니다."),
 
-    _NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST,"NOTICE4003","공지가 없습니다.");
+
+    _NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST,"NOTICE4003","공지가 없습니다."),
+
+    // Question Error Response
+    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION404", "존재하지 않는 질문입니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;
@@ -38,7 +43,6 @@ public enum ErrorStatus implements BaseErrorCode {
                 .code(code)
                 .isSuccess(false)
                 .httpStatus(httpStatus)
-                .build()
-                ;
+                .build();
     }
 }
