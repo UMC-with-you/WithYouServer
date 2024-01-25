@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface NoticeCheckRepository extends JpaRepository<NoticeCheck,Long> {
     Optional<NoticeCheck> findByNotice(Notice notice);
-    List<NoticeCheck> findAllByIsCheckedIsTrueAndNotice(Long noticeId);
+    List<NoticeCheck> findAllByIsCheckedIsTrueAndNotice(Notice notice);
 }

@@ -1,6 +1,7 @@
 package UMC.WithYou.converter;
 
 import UMC.WithYou.domain.notice.Notice;
+import UMC.WithYou.dto.NoticeCheckResponseDTO;
 import UMC.WithYou.dto.NoticeRequestDTO;
 import UMC.WithYou.dto.NoticeResponseDTO;
 
@@ -39,5 +40,12 @@ public class NoticeConverter {
 
     }
 
+    public static NoticeCheckResponseDTO.ShortResponseDto toSearch(Notice notice, int checkNum){
+        return NoticeCheckResponseDTO.ShortResponseDto.builder()
+                .content(notice.getContent())
+                .checkNum(checkNum)
+                .name(notice.getMember().getName())
+                .build();
+    }
 
 }

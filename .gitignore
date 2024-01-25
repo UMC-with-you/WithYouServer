@@ -43,3 +43,6 @@ out/
 application.yml
 application-local.yml
 .env
+
+### Generated Q classes ###
+src/main/generated/
