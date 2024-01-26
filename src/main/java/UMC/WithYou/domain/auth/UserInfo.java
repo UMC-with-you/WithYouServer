@@ -1,4 +1,4 @@
-package UMC.WithYou.domain.oauth;
+package UMC.WithYou.domain.auth;
 
 import java.util.Map;
 
