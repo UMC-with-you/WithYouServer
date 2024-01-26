@@ -17,8 +17,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login/kakao")
-    public ResponseEntity<?> loginWithKakao(@RequestBody LoginRequest request) {
-        authService.authenticateOrRegisterUser(request);
-        return null;
+    public ResponseEntity<LoginResponse> loginWithKakao(@RequestBody LoginRequest request) {;
+        return ResponseEntity.ok()
+                .body(authService.authenticateOrRegisterUser(request));
     }
 }

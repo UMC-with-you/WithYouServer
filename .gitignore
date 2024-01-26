@@ -40,6 +40,5 @@ out/
 .DS_STORE
 
 ### Secret ###
-application.yml
 application-local.yml
 .env
