@@ -1,6 +1,7 @@
 package UMC.WithYou.controller;
 
 import UMC.WithYou.dto.auth.LoginRequest;
+import UMC.WithYou.dto.auth.LoginResponse;
 import UMC.WithYou.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class AuthController {
 
     @PostMapping("/login/kakao")
     public ResponseEntity<?> loginWithKakao(@RequestBody LoginRequest request) {
-        authService.loginWithKakao(tokenDto);
-        return ResponseEntity.ok().body(userDto);
+        authService.authenticateOrRegisterUser(request);
+        return null;
     }
 }

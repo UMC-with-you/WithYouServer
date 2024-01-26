@@ -26,11 +26,11 @@ public class KakaoUserInfo implements UserInfo {
         return (String) kakaoAccount.get("name");
     }
 
-    @Override
-    public String getPhoneNumber() {
-        Map<String, Object> kakaoAccount = asMap(attributes.get("kakao_account"));
-        return (String) kakaoAccount.get("phone_number");
-    }
+//    @Override
+//    public String getPhoneNumber() {
+//        Map<String, Object> kakaoAccount = asMap(attributes.get("kakao_account"));
+//        return (String) kakaoAccount.get("phone_number");
+//    }
     @Override
     public Map<String, Object> toAttributes() {
         return attributes;

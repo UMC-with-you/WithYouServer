@@ -1,9 +1,12 @@
 package UMC.WithYou.service.auth;
 
+import UMC.WithYou.domain.auth.RefreshToken;
 import UMC.WithYou.domain.auth.UserInfo;
 import UMC.WithYou.domain.member.Email;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.member.MemberType;
+import UMC.WithYou.dto.auth.LoginRequest;
+import UMC.WithYou.repository.auth.RefreshTokenRepository;
 import UMC.WithYou.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,17 +16,24 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final MemberRepository memberRepository;
     private final OAuth2ProviderService oAuth2ProviderService;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final TokenProvider tokenProvider;
 
-    public Member authenticateOrRegisterUser(String provider, String token) {
+    public Member authenticateOrRegisterUser(LoginRequest request) {
         // 외부 OAuth 공급자를 통해 사용자 정보를 가져옵니다.
-        UserInfo userInfo = oAuth2ProviderService.getUserInfo(provider, token);
+        UserInfo userInfo = oAuth2ProviderService.getUserInfo(request.getProvider(), request.getAccessToken());
         Email emailObject = new Email(userInfo.getEmail());
 
         // 이메일을 기반으로 기존 사용자를 찾거나 새로 등록합니다.
-        return memberRepository.findByEmail(emailObject)
+        Member member = memberRepository.findByEmail(emailObject)
                 .map(existingMember -> updateExistingMember(existingMember, userInfo))
                 .orElseGet(() -> registerNewMember(userInfo));
+
+        // JWT 토큰 발급
+        String accessToken = tokenProvider.createToken(member.getEmail());
+        RefreshToken refreshToken = tokenProvider.createRefreshToken(member.getEmail());
+
+        return member;
     }
 
     private Member updateExistingMember(Member existingMember, UserInfo userInfo) {
