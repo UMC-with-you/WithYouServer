@@ -2,24 +2,26 @@ package UMC.WithYou.service.auth;
 
 import UMC.WithYou.domain.auth.KakaoUserInfo;
 import UMC.WithYou.domain.auth.UserInfo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class OAuth2ProviderService {
-    private final WebClient webClient;
+    private final RestTemplate restTemplate;
 
-    public OAuth2ProviderService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.build();
-    }
-
-    @Value("${kakao.client-id}")
+    @Value("${kakao-client-id}")
     private String kakaoClientId;
 
-    @Value("${kakao.redirect-uri}")
+    @Value("${kakao-redirect-uri}")
     private String kakaoRedirectUri;
 
     // 각 공급자 API와 통신하는 메소드 구현
@@ -44,13 +46,20 @@ public class OAuth2ProviderService {
 
     private UserInfo getKakaoUserInfo(String token) {
         // Kakao API를 호출하여 사용자 정보를 가져옵니다.
-        Map attributes = webClient.get()
-                .uri("https://kapi.kakao.com/v2/user/me")
-                .header("Authorization", "Bearer " + token)
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block(); // 리액티브 타입의 결과를 동기적으로 대기하고 결과를 받습니다.
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Map> response = restTemplate.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.GET,
+                entity,
+                Map.class
+        );
+
+        Map<String, Object> attributes = response.getBody();
 
         return new KakaoUserInfo(attributes);
     }
 }
+

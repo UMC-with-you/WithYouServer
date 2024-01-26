@@ -6,6 +6,7 @@ import UMC.WithYou.domain.member.Email;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.member.MemberType;
 import UMC.WithYou.dto.auth.LoginRequest;
+import UMC.WithYou.dto.auth.LoginResponse;
 import UMC.WithYou.repository.auth.RefreshTokenRepository;
 import UMC.WithYou.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenProvider tokenProvider;
 
-    public Member authenticateOrRegisterUser(LoginRequest request) {
+    public LoginResponse authenticateOrRegisterUser(LoginRequest request) {
         // 외부 OAuth 공급자를 통해 사용자 정보를 가져옵니다.
         UserInfo userInfo = oAuth2ProviderService.getUserInfo(request.getProvider(), request.getAccessToken());
         Email emailObject = new Email(userInfo.getEmail());
@@ -33,7 +34,13 @@ public class AuthService {
         String accessToken = tokenProvider.createToken(member.getEmail());
         RefreshToken refreshToken = tokenProvider.createRefreshToken(member.getEmail());
 
-        return member;
+        // RefreshToken 저장
+        refreshTokenRepository.save(refreshToken);
+
+        return LoginResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken.getValue())
+                .build();
     }
 
     private Member updateExistingMember(Member existingMember, UserInfo userInfo) {
