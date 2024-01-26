@@ -2,7 +2,6 @@ package UMC.WithYou.dto;
 
 import UMC.WithYou.common.validation.annotation.ExistQuestionId;
 import UMC.WithYou.domain.rewind.Mood;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
@@ -18,7 +17,7 @@ public class RewindRequest {
         Integer day;
         @Schema(description = "MVP 투표 대상 멤버 ID", example = "10")
         Long mvpCandidateId;
-        @Schema(description = "오늘의 기분")
+        @Schema(description = "오늘의 기분", example = "SAD")
         Mood mood;
         @Schema(description = "Q&A 목록")
         List<CreateRewindQnaDto> qnaList;

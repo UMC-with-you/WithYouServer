@@ -1,5 +1,7 @@
 package UMC.WithYou.service.rewind;
 
+import UMC.WithYou.common.apiPayload.exception.handler.CommonErrorHandler;
+import UMC.WithYou.common.apiPayload.code.status.ErrorStatus;
 import UMC.WithYou.converter.RewindConverter;
 import UMC.WithYou.domain.rewind.Rewind;
 import UMC.WithYou.domain.rewind.RewindQna;
@@ -23,7 +25,7 @@ public class RewindCommandServiceImpl implements RewindCommandService {
     public Rewind createRewind(String token, Long travelId, RewindRequest.CreateRewindDto requestDto) {
 //        //임시 로직 -> member check with token parsing
 //        Long memberId = Long.parseLong(token);
-//        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND))
+//        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND));
 //        //travel check
 //        Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.TRAVEL_NOT_FOUND))
 //        //check valid travel's day
@@ -31,7 +33,7 @@ public class RewindCommandServiceImpl implements RewindCommandService {
 //        Duration duration = Duration.between(travel.getStartDateTime(), travel.getStartEndTime());
 //        // 차이를 일로 변환
 //        long daysDifference = Math.abs(duration.toDays());
-//        if (daysDifference < requestDto.getDay())
+//        if (daysDifference < requestDto.getDay()) throw new CommonErrorHandler(ErrorStatus.TRAVEL_DAY_NOT_VALID);
 //        //traveler check
 //        Traveler traveler = travel.getTravelers().stream()
 //              .filter(traveler -> member.equals(traveler.getMember()))
@@ -43,6 +45,7 @@ public class RewindCommandServiceImpl implements RewindCommandService {
 
         //변환&저장
         Rewind rewind = RewindConverter.toRewind(requestDto);
+//        rewind.setWriter(member);
         requestDto.getQnaList().stream()
                 .map(createRewindQnaDto -> {
                     RewindQna rewindQna = RewindQna.builder()
