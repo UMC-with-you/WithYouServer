@@ -35,7 +35,7 @@ public class JwtTokenProvider implements TokenProvider {
     private String jwtTokenPrefix;
     @Value("${jwt.expiration-period}")
     private Long expirationPeriod;
-    @Value("${JWT_REFRESH_TOKEN_VALID_TIME}")
+    @Value("${jwt.refresh.expiration-period}")
     private Long refreshTokenValidTime;
 
     private final UserDetailsService userDetailsService;
