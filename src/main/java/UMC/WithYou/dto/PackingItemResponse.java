@@ -1,6 +1,6 @@
 package UMC.WithYou.dto;
 
-import UMC.WithYou.domain.dummy.Member;
+import UMC.WithYou.domain.dummy.DummyMember;
 import UMC.WithYou.domain.PackingItem;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class PackingItemResponse {
         private boolean isChecked;
         public SearchResponseDTO(PackingItem packingItem){
             this.itemName = packingItem.getItemName();
-            Member packer = packingItem.getPacker();
+            DummyMember packer = packingItem.getPacker();
             if (packer != null){
                 this.packerId = packer.getId();
             }
