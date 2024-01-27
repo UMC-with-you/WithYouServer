@@ -20,7 +20,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST,"NOTICE4003","공지가 없습니다."),
 
     // Question Error Response
-    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION404", "존재하지 않는 질문입니다.");
+    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION404", "존재하지 않는 질문입니다."),
+
+    // Rewind Error Response
+    REWIND_NOT_FOUND(HttpStatus.NOT_FOUND, "REWIND404", "존재하지 않는 회고입니다.");
 
 
     private final HttpStatus httpStatus;

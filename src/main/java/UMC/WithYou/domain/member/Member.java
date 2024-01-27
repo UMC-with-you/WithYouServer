@@ -1,9 +1,12 @@
 package UMC.WithYou.domain.member;
 
 import UMC.WithYou.domain.BaseEntity;
+import UMC.WithYou.domain.rewind.Rewind;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,12 +25,18 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
 
+    @OneToMany(mappedBy="writer", cascade = CascadeType.ALL)
+    private List<Rewind> rewindList = new ArrayList<>();
+
+
     @Builder
     public Member(String email, String name,String phoneNumber,MemberType memberType) {
         this.email=new Email(email);
         this.name = new Name(name);
         this.memberType=memberType;
     }
+
+    public Long getId() {return id;}
 
     public String getEmail() {
         return this.email.getValue();
@@ -39,6 +48,10 @@ public class Member extends BaseEntity {
 
     public void changeName(String name){
         this.name = new Name(name);
+    }
+
+    public List<Rewind> getRewindList() {
+        return rewindList;
     }
 
     @Override
