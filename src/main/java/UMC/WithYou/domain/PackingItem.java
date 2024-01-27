@@ -1,8 +1,8 @@
 package UMC.WithYou.domain;
 
 
-import UMC.WithYou.domain.dummy.Member;
-import UMC.WithYou.domain.dummy.Travel;
+import UMC.WithYou.domain.dummy.DummyMember;
+import UMC.WithYou.domain.dummy.DummyTravel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,20 +30,20 @@ public class PackingItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
-    private Member creator;
+    private DummyMember creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "packer_id")
-    private Member packer;
+    private DummyMember packer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travel_id")
-    private Travel travel;
+    private DummyTravel travel;
 
     private Boolean isChecked;
     private String itemName;
 
-    public static PackingItem createPackingItem(Travel travelId, String itemName){
+    public static PackingItem createPackingItem(DummyTravel travelId, String itemName){
         return PackingItem.builder()
                 .travel(travelId)
                 .itemName(itemName)
@@ -60,7 +60,7 @@ public class PackingItem extends BaseEntity {
         return packer == null;
     }
 
-    public void setPacker(Member packer){
+    public void setPacker(DummyMember packer){
         this.packer = packer;
     }
 

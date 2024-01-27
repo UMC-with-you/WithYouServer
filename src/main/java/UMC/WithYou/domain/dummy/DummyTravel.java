@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Travel {
+public class DummyTravel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
