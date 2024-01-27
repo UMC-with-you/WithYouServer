@@ -30,7 +30,7 @@ public class Member extends BaseEntity {
 
 
     @Builder
-    public Member(String email, String name,String phoneNumber,MemberType memberType) {
+    public Member(String email, String name,MemberType memberType) {
         this.email=new Email(email);
         this.name = new Name(name);
         this.memberType=memberType;
