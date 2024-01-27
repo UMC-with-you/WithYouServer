@@ -32,9 +32,9 @@ public class PackingItem extends BaseEntity {
 //    @JoinColumn(name = "packer_id")
 //    private Member packer;
 //
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "travel_id")
-//    private Travel travel;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "travel_id")
+    private Travel travel;
 
     private boolean isChecked;
     private String itemName;

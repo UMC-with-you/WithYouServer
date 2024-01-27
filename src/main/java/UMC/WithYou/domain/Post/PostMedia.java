@@ -34,4 +34,8 @@ public class PostMedia extends BaseEntity {
     private Post post;
 
     private String url;
+
+    public PostMedia(String url){
+        this.url = url;
+    }
 }
