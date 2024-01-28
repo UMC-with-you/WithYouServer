@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RewindQuestionQueryServiceImpl implements RewindQuestionQueryService{
+public class RewindQuestionServiceImpl implements RewindQuestionService {
 
     private final RewindQuestionRepository rewindQuestionRepository;
 

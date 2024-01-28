@@ -32,4 +32,8 @@ public class RewindQna {
         rewind.getRewindQnaList().add(this);
     }
 
+    public void updateRewindQna(String answer) {
+        this.answer = answer;
+    }
+
 }
