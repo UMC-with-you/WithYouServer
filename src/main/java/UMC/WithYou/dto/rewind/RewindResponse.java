@@ -1,5 +1,6 @@
-package UMC.WithYou.dto;
+package UMC.WithYou.dto.rewind;
 
+import UMC.WithYou.common.validation.annotation.ExistQnaId;
 import UMC.WithYou.common.validation.annotation.ExistQuestionId;
 import UMC.WithYou.domain.rewind.Mood;
 import UMC.WithYou.domain.rewind.RewindQna;
@@ -19,6 +20,7 @@ public class RewindResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateRewindResultDto {
+        @Schema(description = "REWIND ID", example = "100")
         Long rewindId;
         LocalDateTime createdAt;
     }
@@ -51,13 +53,25 @@ public class RewindResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RetrieveRewindQnaDto {
-        @ExistQuestionId
+        @Schema(description = "Q&A ID", example = "123")
+        Long qnaId;
         @Schema(description = "질문 ID", example = "456")
         Long questionId;
         @Schema(description = "질문 내용", example = "오늘의 기분은 어땠어?")
         String content;
         @Schema(description = "질문 답변", example = "기분 좋았어요.")
         String answer;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateRewindResultDto {
+        @Schema(description = "REWIND ID", example = "100")
+        Long rewindId;
+        LocalDateTime createdAt;
+        LocalDateTime updatedAt;
     }
 
 

@@ -2,8 +2,8 @@ package UMC.WithYou.converter;
 
 import UMC.WithYou.domain.rewind.Rewind;
 import UMC.WithYou.domain.rewind.RewindQna;
-import UMC.WithYou.dto.RewindRequest;
-import UMC.WithYou.dto.RewindResponse;
+import UMC.WithYou.dto.rewind.RewindRequest;
+import UMC.WithYou.dto.rewind.RewindResponse;
 
 import java.util.Comparator;
 import java.util.List;
@@ -49,6 +49,7 @@ public class RewindConverter {
 
     public static RewindResponse.RetrieveRewindQnaDto toRetrieveRewindQnaDto(RewindQna rewindQna) {
         return RewindResponse.RetrieveRewindQnaDto.builder()
+                .qnaId(rewindQna.getId())
                 .questionId(rewindQna.getRewindQuestion().getId())
                 .content(rewindQna.getRewindQuestion().getContent())
                 .answer(rewindQna.getAnswer())
@@ -60,6 +61,15 @@ public class RewindConverter {
                 .map(RewindConverter::toRetrieveRewindQnaDto).collect(Collectors.toList());
         return retrieveRewindQnaList;
     }
+
+    public static RewindResponse.UpdateRewindResultDto toUpdateRewindResultDto(Rewind rewind) {
+        return RewindResponse.UpdateRewindResultDto.builder()
+                .rewindId(rewind.getId())
+                .createdAt(rewind.getCreatedAt())
+                .updatedAt(rewind.getUpdatedAt())
+                .build();
+    }
+
 
 
 }

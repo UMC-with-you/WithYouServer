@@ -57,4 +57,10 @@ public class Rewind extends BaseEntity {
         member.getRewindList().add(this);
     }
 
+    public void updateRewind(Long mvpCandidateId, Mood mood, String comment) {
+        if(mvpCandidateId != null) this.mvpCandidateId = mvpCandidateId;
+        if(mood != null) this.mood = mood;
+        if(comment != null) this.comment = comment;
+    }
+
 }
