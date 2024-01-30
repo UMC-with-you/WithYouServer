@@ -1,0 +1,24 @@
+server:
+  port: 8080
+    #servlet:
+  #context-path: /api
+
+spring:
+  profiles:
+    active: dev, oauth
+  datasource:
+    hikari:
+      minimum-idle: 22
+      maximum-pool-size: 22
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  expiration-period: ${JWT_EXPIRATION_PERIOD}
+  header: ${JWT_HEADER}
+  prefix: ${JWT_PREFIX}
+  refresh:
+    expiration-period: ${JWT_REFRESH_TOKEN_VALID_TIME}

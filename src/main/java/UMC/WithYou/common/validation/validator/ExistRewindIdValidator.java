@@ -1,8 +1,8 @@
 package UMC.WithYou.common.validation.validator;
 
 import UMC.WithYou.common.apiPayload.code.status.ErrorStatus;
-import UMC.WithYou.common.validation.annotation.ExistQuestionId;
-import UMC.WithYou.service.rewind.RewindQuestionService;
+import UMC.WithYou.common.validation.annotation.ExistRewindId;
+import UMC.WithYou.service.rewind.RewindQueryService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -10,22 +10,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ExistQuestionIdValidator implements ConstraintValidator<ExistQuestionId, Long> {
+public class ExistRewindIdValidator implements ConstraintValidator<ExistRewindId, Long> {
 
-    private final RewindQuestionService rewindQuestionService;
+    private final RewindQueryService rewindQueryService;
 
     @Override
-    public void initialize(ExistQuestionId constraintAnnotation) {
+    public void initialize(ExistRewindId constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
     @Override
     public boolean isValid(Long value, ConstraintValidatorContext context) {
-        boolean isValid = rewindQuestionService.checkQuestionIdExist(value);
+        boolean isValid = rewindQueryService.checkRewindIdExist(value);
 
         if (!isValid) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ErrorStatus.QUESTION_NOT_FOUND.toString()).addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorStatus.REWIND_NOT_FOUND.toString()).addConstraintViolation();
         }
 
         return isValid;

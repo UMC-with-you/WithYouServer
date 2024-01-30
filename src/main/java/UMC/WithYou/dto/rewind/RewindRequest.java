@@ -1,8 +1,7 @@
-package UMC.WithYou.dto;
+package UMC.WithYou.dto.rewind;
 
 import UMC.WithYou.common.validation.annotation.ExistQuestionId;
 import UMC.WithYou.domain.rewind.Mood;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
@@ -18,7 +17,7 @@ public class RewindRequest {
         Integer day;
         @Schema(description = "MVP 투표 대상 멤버 ID", example = "10")
         Long mvpCandidateId;
-        @Schema(description = "오늘의 기분")
+        @Schema(description = "오늘의 기분", example = "SAD")
         Mood mood;
         @Schema(description = "Q&A 목록")
         List<CreateRewindQnaDto> qnaList;
@@ -31,6 +30,27 @@ public class RewindRequest {
         @ExistQuestionId
         @Schema(description = "질문 ID", example = "456")
         Long questionId;
+        @Schema(description = "질문 답변", example = "기분 좋았어요.")
+        String answer;
+    }
+
+    @Getter
+    public static class UpdateRewindDto {
+        @Schema(description = "MVP 투표 대상 멤버 ID", example = "10")
+        Long mvpCandidateId;
+        @Schema(description = "오늘의 기분", example = "SAD")
+        Mood mood;
+        @Schema(description = "Q&A 목록")
+        List<UpdateRewindQnaDto> qnaList;
+        @Schema(description = "오늘의 한마디", example = "좋은 날이었습니다.")
+        String comment;
+    }
+
+    @Getter
+    public static class UpdateRewindQnaDto {
+        @ExistQuestionId
+        @Schema(description = "Q&A ID (질문 ID가 아닌 Q&A ID)", example = "456")
+        Long qnaId;
         @Schema(description = "질문 답변", example = "기분 좋았어요.")
         String answer;
     }

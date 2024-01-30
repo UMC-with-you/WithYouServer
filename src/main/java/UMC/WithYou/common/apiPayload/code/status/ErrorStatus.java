@@ -23,6 +23,14 @@ public enum ErrorStatus implements BaseErrorCode {
     QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QUESTION404", "존재하지 않는 질문입니다."),
 
 
+    // Q&A Error Response
+    QNA_NOT_FOUND(HttpStatus.NOT_FOUND, "QNA404", "존재하지 않는 QNA입니다."),
+
+    // Rewind Error Response
+    REWIND_NOT_FOUND(HttpStatus.NOT_FOUND, "REWIND404", "존재하지 않는 회고입니다."),
+    NOT_VALID_WRITER(HttpStatus.FORBIDDEN, "REWIND403", "해당 회고의 작성자가 아닙니다.");
+
+
 
     // Member Error Response
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4001", "존재하지 않는 회원입니다."),

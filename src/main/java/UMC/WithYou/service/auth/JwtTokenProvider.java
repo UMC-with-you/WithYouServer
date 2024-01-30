@@ -1,9 +1,8 @@
 package UMC.WithYou.service.auth;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import UMC.WithYou.domain.auth.RefreshToken;
+import UMC.WithYou.domain.member.Member;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,22 +17,26 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider implements TokenProvider {
-    @Value("${jwt.secret}")
+    @Value("${JWT_SECRET_KEY}")
     private String secret;
     private SecretKey key;
-    @Value("${jwt.header}")
+    @Value("${JWT_HEADER}")
     private String jwtHeader;
-    @Value("${jwt.prefix}")
+    @Value("${JWT_PREFIX}")
     private String jwtTokenPrefix;
-    @Value("${jwt.expiration-period}")
+    @Value("${JWT_EXPIRATION_PERIOD}")
     private Long expirationPeriod;
+    @Value("${JWT_REFRESH_TOKEN_VALID_TIME}")
+    private Long refreshTokenValidTime;
 
     private final UserDetailsService userDetailsService;
 
@@ -84,6 +87,25 @@ public class JwtTokenProvider implements TokenProvider {
             //throw new AuthException(AuthExceptionType.INVALID_AUTHORIZATION);
             return null;
         }
+    }
+
+    @Override
+    public RefreshToken createRefreshToken(String payload) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + TimeUnit.MINUTES.toMillis(expirationPeriod));
+
+        String value = Jwts.builder()
+                .setSubject(UUID.randomUUID().toString())
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+
+        return RefreshToken.builder()
+                .key(payload)
+                .value(value)
+                .expiredTime(refreshTokenValidTime)
+                .build();
     }
 
     @Override

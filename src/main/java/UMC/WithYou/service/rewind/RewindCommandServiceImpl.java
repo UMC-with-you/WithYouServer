@@ -1,9 +1,11 @@
 package UMC.WithYou.service.rewind;
 
+import UMC.WithYou.common.apiPayload.code.status.ErrorStatus;
+import UMC.WithYou.common.apiPayload.exception.handler.CommonErrorHandler;
 import UMC.WithYou.converter.RewindConverter;
 import UMC.WithYou.domain.rewind.Rewind;
 import UMC.WithYou.domain.rewind.RewindQna;
-import UMC.WithYou.dto.RewindRequest;
+import UMC.WithYou.dto.rewind.RewindRequest;
 import UMC.WithYou.repository.rewind.RewindQnaRepository;
 import UMC.WithYou.repository.rewind.RewindQuestionRepository;
 import UMC.WithYou.repository.rewind.RewindRepository;
@@ -23,15 +25,15 @@ public class RewindCommandServiceImpl implements RewindCommandService {
     public Rewind createRewind(String token, Long travelId, RewindRequest.CreateRewindDto requestDto) {
 //        //임시 로직 -> member check with token parsing
 //        Long memberId = Long.parseLong(token);
-//        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND))
+//        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND));
 //        //travel check
-//        Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.TRAVEL_NOT_FOUND))
+//        Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.TRAVEL_NOT_FOUND));
 //        //check valid travel's day
 //        // Duration.between으로 두 LocalDateTime 사이의 차이를 계산
 //        Duration duration = Duration.between(travel.getStartDateTime(), travel.getStartEndTime());
 //        // 차이를 일로 변환
 //        long daysDifference = Math.abs(duration.toDays());
-//        if (daysDifference < requestDto.getDay())
+//        if (daysDifference < requestDto.getDay()) throw new CommonErrorHandler(ErrorStatus.TRAVEL_DAY_NOT_VALID);
 //        //traveler check
 //        Traveler traveler = travel.getTravelers().stream()
 //              .filter(traveler -> member.equals(traveler.getMember()))
@@ -43,12 +45,35 @@ public class RewindCommandServiceImpl implements RewindCommandService {
 
         //변환&저장
         Rewind rewind = RewindConverter.toRewind(requestDto);
+//        rewind.setWriter(member);
         requestDto.getQnaList().stream()
                 .map(createRewindQnaDto -> {
                     RewindQna rewindQna = RewindQna.builder()
                             .answer(createRewindQnaDto.getAnswer())
                             .rewindQuestion(rewindQuestionRepository.findById(createRewindQnaDto.getQuestionId()).get())
                             .build();
+                    rewindQna.setRewind(rewind);
+                    return rewindQna;
+                })
+                .forEach(rewindQnaRepository::save);
+        return rewindRepository.save(rewind);
+    }
+
+    @Override
+    public Rewind updateRewindById(String token, Long travelId, Long rewindId, RewindRequest.UpdateRewindDto requestDto) {
+//        //임시 로직 -> member check with token parsing
+//        Long memberId = Long.parseLong(token);
+//        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND));
+//        //travel check
+//        Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.TRAVEL_NOT_FOUND));
+        Rewind rewind = rewindRepository.findById(rewindId).get();
+//        //writer check
+//        if(rewind.getWriter() != member) throw new CommonErrorHandler(ErrorStatus.NOT_VALID_WRITER);
+        rewind.updateRewind(requestDto.getMvpCandidateId(), requestDto.getMood(), requestDto.getComment());
+        requestDto.getQnaList().stream()
+                .map(rewindQnaDto -> {
+                    RewindQna rewindQna = rewindQnaRepository.findById(rewindQnaDto.getQnaId()).get();
+                    rewindQna.updateRewindQna(rewindQnaDto.getAnswer());
                     rewindQna.setRewind(rewind);
                     return rewindQna;
                 })

@@ -1,6 +1,7 @@
 package UMC.WithYou.domain.rewind;
 
 import UMC.WithYou.domain.BaseEntity;
+import UMC.WithYou.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,9 +23,9 @@ public class Rewind extends BaseEntity {
 //    @JoinColumn(name = "travel_id")
 //    private Travel travel;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member writer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member writer;
 
     @Column
     private Integer day;
@@ -49,11 +50,17 @@ public class Rewind extends BaseEntity {
 //        travel.getRewindList().add(this);
 //    }
 
-//    public void setWriter(Member member) {
-//        if(this.member != null)
-//            member.getRewindList().remove(this);
-//        this.member = member;
-//        member.getRewindList().add(this);
-//    }
+    public void setWriter(Member member) {
+        if(this.writer != null)
+            member.getRewindList().remove(this);
+        this.writer = member;
+        member.getRewindList().add(this);
+    }
+
+    public void updateRewind(Long mvpCandidateId, Mood mood, String comment) {
+        if(mvpCandidateId != null) this.mvpCandidateId = mvpCandidateId;
+        if(mood != null) this.mood = mood;
+        if(comment != null) this.comment = comment;
+    }
 
 }

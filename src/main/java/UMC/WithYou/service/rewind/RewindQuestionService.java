@@ -1,6 +1,6 @@
 package UMC.WithYou.service.rewind;
 
-public interface RewindQuestionQueryService {
+public interface RewindQuestionService {
 
     Boolean checkQuestionIdExist(Long questionId);
 }
