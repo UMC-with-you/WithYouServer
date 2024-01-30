@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 
-public class PostMedia extends BaseEntity {
+public class PostMedia extends BaseEntity implements Comparable<PostMedia>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,6 +32,23 @@ public class PostMedia extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
-
+    private int position;
     private String url;
+
+    public PostMedia(String url, Post post, int position){
+        this.url = url;
+        this.post = post;
+        this.position = position;
+    }
+
+
+    public void setPosition(int position){
+        this.position = position;
+    }
+    @Override
+    public int compareTo(PostMedia postMedia) {
+        return Integer.compare(this.getPosition(), postMedia.getPosition());
+    }
+
+
 }

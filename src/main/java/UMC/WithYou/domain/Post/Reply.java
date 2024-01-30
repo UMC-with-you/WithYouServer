@@ -2,6 +2,7 @@ package UMC.WithYou.domain.Post;
 
 
 import UMC.WithYou.domain.BaseEntity;
+import UMC.WithYou.domain.member.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,9 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "reply")
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 
 public class Reply extends BaseEntity {
     @Id
@@ -33,13 +32,23 @@ public class Reply extends BaseEntity {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    //    @ManyToOne(fetch = FetchType.LAZY)
-    //    @JoinColumn(name = "member_id")
-    //    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
 
     private String content;
 
+    public Reply(Comment comment, Member member, String content){
+        this.comment = comment;
+        this.member = member;
+        this.content = content;
+    }
+
+    public void setContent(String content){
+        this.content = content;
+    }
 }
+
 
 

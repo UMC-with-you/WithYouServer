@@ -1,9 +1,10 @@
 package UMC.WithYou.domain.Post;
 
-import static jakarta.persistence.FetchType.LAZY;
 
 import UMC.WithYou.domain.BaseEntity;
+import UMC.WithYou.domain.member.Member;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,12 +30,17 @@ public class ScrapedPost extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id")
     private Post post;
 
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    public ScrapedPost(Post post, Member member){
+        this.post = post;
+        this.member = member;
+    }
 
 }

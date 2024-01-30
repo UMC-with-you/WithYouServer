@@ -1,6 +1,7 @@
 package UMC.WithYou.domain.Post;
 
 import UMC.WithYou.domain.BaseEntity;
+import UMC.WithYou.domain.member.Member;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,9 +36,9 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "post_id")
     private Post post;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private List<Reply> replies = new ArrayList<>();
@@ -45,4 +46,13 @@ public class Comment extends BaseEntity {
 
     private String content;
 
+    public Comment(Post post, Member writer, String content){
+        this.post = post;
+        this.member = writer;
+        this.content = content;
+    }
+
+    public void setContent(String content){
+        this.content = content;
+    }
 }
