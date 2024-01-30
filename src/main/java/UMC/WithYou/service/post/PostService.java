@@ -4,11 +4,10 @@ import UMC.WithYou.common.apiPayload.code.status.ErrorStatus;
 import UMC.WithYou.common.apiPayload.exception.handler.CommonErrorHandler;
 import UMC.WithYou.domain.Post.Post;
 import UMC.WithYou.domain.Post.ScrapedPost;
-import UMC.WithYou.domain.dummy.DummyTravel;
-import UMC.WithYou.domain.member.Email;
+
 import UMC.WithYou.domain.member.Member;
-import UMC.WithYou.repository.dummy.DummyTravelRepository;
-import UMC.WithYou.repository.member.MemberRepository;
+import UMC.WithYou.domain.travel.Travel;
+import UMC.WithYou.repository.TravelRepository;
 import UMC.WithYou.repository.post.PostRepository;
 import UMC.WithYou.repository.post.ScrapedPostRepository;
 import UMC.WithYou.service.member.MemberService;
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class PostService {
     private final PostRepository postRepository;
     private final MemberService memberService;
-    private final DummyTravelRepository travelRepository;
+    private final TravelRepository travelRepository;
     private final ScrapedPostRepository scrapedPostRepository;
 
 
@@ -35,7 +34,7 @@ public class PostService {
 //                ()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND)
 //        );
         Member publisher = memberService.findByMemberIdToken(token);
-        DummyTravel travel = travelRepository.findById(travelId).orElseThrow(
+        Travel travel = travelRepository.findById(travelId).orElseThrow(
                 ()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND)
         );
         if (urls.isEmpty() || urls.size() > 11){

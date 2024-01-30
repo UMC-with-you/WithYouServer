@@ -1,8 +1,8 @@
 package UMC.WithYou.domain;
 
 
-import UMC.WithYou.domain.dummy.DummyTravel;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.domain.travel.Travel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -34,12 +34,12 @@ public class PackingItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travel_id")
-    private DummyTravel travel;
+    private Travel travel;
 
     private Boolean isChecked;
     private String itemName;
 
-    public static PackingItem createPackingItem(DummyTravel travelId, String itemName){
+    public static PackingItem createPackingItem(Travel travelId, String itemName){
         return PackingItem.builder()
                 .travel(travelId)
                 .itemName(itemName)
