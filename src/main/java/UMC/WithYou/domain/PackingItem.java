@@ -1,8 +1,8 @@
 package UMC.WithYou.domain;
 
 
-import UMC.WithYou.domain.dummy.DummyMember;
 import UMC.WithYou.domain.dummy.DummyTravel;
+import UMC.WithYou.domain.member.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +30,7 @@ public class PackingItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "packer_id")
-    private DummyMember packer;
+    private Member packer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travel_id")
@@ -56,7 +56,7 @@ public class PackingItem extends BaseEntity {
         return packer == null;
     }
 
-    public void setPacker(DummyMember packer){
+    public void setPacker(Member packer){
         this.packer = packer;
     }
 
