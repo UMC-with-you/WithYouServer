@@ -54,7 +54,7 @@ public class PostController {
             @Parameter( name = "travelId" , description = "여행 Id", required = true, schema = @Schema(type = "Long"))
     })
     @GetMapping("api/v1/travels/{travelId}/posts")
-    public ApiResponse<List<ThumbnailResponseDTO>> getThumbnails(@PathVariable("travelId") Long travelId){
+    public ApiResponse<List<ThumbnailResponseDTO>> getPostThumbnails(@PathVariable("travelId") Long travelId){
         List<Post> posts = postService.getPosts(travelId);
 
         return ApiResponse.onSuccess(posts.stream()
@@ -139,7 +139,8 @@ public class PostController {
     ){
         List<Post> posts = postService.getPosts(token);
 
-        return ApiResponse.onSuccess(posts.stream()
+        return ApiResponse.onSuccess(
+                posts.stream()
                 .map(p -> new ThumbnailResponseDTO(p))
                 .toList()
         );

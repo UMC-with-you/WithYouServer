@@ -3,31 +3,27 @@ package UMC.WithYou.service;
 import UMC.WithYou.common.apiPayload.code.status.ErrorStatus;
 import UMC.WithYou.common.apiPayload.exception.handler.CommonErrorHandler;
 import UMC.WithYou.domain.PackingItem;
-import UMC.WithYou.domain.dummy.DummyTravel;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.domain.travel.Travel;
 import UMC.WithYou.repository.PackingItemRepository;
-import UMC.WithYou.repository.dummy.DummyTravelRepository;
+import UMC.WithYou.repository.TravelRepository;
 import UMC.WithYou.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class PackingItemService {
     private final PackingItemRepository packingItemRepository;
-    private final DummyTravelRepository travelRepository;
+    private final TravelRepository travelRepository;
     private final MemberRepository memberRepository;
 
 
-    public PackingItemService(PackingItemRepository packingItemRepository, DummyTravelRepository travelRepository, MemberRepository memberRepository){
-        this.packingItemRepository = packingItemRepository;
-        this.travelRepository = travelRepository;
-        this.memberRepository = memberRepository;
-    }
-
     public PackingItem addPackingItem(Long travelId, String itemName) {
-        DummyTravel travel = travelRepository.findById(travelId).orElseThrow(
+        Travel travel = travelRepository.findById(travelId).orElseThrow(
                 ()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND)
         );
 
@@ -37,7 +33,7 @@ public class PackingItemService {
     }
 
     public List<PackingItem> findPackingItems(Long travelId){
-        DummyTravel travel = travelRepository.findById(travelId).orElseThrow(
+        Travel travel = travelRepository.findById(travelId).orElseThrow(
                 ()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND)
         );
         return packingItemRepository.findByTravelId(travelId);

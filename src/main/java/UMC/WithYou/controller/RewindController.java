@@ -91,7 +91,7 @@ public class RewindController {
             @Parameter(name = "travelId", description = "여행 ID", required = true, schema = @Schema(type = "Long")),
             @Parameter(name = "rewindId", description = "회고 ID", required = true, schema = @Schema(type = "Long"))
     })
-    @GetMapping("/api/v1/travels/{travelId}/rewinds/{rewindId}")
+    @DeleteMapping("/api/v1/travels/{travelId}/rewinds/{rewindId}")
     public ApiResponse deleteRewindById(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
                                         @PathVariable Long travelId,
                                         @PathVariable @ExistRewindId Long rewindId) {

@@ -1,8 +1,8 @@
 package UMC.WithYou.domain.Post;
 
 import UMC.WithYou.domain.BaseEntity;
-import UMC.WithYou.domain.dummy.DummyTravel;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.domain.travel.Travel;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -41,7 +41,7 @@ public class Post extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "log_id")
-    private DummyTravel travel;
+    private Travel travel;
 
 //    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 //    private List<ScrapedPost> scrapedPosts = new ArrayList<>();
@@ -55,7 +55,7 @@ public class Post extends BaseEntity {
 
     private String text;
 
-    public Post(Member publisher, DummyTravel travel, String text, List<String> urls) {
+    public Post(Member publisher, Travel travel, String text, List<String> urls) {
         this.member = publisher;
         this.travel = travel;
         this.text = text;

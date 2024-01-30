@@ -2,6 +2,7 @@ package UMC.WithYou.domain.member;
 
 import UMC.WithYou.domain.BaseEntity;
 import UMC.WithYou.domain.Post.ScrapedPost;
+import UMC.WithYou.domain.travel.Travel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import UMC.WithYou.domain.rewind.Rewind;
 import jakarta.persistence.*;
@@ -34,6 +35,13 @@ public class Member extends BaseEntity {
     @JsonIgnore
     private List<ScrapedPost> scrapedPosts;
 
+    @Getter
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Travel> travels;
+
+    @Getter
+    private String imageUrl;
     @OneToMany(mappedBy="writer", cascade = CascadeType.ALL)
     private List<Rewind> rewindList = new ArrayList<>();
 

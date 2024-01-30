@@ -80,7 +80,8 @@ public class PackingItemController {
     })
     @PatchMapping("api/v1/packing_items/{packingItemId}/packer_choice")
     public ApiResponse<PackerChoiceResponseDTO> choosePacker(
-        @PathVariable Long packingItemId, @RequestParam("packer_id") Long packerId) {
+        @PathVariable Long packingItemId, @RequestParam("packer_id") Long packerId)
+    {
         Boolean checkboxState = packingItemService.setPacker(packingItemId, packerId);
         return ApiResponse.onSuccess(new PackerChoiceResponseDTO(packingItemId, packerId, checkboxState));
     }
