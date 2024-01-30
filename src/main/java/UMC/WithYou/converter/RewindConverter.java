@@ -69,7 +69,4 @@ public class RewindConverter {
                 .updatedAt(rewind.getUpdatedAt())
                 .build();
     }
-
-
-
 }

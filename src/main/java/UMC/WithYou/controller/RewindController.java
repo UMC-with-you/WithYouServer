@@ -70,7 +70,7 @@ public class RewindController {
         return ApiResponse.onSuccess(RewindConverter.toRetrieveRewindResultDto(rewind));
     }
 
-    @Operation(summary = "REWIND 수정", description = "해당 여행 그룹의 멤버가 해당 여행 중 자신의 특정 회고를 수정합니다.")
+    @Operation(summary = "REWIND 수정", description = "해당 여행 그룹의 멤버가 해당 여행중 자신의 특정 회고를 수정합니다.")
     @Parameters({
             @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
             @Parameter(name = "travelId", description = "여행 ID", required = true, schema = @Schema(type = "Long")),
@@ -83,5 +83,19 @@ public class RewindController {
                                                                               @RequestBody @Valid RewindRequest.UpdateRewindDto requestDto) {
         Rewind rewind = rewindCommandService.updateRewindById(token, travelId, rewindId, requestDto);
         return ApiResponse.onSuccess(RewindConverter.toUpdateRewindResultDto(rewind));
+    }
+
+    @Operation(summary = "REWIND 삭제", description = "해당 여행 그룹의 멤버가 해당 여행중 자신의 특정 회고를 삭제합니다.")
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter(name = "travelId", description = "여행 ID", required = true, schema = @Schema(type = "Long")),
+            @Parameter(name = "rewindId", description = "회고 ID", required = true, schema = @Schema(type = "Long"))
+    })
+    @GetMapping("/api/v1/travels/{travelId}/rewinds/{rewindId}")
+    public ApiResponse deleteRewindById(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+                                        @PathVariable Long travelId,
+                                        @PathVariable @ExistRewindId Long rewindId) {
+        rewindCommandService.deleteRewindById(token, travelId, rewindId);
+        return ApiResponse.onSuccess_NoContent();
     }
 }

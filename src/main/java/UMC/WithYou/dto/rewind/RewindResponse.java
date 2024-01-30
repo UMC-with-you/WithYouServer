@@ -20,7 +20,7 @@ public class RewindResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateRewindResultDto {
-        @Schema(description = "REWIND ID", example = "100")
+        @Schema(description = "생성된 REWIND ID", example = "100")
         Long rewindId;
         LocalDateTime createdAt;
     }
@@ -30,7 +30,7 @@ public class RewindResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RetrieveRewindResultDto {
-        @Schema(description = "REWIND ID", example = "100")
+        @Schema(description = "조회된 REWIND ID", example = "100")
         Long rewindId;
         @Schema(description = "여행 날짜", example = "1")
         Integer day;
@@ -68,11 +68,10 @@ public class RewindResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateRewindResultDto {
-        @Schema(description = "REWIND ID", example = "100")
+        @Schema(description = "수정된 REWIND ID", example = "100")
         Long rewindId;
         LocalDateTime createdAt;
         LocalDateTime updatedAt;
     }
-
 
 }
