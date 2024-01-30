@@ -5,7 +5,7 @@ import UMC.WithYou.domain.Post.Post;
 import UMC.WithYou.service.post.PostService;
 import UMC.WithYou.dto.post.PostRequest.*;
 import UMC.WithYou.dto.post.PostResponse.*;
-import com.google.common.net.HttpHeaders;
+import org.springframework.http.HttpHeaders;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
