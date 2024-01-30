@@ -1,7 +1,10 @@
 package UMC.WithYou.domain.member;
 
 import UMC.WithYou.domain.BaseEntity;
+import UMC.WithYou.domain.Post.ScrapedPost;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.*;
 
 import java.util.Objects;
@@ -10,6 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = @Index(name = "email", columnList = "email", unique = true))
 public class Member extends BaseEntity {
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -21,6 +25,11 @@ public class Member extends BaseEntity {
     @Getter
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
+
+    @Getter
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<ScrapedPost> scrapedPosts;
 
     @Builder
     public Member(String email, String name,String phoneNumber,MemberType memberType) {
@@ -63,5 +72,4 @@ public class Member extends BaseEntity {
     public boolean isSameId(Long memberId) {
         return this.id.equals(memberId);
     }
-
 }
