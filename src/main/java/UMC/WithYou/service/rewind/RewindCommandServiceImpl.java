@@ -80,4 +80,17 @@ public class RewindCommandServiceImpl implements RewindCommandService {
                 .forEach(rewindQnaRepository::save);
         return rewindRepository.save(rewind);
     }
+
+    @Override
+    public void deleteRewindById(String token, Long travelId, Long rewindId) {
+//        //임시 로직 -> member check with token parsing
+//        Long memberId = Long.parseLong(token);
+//        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND));
+//        //travel check
+//        Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.TRAVEL_NOT_FOUND));
+        Rewind rewind = rewindRepository.findById(rewindId).get();
+//        //writer check
+//        if(rewind.getWriter() != member) throw new CommonErrorHandler(ErrorStatus.NOT_VALID_WRITER);
+        rewindRepository.deleteById(rewind.getId());
+    }
 }
