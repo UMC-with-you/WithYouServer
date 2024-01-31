@@ -33,7 +33,7 @@ public class AuthConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        AuthFilter authFilter = new AuthFilter(tokenProvider);
+        //AuthFilter authFilter = new AuthFilter(tokenProvider);
         return http
                 .cors(c->corsConfigurationSource())
                 .csrf(AbstractHttpConfigurer::disable)
@@ -41,9 +41,10 @@ public class AuthConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(e -> e.accessDeniedHandler(tokenAccessDeniedHandler))
                 .authorizeHttpRequests(request -> request
-//                        .requestMatchers("/login","/api/members","/auth/**", "/oauth2/**","/login/oauth2/code/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**","/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**")
+                        .permitAll()
                         .anyRequest().permitAll())
-//                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+    //            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .getOrBuild();
     }
 
