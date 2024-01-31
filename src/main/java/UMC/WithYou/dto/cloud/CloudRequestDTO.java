@@ -16,6 +16,8 @@ public class CloudRequestDTO {
 
         LocalDate date;
 
+        Long travelId;
+
         List<MultipartFile> pictures;
     }
 }

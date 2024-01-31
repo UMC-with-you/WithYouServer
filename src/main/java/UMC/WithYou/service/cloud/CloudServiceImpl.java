@@ -4,9 +4,12 @@ import UMC.WithYou.common.apiPayload.code.status.ErrorStatus;
 import UMC.WithYou.common.apiPayload.exception.handler.CommonErrorHandler;
 import UMC.WithYou.converter.CloudConverter;
 import UMC.WithYou.domain.cloud.Cloud;
+import UMC.WithYou.domain.cloud.CloudMedia;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.notice.Notice;
+import UMC.WithYou.domain.travel.Travel;
 import UMC.WithYou.dto.cloud.CloudRequestDTO;
+import UMC.WithYou.repository.TravelRepository;
 import UMC.WithYou.repository.cloud.CloudMediaRepository;
 import UMC.WithYou.repository.cloud.CloudRepository;
 import UMC.WithYou.repository.member.MemberRepository;
@@ -25,26 +28,26 @@ import java.util.Optional;
 public class CloudServiceImpl implements CloudService{
     private final MemberRepository memberRepository;
     private final CloudRepository cloudRepository;
+    private final TravelRepository travelRepository;
     private final CloudMediaRepository cloudMediaRepository;
 
     @Override
     @Transactional
     public Cloud createCloud(CloudRequestDTO.JoinDto request){ //date, pictures
-        Member member = memberRepository.findById(request.getMemberId())
-                .orElseThrow(()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        Travel travel = travelRepository.findById(request.getTravelId())
+                .orElseThrow(()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND));
 
-        Cloud cloud = cloudRepository.findByMember(member)
+        Cloud cloud = cloudRepository.findByTravel(travel)
                 .orElseGet(() -> {
-                    Cloud newCloud = CloudConverter.toChangeCloud(member);
+                    Cloud newCloud = CloudConverter.toChangeCloud(travel);
                     return cloudRepository.save(newCloud);
                 });
 
-        pictureSave(request,cloud);
+        CloudMedia cloudMedia=CloudConverter.toMedia(request,cloud);//url 로 바꾸기
+        cloudMediaRepository.save(cloudMedia);
+
         return cloud;
     }
 
-    public static void pictureSave(CloudRequestDTO.JoinDto request, Cloud cloud){
-
-    }
 
 }

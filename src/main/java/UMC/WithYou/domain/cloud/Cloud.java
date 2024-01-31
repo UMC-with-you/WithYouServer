@@ -2,6 +2,7 @@ package UMC.WithYou.domain.cloud;
 
 import UMC.WithYou.domain.BaseEntity;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.domain.travel.Travel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -24,11 +25,8 @@ public class Cloud extends BaseEntity {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="member_id")
-    private Member member;
+    @JoinColumn(name="travel_id")
+    private Travel travel;
 
     private List<CloudMedia> pictureDate;
-
-
-
 }

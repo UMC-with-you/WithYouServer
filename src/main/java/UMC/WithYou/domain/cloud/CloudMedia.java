@@ -1,5 +1,6 @@
 package UMC.WithYou.domain.cloud;
 
+import UMC.WithYou.domain.travel.Travel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -11,6 +12,11 @@ import java.util.List;
 
 @Entity
 @Getter
+@DynamicUpdate
+@DynamicInsert
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class CloudMedia {
 
     @Getter
@@ -20,6 +26,7 @@ public class CloudMedia {
 
     private LocalDate date;
     private List<String> url;
+
 
 
     @OneToOne(fetch = FetchType.LAZY)
