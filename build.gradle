@@ -40,7 +40,7 @@ dependencies {
 
 	// Spring Security 관련 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-spring security6'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
 	// Jasypt 관련 의존성
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
