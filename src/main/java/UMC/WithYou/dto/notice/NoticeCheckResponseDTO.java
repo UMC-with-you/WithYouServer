@@ -1,4 +1,4 @@
-package UMC.WithYou.dto;
+package UMC.WithYou.dto.notice;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

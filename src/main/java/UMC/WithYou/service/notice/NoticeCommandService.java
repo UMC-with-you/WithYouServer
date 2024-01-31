@@ -1,8 +1,8 @@
 package UMC.WithYou.service.notice;
 
 import UMC.WithYou.domain.notice.Notice;
-import UMC.WithYou.dto.NoticeCheckResponseDTO;
-import UMC.WithYou.dto.NoticeRequestDTO;
+import UMC.WithYou.dto.notice.NoticeCheckResponseDTO;
+import UMC.WithYou.dto.notice.NoticeRequestDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
-package UMC.WithYou.dto;
+package UMC.WithYou.dto.notice;
 
 import UMC.WithYou.common.validation.annotation.ExistNotices;
 import lombok.Getter;

@@ -2,8 +2,7 @@ package UMC.WithYou.converter;
 
 import UMC.WithYou.domain.notice.Notice;
 import UMC.WithYou.domain.notice.NoticeCheck;
-import UMC.WithYou.dto.NoticeCheckResponseDTO;
-import UMC.WithYou.dto.NoticeResponseDTO;
+import UMC.WithYou.dto.notice.NoticeCheckResponseDTO;
 
 public class NoticeCheckConverter {
 

@@ -3,9 +3,9 @@ package UMC.WithYou.controller;
 import UMC.WithYou.common.apiPayload.ApiResponse;
 import UMC.WithYou.converter.NoticeConverter;
 import UMC.WithYou.domain.notice.Notice;
-import UMC.WithYou.dto.NoticeCheckResponseDTO;
-import UMC.WithYou.dto.NoticeRequestDTO;
-import UMC.WithYou.dto.NoticeResponseDTO;
+import UMC.WithYou.dto.notice.NoticeCheckResponseDTO;
+import UMC.WithYou.dto.notice.NoticeRequestDTO;
+import UMC.WithYou.dto.notice.NoticeResponseDTO;
 import UMC.WithYou.service.notice.NoticeCommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
