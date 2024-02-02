@@ -1,5 +1,6 @@
 package UMC.WithYou.repository.notice;
 
+import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.notice.Notice;
 import UMC.WithYou.domain.notice.NoticeCheck;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,5 @@ import java.util.Optional;
 public interface NoticeCheckRepository extends JpaRepository<NoticeCheck,Long> {
     Optional<NoticeCheck> findByNotice(Notice notice);
     List<NoticeCheck> findAllByIsCheckedIsTrueAndNotice(Notice notice);
+    Optional<NoticeCheck> findByMemberAndNotice(Member member, Notice notice);
 }

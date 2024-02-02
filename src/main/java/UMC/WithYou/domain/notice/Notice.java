@@ -2,6 +2,7 @@ package UMC.WithYou.domain.notice;
 
 import UMC.WithYou.domain.BaseEntity;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.domain.travel.Travel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -34,9 +35,9 @@ public class Notice extends BaseEntity {
     @JoinColumn(name="member_id")
     private Member member;    //노티스를 만든사람
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="log_id")
-//    private TravelLog travelLog;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="log_id")
+    private Travel travel;
 
 
 }

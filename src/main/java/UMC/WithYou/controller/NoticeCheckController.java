@@ -37,9 +37,10 @@ public class NoticeCheckController {
     })
     @Parameters({
             @Parameter(name = "noticeId", description = "notice 의 아이디, path variable 입니다!"),
+            @Parameter(name = "memberId", description = "notice 의 아이디, path variable 입니다!"),
     })
-    public ApiResponse<NoticeCheckResponseDTO.ResultDto> checkBox(@PathVariable Long noticeId){
-        NoticeCheck noticeCheck=noticeCheckCommandService.checkBox(noticeId);
+    public ApiResponse<NoticeCheckResponseDTO.ResultDto> checkBox(@PathVariable Long noticeId,@PathVariable Long memberId){
+        NoticeCheck noticeCheck=noticeCheckCommandService.checkBox(noticeId,memberId);
         return ApiResponse.onSuccess(NoticeCheckConverter.toResultDTO(noticeCheck));
     }
 }
