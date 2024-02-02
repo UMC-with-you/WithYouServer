@@ -34,8 +34,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // Member Error Response
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4001", "존재하지 않는 회원입니다."),
-    // Travel Error Response
-    TRAVEL_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "TRAVEL4001", "존재하지 않는 여행 로그입니다."),
+
 
     // PackingItem Error Response
     INVALID_ITEM_NAME_LENGTH(HttpStatus.BAD_REQUEST, "PACKING_ITEM4001", "유효하지 않은 짐 이름의 길이입니다."),
@@ -56,6 +55,11 @@ public enum ErrorStatus implements BaseErrorCode {
     REPLY_NOT_FOUND(HttpStatus.NOT_FOUND, "REPLY4001", "존재하지 않는 대댓글입니다."),
     UNAUTHORIZED_ACCESS_TO_REPLY(HttpStatus.BAD_REQUEST, "COMMENT4002", "대댓글 수정, 삭제 권한이 없는 회원입니다."),
 
+
+    // Travel Error Response
+    TRAVEL_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "TRAVEL4001", "존재하지 않는 여행 로그입니다."),
+    UNAUTHORIZED_ACCESS_TO_TRAVEL(HttpStatus.BAD_REQUEST, "TRAVEL4002", "여행 로그에 접근 권한이 없는 회원입니다."),
+    INVITATION_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "TRAVEL4003", "존재하지 초대 코드입니다."),
     ;
     private final HttpStatus httpStatus;
     private final String code;
