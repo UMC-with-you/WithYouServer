@@ -31,7 +31,7 @@ public class Notice extends BaseEntity {
     LocalDateTime endDate;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;    //노티스를 만든사람
 
