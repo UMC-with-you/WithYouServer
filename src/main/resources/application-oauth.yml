@@ -1,3 +1,3 @@
 kakao:
-  client-id: ${KAKAO_CLIENT_ID}
-  redirect-uri: ${KAKAO_REDIRECT_URI}
+  client-id: ENC(VZ1Kprz2oa64F80iNbzKeuzUOJeTuDc+kSP07DTQwis/5iiHscu+3BFLETHzOPyo)
+  redirect-uri: ENC(V6HEXM2mXG9FzrqGwU4GlcyuQBoY73SGxrkFde8NP6Q0S0RNX4n3ccOykjwljzRcsEqjLCcCMOQ=)

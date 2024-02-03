@@ -18,10 +18,10 @@ import java.util.Map;
 public class OAuth2ProviderService {
     private final RestTemplate restTemplate;
 
-    @Value("${kakao-client-id}")
+    @Value("${kakao.client-id}")
     private String kakaoClientId;
 
-    @Value("${kakao-redirect-uri}")
+    @Value("${kakao.redirect-uri}")
     private String kakaoRedirectUri;
 
     // 각 공급자 API와 통신하는 메소드 구현

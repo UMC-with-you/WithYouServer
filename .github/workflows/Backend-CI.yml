@@ -20,15 +20,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-      JWT_EXPIRATION_PERIOD: ${{ secrets.JWT_EXPIRATION_PERIOD }}
-      JWT_HEADER: ${{ secrets.JWT_HEADER }}
-      JWT_PREFIX: ${{ secrets.JWT_PREFIX }}
-      JWT_REFRESH_TOKEN_VALID_TIME: ${{ secrets.JWT_REFRESH_TOKEN_VALID_TIME }}
-      KAKAO_CLIENT_ID: ${{ secrets.KAKAO_CLIENT_ID }}
-      KAKAO_REDIRECT_URI: ${{ secrets.KAKAO_REDIRECT_URI }}
-      REDIS_HOST: ${{ secrets.REDIS_HOST }}
-      REDIS_PORT: ${{ secrets.REDIS_PORT }}
       DB_URL: ${{ secrets.DB_URL }}
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}

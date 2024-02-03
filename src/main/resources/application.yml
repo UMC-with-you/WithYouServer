@@ -12,13 +12,18 @@ spring:
       maximum-pool-size: 22
   data:
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
+      host: ENC(JDY+AId1xKxkYaymyAkcuOl63WdNBzwL)
+      port: 6379
 
 jwt:
-  secret: ${JWT_SECRET_KEY}
-  expiration-period: ${JWT_EXPIRATION_PERIOD}
-  header: ${JWT_HEADER}
-  prefix: ${JWT_PREFIX}
+  secret: ENC(7bmxJEYMUVIrgCM+TkClZaX2DDLqzKTO6Jp9C1fZg5a/aPvxz4tPpbbzF2cUqyjDJ3nThdVqepw=)
+  expiration-period: ENC(rhU/5h9od5+FKCuh5iIeJA==)
+  header: ENC(i+cGKdSqtE6rebBZswksr1Uu9O58DNYx)
+  prefix: ENC(U+nfPN7QOj1ohWCXahSheA==)
   refresh:
-    expiration-period: ${JWT_REFRESH_TOKEN_VALID_TIME}
+    expiration-period: ENC(DpdQuzNXc24kB4v0qJkDUA==)
+
+jasypt:
+  encryptor:
+    bean: jasyptEncryptor
+    password: ${ENCRYPT_KEY}

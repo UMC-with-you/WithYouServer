@@ -3,12 +3,14 @@ package UMC.WithYou.repository.notice;
 import UMC.WithYou.domain.notice.Notice;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static UMC.WithYou.domain.member.QMember.member;
 import static UMC.WithYou.domain.notice.QNotice.notice;
 
+@Repository
 @RequiredArgsConstructor
 public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom{
 
