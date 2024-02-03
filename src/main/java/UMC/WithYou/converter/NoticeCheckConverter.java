@@ -9,7 +9,7 @@ import UMC.WithYou.dto.NoticeResponseDTO;
 
 public class NoticeCheckConverter {
 
-    public static NoticeCheckResponseDTO.ResultDto toResultDTO(NoticeCheck notice){ //조회용
+    public static NoticeCheckResponseDTO.ResultDto toResultDTO(NoticeCheck notice){
         return NoticeCheckResponseDTO.ResultDto.builder()
                 .noticeId(notice.getId())
                 .createdAt(notice.getCreatedAt())
@@ -31,7 +31,7 @@ public class NoticeCheckConverter {
 
     public static NoticeCheck toJoinDTO(Notice notices,Member member){
         return NoticeCheck.builder()
-                .isChecked(false)
+                .isChecked(true)
                 .member(member)
                 .notice(notices)
                 .build();
