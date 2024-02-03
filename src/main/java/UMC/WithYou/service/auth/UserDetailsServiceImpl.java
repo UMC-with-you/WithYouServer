@@ -1,5 +1,9 @@
 package UMC.WithYou.service.auth;
 
+import UMC.WithYou.domain.auth.UserPrincipal;
+import UMC.WithYou.domain.member.Email;
+import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,8 +15,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
+    private final MemberRepository memberRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        Email email=new Email(username);
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+
+        return UserPrincipal.create(member);
     }
 }
