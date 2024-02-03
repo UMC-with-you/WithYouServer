@@ -3,6 +3,7 @@ package UMC.WithYou.service.auth;
 import UMC.WithYou.domain.auth.KakaoUserInfo;
 import UMC.WithYou.domain.auth.UserInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OAuth2ProviderService {
@@ -57,6 +59,7 @@ public class OAuth2ProviderService {
                 Map.class
         );
 
+        log.info(response.getBody().toString());
         Map<String, Object> attributes = response.getBody();
 
         return new KakaoUserInfo(attributes);
