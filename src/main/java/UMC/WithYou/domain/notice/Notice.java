@@ -26,12 +26,9 @@ public class Notice extends BaseEntity {
 
     private String content;
 
-    LocalDateTime startDate;
+    private int state; //1: 여행전, 2: 여행중, 3: 여행후
 
-    LocalDateTime endDate;
-
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;    //노티스를 만든사람
 

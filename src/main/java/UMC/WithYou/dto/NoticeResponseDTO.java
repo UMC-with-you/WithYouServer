@@ -23,7 +23,5 @@ public class NoticeResponseDTO {
     @AllArgsConstructor
     public static class ResultDto{
         String content;
-        LocalDateTime startAt;
-        LocalDateTime endAt;
     }
 }

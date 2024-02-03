@@ -72,7 +72,7 @@ public class NoticeController {
     }
 
     @Operation(summary="travelLog에 따른 notice 모두 조회 API")
-    @GetMapping("/logs/{noticeId}")
+    @GetMapping("/logs/{travelId}")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE2000",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "TRAVEL4003", description = "해당 travel log가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
@@ -86,7 +86,7 @@ public class NoticeController {
     }
 
     @Operation(summary="날짜에 따른 notice 모두 조회 API")
-    @GetMapping("/date/{noticeId}")
+    @GetMapping("/date/{travelId}/{checkDate}")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE2000",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "TRAVEL4003", description = "해당 travel log가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),

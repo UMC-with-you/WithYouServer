@@ -16,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AppConfig implements WebMvcConfigurer {
     private final MemberArgumentResolver memberArgumentResolver;
-
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
