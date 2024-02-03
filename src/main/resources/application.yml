@@ -12,7 +12,7 @@ spring:
       maximum-pool-size: 22
   data:
     redis:
-      host: ENC(JDY+AId1xKxkYaymyAkcuOl63WdNBzwL)
+      host: ENC(BmVFNh6evAsOpejjYfA35Q==)
       port: 6379
 
 jwt:
