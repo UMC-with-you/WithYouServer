@@ -3,10 +3,13 @@ package UMC.WithYou.domain.member;
 import UMC.WithYou.domain.BaseEntity;
 import UMC.WithYou.domain.Post.ScrapedPost;
 import UMC.WithYou.domain.travel.Travel;
+import UMC.WithYou.domain.travel.Traveler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import UMC.WithYou.domain.rewind.Rewind;
 import jakarta.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -38,7 +41,7 @@ public class Member extends BaseEntity {
     @Getter
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Travel> travels;
+    private List<Traveler> travelers = new ArrayList<>();
 
     @Getter
     private String imageUrl;
@@ -92,5 +95,9 @@ public class Member extends BaseEntity {
 
     public boolean isSameId(Long memberId) {
         return this.id.equals(memberId);
+    }
+
+    public void addTraveler(Traveler traveler) {
+        this.travelers.add(traveler);
     }
 }

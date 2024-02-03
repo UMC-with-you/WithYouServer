@@ -2,6 +2,8 @@ package UMC.WithYou.dto;
 
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.travel.Travel;
+import UMC.WithYou.domain.travel.TravelStatus;
+import UMC.WithYou.domain.travel.Traveler;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,12 +22,14 @@ public class TravelResponseDTO {
         private String title;
         private LocalDate startDate;
         private LocalDate endDate;
+        private TravelStatus status;
         private String imageUrl;
         public ThumbnailResponseDTO(Travel travel){
             travelId = travel.getId();
             title = travel.getTitle();
             startDate = travel.getStartDate();
             endDate = travel.getEndDate();
+            status = travel.getStatus();
             imageUrl = travel.getImageUrl();
         }
     }
@@ -40,6 +44,35 @@ public class TravelResponseDTO {
             this.name = member.getName();;
             this.imageUrl = member.getImageUrl();
         }
-
     }
+
+    @Getter
+    public static class JoinResponseDTO{
+        private Long memberId;
+        private Long travelId;
+
+        public JoinResponseDTO(Traveler traveler){
+            this.memberId = traveler.getMember().getId();
+            this.travelId = traveler.getTravel().getId();
+        }
+    }
+
+    @Getter
+    public static class InvitationCodeResponseDTO{
+        private Long travelId;
+        private String invitationCode;
+
+        public InvitationCodeResponseDTO(Long travelId, String invitationCode) {
+            this.travelId =travelId;
+            this.invitationCode = invitationCode;
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class DeletionResponseDTO{
+        private Long travelId;
+    }
+
+
 }
