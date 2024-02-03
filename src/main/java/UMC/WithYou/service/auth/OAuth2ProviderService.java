@@ -59,7 +59,7 @@ public class OAuth2ProviderService {
                 Map.class
         );
 
-        log.info(response.getBody().toString());
+        log.info("ㅁㅇ",response);
         Map<String, Object> attributes = response.getBody();
 
         return new KakaoUserInfo(attributes);
