@@ -10,16 +10,16 @@ import static UMC.WithYou.domain.member.QMember.member;
 import static UMC.WithYou.domain.notice.QNotice.notice;
 
 @RequiredArgsConstructor
-public class NoticeRepositoryCustomImpl{
+public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom{
 
     private final JPAQueryFactory jpaQueryFactory;
 
-//    @Override
-//    public List<Notice> findByTravelLogFetchJoinMember(Long travelId){
-//        return jpaQueryFactory
-//                .selectFrom(notice)
-//                .join(notice.member,member).fetchJoin()
-//                .where(notice.travelLog.id.eq(travelId))
-//                .fetch();
-//    }
+    @Override
+    public List<Notice> findByTravelLogFetchJoinMember(Long travelId){
+        return jpaQueryFactory
+                .selectFrom(notice)
+                .join(notice.member,member).fetchJoin()
+                .where(notice.travel.id.eq(travelId))
+                .fetch();
+    }
 }

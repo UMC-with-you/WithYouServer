@@ -1,7 +1,9 @@
 package UMC.WithYou.converter;
 
+import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.notice.Notice;
 import UMC.WithYou.domain.notice.NoticeCheck;
+import UMC.WithYou.domain.travel.Travel;
 import UMC.WithYou.dto.NoticeCheckResponseDTO;
 import UMC.WithYou.dto.NoticeResponseDTO;
 
@@ -14,21 +16,23 @@ public class NoticeCheckConverter {
                 .build();
     }
 
-    public static NoticeCheck toChangeNoticeCheck(NoticeCheck noticeCheck){
+    public static NoticeCheck toChangeNoticeCheck(NoticeCheck noticeCheck,Member member,Notice notice){
         boolean checkStatus=false;
         if (!noticeCheck.isChecked())
             checkStatus=true;
 
         return NoticeCheck.builder()
                 .id(noticeCheck.getId())
-                .notice(noticeCheck.getNotice())
+                .member(member)
+                .notice(notice)
                 .isChecked(checkStatus)
                 .build();
     }
 
-    public static NoticeCheck toJoinDTO(Notice notices){
+    public static NoticeCheck toJoinDTO(Notice notices,Member member){
         return NoticeCheck.builder()
                 .isChecked(false)
+                .member(member)
                 .notice(notices)
                 .build();
     }

@@ -1,6 +1,8 @@
 package UMC.WithYou.converter;
 
+import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.notice.Notice;
+import UMC.WithYou.domain.travel.Travel;
 import UMC.WithYou.dto.NoticeCheckResponseDTO;
 import UMC.WithYou.dto.NoticeRequestDTO;
 import UMC.WithYou.dto.NoticeResponseDTO;
@@ -31,9 +33,11 @@ public class NoticeConverter {
                 .build();
     }
 
-    public static Notice toNotice(NoticeRequestDTO.JoinDto request){ //미완성
+    public static Notice toNotice(NoticeRequestDTO.JoinDto request, Member member, Travel travel){
         return Notice.builder()
                 .content(request.getContent())
+                .member(member)
+                .travel(travel)
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
                 .build();
@@ -43,6 +47,7 @@ public class NoticeConverter {
     public static NoticeCheckResponseDTO.ShortResponseDto toSearch(Notice notice, int checkNum){
         return NoticeCheckResponseDTO.ShortResponseDto.builder()
                 .content(notice.getContent())
+                .url(notice.getMember().getImageUrl())
                 .checkNum(checkNum)
                 .name(notice.getMember().getName())
                 .build();

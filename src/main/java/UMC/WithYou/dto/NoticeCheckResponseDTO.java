@@ -21,8 +21,8 @@ public class NoticeCheckResponseDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ShortResponseDto{ //NoticeCheckResponseDTO.ShortResponseDto
-        //String url;       //공지 쓴 멤버 사진
+    public static class ShortResponseDto{
+        String url;       //공지 쓴 멤버 사진
         String name;      //공지 쓴 멤버 이름
         String content;
         int checkNum;
@@ -33,7 +33,7 @@ public class NoticeCheckResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ShortDto{
-        //String url;       //공지 쓴 멤버 사진
+        String url;       //공지 쓴 멤버 사진
         String name;      //공지 쓴 멤버 이름
     }
 }
