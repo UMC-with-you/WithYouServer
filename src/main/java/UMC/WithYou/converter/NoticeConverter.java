@@ -18,28 +18,24 @@ public class NoticeConverter {
 
     public static NoticeResponseDTO.ResultDto toResultDTO(Notice notice){ //조회용
         return NoticeResponseDTO.ResultDto.builder()
-                .startAt(notice.getStartDate())
-                .endAt(notice.getEndDate())
                 .content(notice.getContent())
                 .build();
     }
 
     public static Notice toFixNotice(NoticeRequestDTO.FixDto request){
         return Notice.builder()
+                .state(request.getState())
                 .id(request.getNoticeId())
                 .content(request.getContent())
-                .endDate(request.getEndDate())
-                .startDate(request.getStartDate())
                 .build();
     }
 
     public static Notice toNotice(NoticeRequestDTO.JoinDto request, Member member, Travel travel){
         return Notice.builder()
                 .content(request.getContent())
+                .state(request.getState())
                 .member(member)
                 .travel(travel)
-                .startDate(request.getStartDate())
-                .endDate(request.getEndDate())
                 .build();
 
     }

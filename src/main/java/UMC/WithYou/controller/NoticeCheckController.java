@@ -16,10 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,16 +27,16 @@ public class NoticeCheckController {
     private final NoticeCheckCommandService noticeCheckCommandService;
 
     @Operation(summary="notice 체크 API")
-    @PatchMapping("/{noticeId}")
+    @PatchMapping
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE2000",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE4023", description = "해당 notice가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @Parameters({
-            @Parameter(name = "noticeId", description = "notice 의 아이디, path variable 입니다!"),
-            @Parameter(name = "memberId", description = "notice 의 아이디, path variable 입니다!"),
+            @Parameter(name = "noticeId", description = "notice 의 아이디, query param 입니다!"),
+            @Parameter(name = "memberId", description = "notice 의 아이디, query param 입니다!"),
     })
-    public ApiResponse<NoticeCheckResponseDTO.ResultDto> checkBox(@PathVariable Long noticeId,@PathVariable Long memberId){
+    public ApiResponse<NoticeCheckResponseDTO.ResultDto> checkBox(@RequestParam("noticeId") Long noticeId, @RequestParam("memberId") Long memberId){
         NoticeCheck noticeCheck=noticeCheckCommandService.checkBox(noticeId,memberId);
         return ApiResponse.onSuccess(NoticeCheckConverter.toResultDTO(noticeCheck));
     }

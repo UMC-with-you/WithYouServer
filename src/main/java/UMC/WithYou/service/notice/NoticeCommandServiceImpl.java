@@ -25,7 +25,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class NoticeCommandServiceImpl implements NoticeCommandService{
 
     private final NoticeRepository noticeRepository;
@@ -44,8 +44,8 @@ public class NoticeCommandServiceImpl implements NoticeCommandService{
         List<Notice> notices=noticeRepositoryCustom.findByTravelLogFetchJoinMember(travelId);
 
         for(Notice notice : notices){
-            if (!isBetween(checkDate,notice.getStartDate(),notice.getEndDate()))
-                break;
+//            if (!isBetween(checkDate,notice.getStartDate(),notice.getEndDate()))
+//                break;
 
             List<NoticeCheck> noticeChecks=noticeCheckRepository
                     .findAllByIsCheckedIsTrueAndNotice(notice);
@@ -61,6 +61,7 @@ public class NoticeCommandServiceImpl implements NoticeCommandService{
     public List<NoticeCheckResponseDTO.ShortResponseDto> getTravelNotice(Long travelId){
         List<NoticeCheckResponseDTO.ShortResponseDto> results = new ArrayList<>();
         List<Notice> notices=noticeRepositoryCustom.findByTravelLogFetchJoinMember(travelId);
+        System.out.println(notices);
 
         for(Notice notice : notices){
             List<NoticeCheck> noticeChecks=noticeCheckRepository
@@ -73,7 +74,6 @@ public class NoticeCommandServiceImpl implements NoticeCommandService{
     }
 
     @Override
-    @Transactional
     public Notice createNotice(NoticeRequestDTO.JoinDto request){
         Member member = memberRepository.findById(request.getMemberId())
                 .orElseThrow(()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND));
@@ -95,7 +95,6 @@ public class NoticeCommandServiceImpl implements NoticeCommandService{
     }
 
     @Override
-    @Transactional
     public Notice fix(NoticeRequestDTO.FixDto request){
         Notice notice= noticeRepository.findById(request.getNoticeId()).get();
         Notice newNotice=NoticeConverter.toFixNotice(request);

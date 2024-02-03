@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class NoticeCheckCommandServiceImpl implements NoticeCheckCommandService{
 
     private final NoticeCheckRepository noticeCheckRepository;
@@ -26,7 +26,6 @@ public class NoticeCheckCommandServiceImpl implements NoticeCheckCommandService{
     private final MemberRepository memberRepository;
 
     @Override
-    @Transactional
     public NoticeCheck checkBox(Long noticeId, Long memberId){
         Notice notice= noticeRepository.findById(noticeId)
                 .orElseThrow(()->new CommonErrorHandler(ErrorStatus._NOTICE_NOT_FOUND));
