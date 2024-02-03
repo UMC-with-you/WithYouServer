@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -54,13 +55,13 @@ public class TravelController {
     @Operation(summary = "멤버가 포함된 모든 여행 로그 조회")
     @Parameters({
             @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter(name = "Local Time", description = "사용자의 현 위치의 Local Time", required = true),
     })
     @GetMapping
     public ApiResponse<List<ThumbnailResponseDTO>> getTravelThumbnails(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-            @RequestBody RetrieveResponseDTO request){
-        LocalDate currentLocalDate = request.getCurrentLocalDate();
-        List<Travel> travels = travelService.getTravels(token, currentLocalDate);
+            @RequestParam LocalDate localDate){
+        List<Travel> travels = travelService.getTravels(token, localDate);
         return ApiResponse.onSuccess(
                 travels.stream().map(t -> new ThumbnailResponseDTO(t)).toList()
         );

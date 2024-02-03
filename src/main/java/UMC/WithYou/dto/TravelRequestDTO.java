@@ -18,9 +18,4 @@ public class TravelRequestDTO {
     public static class JoinRequestDTO{
         private String invitationCode;
     }
-
-    @Getter
-    public static class RetrieveResponseDTO{
-        LocalDate currentLocalDate;
-    }
 }
