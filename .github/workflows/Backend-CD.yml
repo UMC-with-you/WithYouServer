@@ -1,10 +1,10 @@
 name: Backend CD Config
 
 on:
-  push:
+  pull_request:
     branches:
-      - main
       - develop
+      - release/*
 
 jobs:
   deploy:
