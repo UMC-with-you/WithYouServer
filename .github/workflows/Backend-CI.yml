@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - develop
-      - main
+      - feat/*
   pull_request:
     branches:
       - develop
-      - main
+      - release/*
       
 permissions:
   pull-requests: write
