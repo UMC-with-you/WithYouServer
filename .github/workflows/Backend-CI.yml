@@ -1,14 +1,9 @@
 name: Backend CI Config
 
 on:
-  push:
-    branches:
-      - develop
-      - feat/*
   pull_request:
     branches:
       - develop
-      - release/*
       
 permissions:
   pull-requests: write
