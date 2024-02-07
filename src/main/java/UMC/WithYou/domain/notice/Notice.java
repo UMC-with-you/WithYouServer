@@ -26,7 +26,7 @@ public class Notice extends BaseEntity {
 
     private String content;
 
-    private int state; //1: 여행전, 2: 여행중, 3: 여행후
+    private int state; //0: 여행전, 1: 여행중, 2: 여행후
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")

@@ -22,9 +22,11 @@ public class NoticeConverter {
                 .build();
     }
 
-    public static Notice toFixNotice(NoticeRequestDTO.FixDto request){
+    public static Notice toFixNotice(NoticeRequestDTO.FixDto request,Member member,Travel travel){
         return Notice.builder()
                 .state(request.getState())
+                .member(member)
+                .travel(travel)
                 .id(request.getNoticeId())
                 .content(request.getContent())
                 .build();

@@ -39,16 +39,21 @@ public class NoticeCommandServiceImpl implements NoticeCommandService{
     }
 
     @Override
-    public List<NoticeCheckResponseDTO.ShortResponseDto> getDateNotice(Long travelId, LocalDateTime checkDate){
+    public List<NoticeCheckResponseDTO.ShortResponseDto> getDateNotice(Long travelId){
+        Travel travel = travelRepository.findById(travelId)
+                .orElseThrow(()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND));
+        int states=travel.getStatus().ordinal();
+        System.out.println(states);
+
         List<NoticeCheckResponseDTO.ShortResponseDto> results = new ArrayList<>();
         List<Notice> notices=noticeRepositoryCustom.findByTravelLogFetchJoinMember(travelId);
 
         for(Notice notice : notices){
-//            if (!isBetween(checkDate,notice.getStartDate(),notice.getEndDate()))
-//                break;
+            System.out.println(notice.getState());
+            if (notice.getState()!=states)
+                continue;
 
-            List<NoticeCheck> noticeChecks=noticeCheckRepository
-                    .findAllByIsCheckedIsTrueAndNotice(notice);
+            List<NoticeCheck> noticeChecks=noticeCheckRepository.findAllByIsCheckedIsTrueAndNotice(notice);
 
             NoticeCheckResponseDTO.ShortResponseDto check = NoticeConverter.toSearch(notice, noticeChecks.size());
             results.add(check);
@@ -97,7 +102,7 @@ public class NoticeCommandServiceImpl implements NoticeCommandService{
     @Override
     public Notice fix(NoticeRequestDTO.FixDto request){
         Notice notice= noticeRepository.findById(request.getNoticeId()).get();
-        Notice newNotice=NoticeConverter.toFixNotice(request);
+        Notice newNotice=NoticeConverter.toFixNotice(request,notice.getMember(),notice.getTravel());
 
         noticeRepository.save(newNotice);
         return notice;
