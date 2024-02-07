@@ -2,11 +2,9 @@ name: Backend CD Config
 
 on:
   workflow_dispatch:
-    pull_request:
-      types:
-        - closed
-    branches:
-      - develop
+  pull_request:
+    types: [closed]
+    branches: [develop]
 
 jobs:
   deploy:
