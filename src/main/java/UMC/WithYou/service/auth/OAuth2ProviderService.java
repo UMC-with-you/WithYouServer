@@ -37,8 +37,19 @@ public class OAuth2ProviderService {
     }
 
     private UserInfo getGoogleUserInfo(String token) {
-        // Google API를 호출하여 사용자 정보를 가져옵니다.
-        return null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Map> response = restTemplate.exchange(
+                "https://www.googleapis.com/oauth2/v3/userinfo",
+                HttpMethod.GET,
+                entity,
+                Map.class
+        );
+
+        Map<String, Object> attributes = response.getBody();
+        return new GoogleUserInfo(attributes);
     }
 
     private UserInfo getAppleUserInfo(String token) {
