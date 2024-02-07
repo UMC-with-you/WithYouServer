@@ -22,9 +22,7 @@ public class TravelService {
     private final TravelRepository travelRepository;
     private final MemberService memberService;
 
-    public Long createTravel(String token, String title, LocalDate startDate, LocalDate endDate, String url, LocalDate localDate) {
-        Member member = memberService.findByMemberIdToken(token);
-
+    public Long createTravel(Member member,String title, LocalDate startDate, LocalDate endDate, String url, LocalDate localDate) {
         Travel travel =  new Travel(member, title, startDate, endDate, url);
 
         travel.setTravelStatus(localDate);

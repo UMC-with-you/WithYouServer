@@ -1,4 +1,4 @@
-name: backend CI Config
+name: Backend CI Config
 
 on:
   push:

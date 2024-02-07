@@ -39,15 +39,15 @@ public class TravelController {
     })
     @PostMapping
     public ApiResponse<ConfigurationResponseDTO> createTravel(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-            @RequestBody  ConfigurationRequestDTO request){
+            @RequestBody  ConfigurationRequestDTO request,
+            @UMC.WithYou.common.annotation.Member Member member){
 
         String title = request.getTitle();
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();
         String url = request.getUrl();
         LocalDate localDate = request.getLocalDate();
-        Long id = travelService.createTravel(token, title, startDate, endDate, url, localDate);
+        Long id = travelService.createTravel(member,title, startDate, endDate, url, localDate);
         return ApiResponse.onSuccess(new ConfigurationResponseDTO(id));
     }
 
