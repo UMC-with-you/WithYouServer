@@ -1,5 +1,6 @@
 package UMC.WithYou.service.auth;
 
+import UMC.WithYou.domain.auth.GoogleUserInfo;
 import UMC.WithYou.domain.auth.KakaoUserInfo;
 import UMC.WithYou.domain.auth.UserInfo;
 import lombok.RequiredArgsConstructor;
