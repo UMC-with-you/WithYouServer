@@ -10,7 +10,6 @@ public class KakaoUserInfo implements UserInfo {
     private final Map<String, Object> attributes;
 
     public KakaoUserInfo(Map<String, Object> attributes) {
-        log.info(attributes.toString());
         this.attributes = attributes;
     }
 
@@ -26,11 +25,6 @@ public class KakaoUserInfo implements UserInfo {
         return (String) kakaoAccount.get("name");
     }
 
-//    @Override
-//    public String getPhoneNumber() {
-//        Map<String, Object> kakaoAccount = asMap(attributes.get("kakao_account"));
-//        return (String) kakaoAccount.get("phone_number");
-//    }
     @Override
     public Map<String, Object> toAttributes() {
         return attributes;

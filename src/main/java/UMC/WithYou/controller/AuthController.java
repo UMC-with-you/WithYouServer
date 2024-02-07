@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/kakao")
+    @PostMapping
     public ResponseEntity<LoginResponse> loginWithKakao(@RequestBody LoginRequest request) {;
         return ResponseEntity.ok()
                 .body(authService.authenticateOrRegisterUser(request));
