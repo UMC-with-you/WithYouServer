@@ -16,9 +16,7 @@ public class NoticeRequestDTO {
         //@ExistLog
         Long logId;
 
-        LocalDateTime startDate;
-
-        LocalDateTime endDate;
+        int state;
 
         String content;
     }
@@ -29,9 +27,7 @@ public class NoticeRequestDTO {
         @ExistNotices
         Long noticeId;
 
-        LocalDateTime startDate;
-
-        LocalDateTime endDate;
+        int state;
 
         String content;
     }

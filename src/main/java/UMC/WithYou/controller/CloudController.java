@@ -7,18 +7,22 @@ import UMC.WithYou.domain.cloud.Cloud;
 import UMC.WithYou.domain.notice.Notice;
 import UMC.WithYou.dto.cloud.CloudRequestDTO;
 import UMC.WithYou.dto.cloud.CloudResponseDTO;
+import UMC.WithYou.dto.notice.NoticeCheckResponseDTO;
 import UMC.WithYou.service.cloud.CloudService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +37,23 @@ public class CloudController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4003", description = "해당 member가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<CloudResponseDTO.ResultDto> create(@RequestBody @Valid CloudRequestDTO.JoinDto request){
-        Cloud cloud= cloudService.createCloud(request);
+    public ApiResponse<CloudResponseDTO.ResultDto> create(@RequestPart @Valid CloudRequestDTO.JoinDto request,
+                                                          @RequestPart(value = "image", required = false) List<MultipartFile> files){
+        Cloud cloud= cloudService.createCloud(request, files);
         return ApiResponse.onSuccess(CloudConverter.toResultDTO(cloud));
+    }
+
+    @Operation(summary="cloud 조회 API")
+    @GetMapping("/{travelId}")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE2000",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "TRAVEL4003", description = "해당 travel log가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "logId", description = "travel log 의 아이디, path variable 입니다!"),
+    })
+    public ApiResponse<List<CloudResponseDTO.PictureDto>> getDateNotice(@PathVariable Long travelId){
+        List<CloudResponseDTO.PictureDto> pictures=cloudService.getPictures(travelId);
+        return ApiResponse.onSuccess(pictures);
     }
 }

@@ -20,11 +20,10 @@ public class CloudConverter {
                 .build();
     }
 
-    public static CloudMedia toMedia(CloudRequestDTO.JoinDto request, Cloud cloud){
-        List<MultipartFile> pictures=request.getPictures();
-
+    public static CloudMedia toMedia(CloudRequestDTO.JoinDto request, Cloud cloud, List<String> pictureList){
         return CloudMedia.builder()
                 .date(request.getDate())
+                .url(pictureList)
                 .cloud(cloud)
                 .build();
     }
@@ -34,4 +33,12 @@ public class CloudConverter {
                 .travel(travel)
                 .build();
     }
+
+    public static CloudResponseDTO.PictureDto toPicture(CloudMedia cloud){
+        return CloudResponseDTO.PictureDto.builder()
+                .date(cloud.getDate())
+                .urlList(cloud.getUrl())
+                .build();
+    }
+
 }

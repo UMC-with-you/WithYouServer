@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Traveler extends BaseEntity {
     @Id
@@ -30,6 +29,10 @@ public class Traveler extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Travel travel;
 
+    public Traveler(Travel travel, Member member){
+        this.member = member;
+        this.travel = travel;
+    }
     public boolean isMember(Member member){
         return member.isSameId(member.getId());
     }

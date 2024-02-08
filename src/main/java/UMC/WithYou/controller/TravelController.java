@@ -3,45 +3,65 @@ package UMC.WithYou.controller;
 import UMC.WithYou.common.apiPayload.ApiResponse;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.travel.Travel;
+import UMC.WithYou.domain.travel.Traveler;
 import UMC.WithYou.dto.TravelRequestDTO.*;
 import UMC.WithYou.dto.TravelResponseDTO.*;
 import UMC.WithYou.service.TravelService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/api/v1/travels")
 public class TravelController {
     private TravelService travelService;
 
-    @PostMapping("api/v1/travels")
+    @Operation(summary = "트래블 로그 추가")
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+    })
+    @PostMapping
     public ApiResponse<ConfigurationResponseDTO> createTravel(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-            @RequestBody  ConfigurationRequestDTO request){
+            @RequestBody  ConfigurationRequestDTO request,
+            @UMC.WithYou.common.annotation.Member Member member){
 
         String title = request.getTitle();
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();
         String url = request.getUrl();
-
-        Long id = travelService.createTravel(token, title, startDate, endDate, url);
+        LocalDate localDate = request.getLocalDate();
+        Long id = travelService.createTravel(member,title, startDate, endDate, url, localDate);
         return ApiResponse.onSuccess(new ConfigurationResponseDTO(id));
     }
 
-    @GetMapping("api/v1/travels")
+
+    @Operation(summary = "멤버가 포함된 모든 여행 로그 조회")
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter(name = "Local Time", description = "사용자의 현 위치의 Local Time", required = true),
+    })
+    @GetMapping
     public ApiResponse<List<ThumbnailResponseDTO>> getTravelThumbnails(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
-        List<Travel> travels = travelService.getThumbnails(token);
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestParam LocalDate localDate){
+        List<Travel> travels = travelService.getTravels(token, localDate);
         return ApiResponse.onSuccess(
                 travels.stream().map(t -> new ThumbnailResponseDTO(t)).toList()
         );
@@ -49,7 +69,27 @@ public class TravelController {
 
 
 
-    @PatchMapping("api/v1/travels/{travelId}")
+    @Operation(summary = "여행 로그 삭제")
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter( name = "travelId" , description = "여행 로그 Id", required = true, schema = @Schema(type = "Long"))
+    })
+    @DeleteMapping("/{travelId}")
+    public ApiResponse<DeletionResponseDTO> deleteTravel(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token, @PathVariable Long travelId
+    ){
+        Long id = travelService.deleteTravel(token, travelId);
+
+        return ApiResponse.onSuccess(new DeletionResponseDTO(id));
+    }
+
+
+    @Operation(summary = "여행 로그 수정")
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter( name = "travelId" , description = "여행 로그 Id", required = true, schema = @Schema(type = "Long"))
+    })
+    @PatchMapping("/{travelId}")
     public ApiResponse<ConfigurationResponseDTO> editTravel(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
             @PathVariable("travelId") Long travelId,
@@ -59,13 +99,20 @@ public class TravelController {
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();
         String url = request.getUrl();
-        Long id = travelService.editTravel(token, travelId, title, startDate, endDate, url);
+        LocalDate localDate = request.getLocalDate();
+        Long id = travelService.editTravel(token, travelId, title, startDate, endDate, url, localDate);
 
         return ApiResponse.onSuccess(new ConfigurationResponseDTO(id));
     }
 
 
-    @GetMapping("api/v1/travels/{travelId}/members")
+
+    @Operation(summary = "여행 로그에 포함된 모든 멤버 조회")
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter( name = "travelId" , description = "여행 로그 Id", required = true, schema = @Schema(type = "Long"))
+    })
+    @GetMapping("/{travelId}/members")
     public ApiResponse<List<TravelerResponseDTO>> getTravelMembers(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
             @PathVariable("travelId") Long travelId
@@ -76,19 +123,31 @@ public class TravelController {
         );
     }
 
-    @GetMapping("api/v1/travels/{travelId}/invitation_code")
-    public void issueInvitationCode(){
-
+    @Operation(summary = "여행 로그의 초대 코드 조회")
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter( name = "travelId" , description = "여행 로그 Id", required = true, schema = @Schema(type = "Long"))
+    })
+    @GetMapping("/{travelId}/invitation_code")
+    public ApiResponse<InvitationCodeResponseDTO> getInvitationCode(
+            @RequestHeader("Authorization") String token, @PathVariable("travelId") Long travelId){
+        String invitationCode = travelService.getInvitationCode(token, travelId);
+        return ApiResponse.onSuccess(new InvitationCodeResponseDTO(travelId, invitationCode));
     }
 
-    @PatchMapping("api/v1/travels/{travelId}/members")
-    public void joinTravel(){
 
-    }
-
-    @GetMapping("api/v1/travels/{travelId}")
-    public void getTravel(){
-
+    @Operation(summary = "여행 로그 합류")
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+    })
+    @PatchMapping("/members")
+    public ApiResponse<JoinResponseDTO> join(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestBody JoinRequestDTO request
+    ){
+        String invitationCode = request.getInvitationCode();
+        Traveler traveler = travelService.join(token, invitationCode);
+        return ApiResponse.onSuccess(new JoinResponseDTO(traveler));
     }
 
 }

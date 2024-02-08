@@ -28,5 +28,6 @@ public class Cloud extends BaseEntity {
     @JoinColumn(name="travel_id")
     private Travel travel;
 
+    @OneToMany(mappedBy = "cloud",cascade = CascadeType.ALL)
     private List<CloudMedia> pictureDate;
 }

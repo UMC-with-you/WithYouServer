@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://withyou-db.ctgu806wcu3i.ap-northeast-1.rds.amazonaws.com/with_you
-    username: withYou
-    password: withYouServerDudwo1234
+    url: ENC(uO8kwbE0bFZ6DSMC+wmi3UnrkYveaDKVnL6bWLImoO4IsJTaWhWkRtVelBzR25bTaHFwOc5fXIaIyZKiACYe0lBCc6coTTCOFHrP3NyBzZUQpIXmiLIfmg==)
+    username: ENC(Rs2ms76oQ1z8zM0GAoa/AA==)
+    password: ENC(dvvMUaXEaPDiS2pzIgWo0SARQOuUsAulD5Pjjdvo2z8=)
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:

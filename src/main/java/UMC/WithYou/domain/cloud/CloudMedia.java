@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,13 +26,14 @@ public class CloudMedia {
     private Long id;
 
     private LocalDate date;
-    private List<String> url;
 
+    private List<String> url=new ArrayList<>();
 
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="cloud_id")
     private Cloud cloud;
 
-
+    public void addUrl(List<String> newUrl) {
+        this.url.addAll(newUrl);
+    }
 }

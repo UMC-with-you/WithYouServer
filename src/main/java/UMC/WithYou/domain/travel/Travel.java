@@ -18,10 +18,13 @@ import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 @Entity
 @AllArgsConstructor
@@ -48,7 +51,7 @@ public class Travel extends BaseEntity {
 
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL)
-    private List<Traveler> travelers;
+    private Set<Traveler> travelers = new HashSet<>();
 
 //    @OneToMany
 //    private List<PackingItem> packingItems;
@@ -78,6 +81,9 @@ public class Travel extends BaseEntity {
     }
 
 
+    public void addTravelMember(Traveler traveler){
+        this.travelers.add(traveler);
+    }
     public List<Member> getTravelMembers(){
         List<Member> travelMembers = new ArrayList<>();
         travelMembers.add(this.member);
@@ -89,9 +95,6 @@ public class Travel extends BaseEntity {
 
 
     public boolean isTraveler(Member member){
-        if (validateOwnership(member)){
-            return true;
-        }
 
         for (Traveler traveler: getTravelers()){
             if (traveler.isMember(member)) {
@@ -102,10 +105,27 @@ public class Travel extends BaseEntity {
 
     }
 
-    private boolean validateOwnership(Member member) {
+    public boolean validateOwnership(Member member) {
         return this.member.isSameId(member.getId());
     }
 
+    public boolean hasInvitationCode() {
+        return this.invitationCode != null;
+    }
 
+    public void setInvitationCode(String invitationCode) {
+        this.invitationCode = invitationCode;
+    }
 
+    public void setTravelStatus(LocalDate localDate){
+        if(endDate.isBefore(localDate)){
+            this.status = TravelStatus.BYGONE;
+        }
+        else if (!startDate.isAfter(localDate)){
+            this.status = TravelStatus.ONGOING;
+        }
+        else{
+            this.status = TravelStatus.UPCOMING;
+        }
+    }
 }

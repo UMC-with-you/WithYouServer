@@ -20,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
-    
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         log.info(request.getRequestURI());

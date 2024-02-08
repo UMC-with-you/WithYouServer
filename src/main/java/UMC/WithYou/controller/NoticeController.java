@@ -29,7 +29,7 @@ public class NoticeController {
 
     private final NoticeCommandService noticeCommandService;
 
-    @Operation(summary="notice 생성 API")
+    @Operation(summary="notice 생성 API(0: 여행전, 1: 여행중, 2: 여행후)")
     @PostMapping
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE2000",description = "OK, 성공"),
@@ -71,7 +71,7 @@ public class NoticeController {
     }
 
     @Operation(summary="travelLog에 따른 notice 모두 조회 API")
-    @GetMapping("/logs/{noticeId}")
+    @GetMapping("/logs/{travelId}")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE2000",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "TRAVEL4003", description = "해당 travel log가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
@@ -84,19 +84,17 @@ public class NoticeController {
         return ApiResponse.onSuccess(notices);
     }
 
-    @Operation(summary="날짜에 따른 notice 모두 조회 API")
-    @GetMapping("/date/{noticeId}")
+    @Operation(summary="state 에 따른 notice 모두 조회 API")
+    @GetMapping("/date/{travelId}")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE2000",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "TRAVEL4003", description = "해당 travel log가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @Parameters({
             @Parameter(name = "logId", description = "travel log 의 아이디, path variable 입니다!"),
-            @Parameter(name = "checkDate", description = "현재 날짜, path variable 입니다!"),
     })
-    public ApiResponse<List<NoticeCheckResponseDTO.ShortResponseDto>> getDateNotice
-            (@PathVariable Long travelId, @PathVariable LocalDateTime checkDate){
-        List<NoticeCheckResponseDTO.ShortResponseDto> notices=noticeCommandService.getDateNotice(travelId,checkDate);
+    public ApiResponse<List<NoticeCheckResponseDTO.ShortResponseDto>> getDateNotice(@PathVariable Long travelId){
+        List<NoticeCheckResponseDTO.ShortResponseDto> notices=noticeCommandService.getDateNotice(travelId);
         return ApiResponse.onSuccess(notices);
     }
 

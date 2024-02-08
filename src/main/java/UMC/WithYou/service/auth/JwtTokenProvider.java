@@ -26,16 +26,16 @@ import java.util.concurrent.TimeUnit;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider implements TokenProvider {
-    @Value("${JWT_SECRET_KEY}")
+    @Value("${jwt.secret}")
     private String secret;
     private SecretKey key;
-    @Value("${JWT_HEADER}")
+    @Value("${jwt.header}")
     private String jwtHeader;
-    @Value("${JWT_PREFIX}")
+    @Value("${jwt.prefix}")
     private String jwtTokenPrefix;
-    @Value("${JWT_EXPIRATION_PERIOD}")
+    @Value("${jwt.expiration-period}")
     private Long expirationPeriod;
-    @Value("${JWT_REFRESH_TOKEN_VALID_TIME}")
+    @Value("${jwt.refresh.expiration-period}")
     private Long refreshTokenValidTime;
 
     private final UserDetailsService userDetailsService;

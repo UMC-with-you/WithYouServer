@@ -39,7 +39,7 @@ public class S3Service {
         } catch (IOException e) {
             throw new CommonErrorHandler(ErrorStatus._PICTURE);
         }
-        return storageFileName;
+        return amazonS3Client.getUrl(bucket, storageFileName).toString();
     }
 
     // 파일 이름 생성 로직
