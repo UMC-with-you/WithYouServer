@@ -56,8 +56,8 @@ public class Travel extends BaseEntity {
 //    @OneToMany
 //    private List<PackingItem> packingItems;
 //
-//    @OneToMany
-//    private List<Rewind> rewinds;
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL)
+    private List<Rewind> rewinds;
 //
 //    @OneToMany
 //    private List<Post> posts;
