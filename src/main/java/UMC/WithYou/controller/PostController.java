@@ -1,11 +1,12 @@
 package UMC.WithYou.controller;
 
+import UMC.WithYou.common.annotation.AuthorizedMember;
 import UMC.WithYou.common.apiPayload.ApiResponse;
 import UMC.WithYou.domain.Post.Post;
+import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.service.post.PostService;
 import UMC.WithYou.dto.post.PostRequest.*;
 import UMC.WithYou.dto.post.PostResponse.*;
-import org.springframework.http.HttpHeaders;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -33,18 +33,17 @@ public class PostController {
 
     @Operation(summary = "포스트 작성")
     @Parameters({
-            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
             @Parameter( name = "travelId" , description = "여행 Id", required = true, schema = @Schema(type = "Long"))
     })
     @PostMapping("api/v1/travels/{travelId}/posts")
     public ApiResponse<PublishResponse> publishPost(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @AuthorizedMember Member member,
             @PathVariable("travelId") Long travelId,
             @RequestBody @Valid PublishRequestDTO request
         ){
         String text = request.getText();
         List<String> urls = request.getUrls();
-        Long postId = postService.createPost(token, travelId, text, urls);
+        Long postId = postService.createPost(member, travelId, text, urls);
         return ApiResponse.onSuccess(new PublishResponse(postId));
     }
 
@@ -80,15 +79,14 @@ public class PostController {
 
     @Operation(summary = "게시글 삭제")
     @Parameters({
-            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
             @Parameter( name = "postId" , description = "게시글 Id", required = true, schema = @Schema(type = "Long"))
     })
     @DeleteMapping("api/v1/posts/{postId}")
     public ApiResponse<DeletionResponseDTO> deletePost(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @AuthorizedMember Member member,
             @PathVariable("postId") Long postId
     ){
-        postService.deletePost(token, postId);
+        postService.deletePost(member, postId);
 
         return ApiResponse.onSuccess(new DeletionResponseDTO(postId));
     }
@@ -96,19 +94,18 @@ public class PostController {
 
     @Operation(summary = "게시글 수정")
     @Parameters({
-            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
             @Parameter( name = "postId" , description = "게시글 Id", required = true, schema = @Schema(type = "Long"))
     })
 
     @PatchMapping("api/v1/posts/{postId}")
     public ApiResponse<EditResponseDTO> editPost(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @AuthorizedMember Member member,
             @PathVariable("postId") Long postId,
             @RequestBody EditRequestDTO request
     ){
         String text = request.getText();
         Map<Long, Integer> newPositions = request.getNewPositions();
-        Post post = postService.editPost(token, postId, text, newPositions);
+        Post post = postService.editPost(member, postId, text, newPositions);
         return ApiResponse.onSuccess(new EditResponseDTO(post.getId()));
     }
 
@@ -116,35 +113,31 @@ public class PostController {
 
     @Operation(summary = "게시글 스크랩")
     @Parameters({
-            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
             @Parameter( name = "postId" , description = "게시글 Id", required = true, schema = @Schema(type = "Long"))
     })
     @PostMapping("api/v1/posts/{postId}")
     public ApiResponse<ScrapeResponseDTO> scrapPost(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @AuthorizedMember Member member,
             @PathVariable("postId") Long postId
     ){
-        Long scrapedPostId = postService.scrapePost(token, postId);
+        Long scrapedPostId = postService.scrapePost(member, postId);
         return ApiResponse.onSuccess(new ScrapeResponseDTO(scrapedPostId));
     }
 
-
     @Operation(summary = "회원이 스크랩한 모든 게시글 조회")
-    @Parameters({
-            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"))
-    })
     @GetMapping("api/v1/posts")
     public ApiResponse<List<ThumbnailResponseDTO>> getScrapedPosts(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+            @AuthorizedMember Member member
     ){
-        List<Post> posts = postService.getPosts(token);
+        List<Post> posts = postService.getPosts(member);
 
         return ApiResponse.onSuccess(
                 posts.stream()
-                .map(p -> new ThumbnailResponseDTO(p))
-                .toList()
+                        .map(p -> new ThumbnailResponseDTO(p))
+                        .toList()
         );
     }
+
 
 
 }

@@ -28,33 +28,30 @@ public class CommentService {
         this.postService = postService;
     }
 
-    public Comment writeComment(String token, Long postId, String content) {
+    public Comment writeComment(Member member, Long postId, String content) {
         Post post = postService.findPostById(postId);
-        Member writer = memberService.findByMemberIdToken(token);
-
-        Comment comment = new Comment(post, writer, content);
+        Comment comment = new Comment(post, member, content);
 
         return commentRepository.save(comment);
     }
 
-    public void deleteComment(String token, Long commentId) {
+    public void deleteComment(Member member, Long commentId) {
         Comment comment = this.findCommentById(commentId);
-        this.validateCommentOwnership(token, comment);
+        this.validateCommentOwnership(member, comment);
 
         commentRepository.delete(comment);
     }
 
-    public Comment editComment(String token, Long commentId, String content) {
+    public Comment editComment(Member member, Long commentId, String content) {
         Comment comment = this.findCommentById(commentId);
-        this.validateCommentOwnership(token, comment);
+        this.validateCommentOwnership(member, comment);
 
         comment.setContent(content);
         return comment;
     }
 
-    private void validateCommentOwnership(String token, Comment comment){
-        Member writer = memberService.findByMemberIdToken(token);
-        if (!writer.isSameId(comment.getMember().getId())) {
+    private void validateCommentOwnership(Member member, Comment comment){
+        if (!member.isSameId(comment.getMember().getId())) {
             throw new CommonErrorHandler(ErrorStatus.UNAUTHORIZED_ACCESS_TO_COMMENT);
         }
 

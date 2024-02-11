@@ -28,12 +28,8 @@ public class PostService {
     private final ScrapedPostRepository scrapedPostRepository;
 
 
-    public Long createPost(String token, Long travelId, String text, List<String> urls){
+    public Long createPost(Member member, Long travelId, String text, List<String> urls){
 
-//        Member publisher = memberRepository.findByEmail(new Email(token)).orElseThrow(
-//                ()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND)
-//        );
-        Member publisher = memberService.findByMemberIdToken(token);
         Travel travel = travelRepository.findById(travelId).orElseThrow(
                 ()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND)
         );
@@ -41,7 +37,7 @@ public class PostService {
             throw new CommonErrorHandler(ErrorStatus.INVALID_MEDIA_COUNT);
         }
 
-        Post post = new Post(publisher, travel, text, urls);
+        Post post = new Post(member, travel, text, urls);
         postRepository.save(post);
         return post.getId();
     }
@@ -58,37 +54,24 @@ public class PostService {
         return this.findPostById(postId);
     }
 
-    public void deletePost(String token, Long postId){
-//        Member member = memberRepository.findByEmail(new Email(token)).orElseThrow();
-        Member member = memberService.findByMemberIdToken(token);
+    public void deletePost(Member member, Long postId){
         Post post = this.findPostById(postId);
-
-
         this.validatePostOwnership(member, post);
-
         postRepository.delete(post);
     }
 
 
 
 
-    public Post editPost(String token, Long postId, String text, Map<Long, Integer> newPositions){
+    public Post editPost(Member member, Long postId, String text, Map<Long, Integer> newPositions){
         Post post = this.findPostById(postId);
-//        Member member = memberRepository.findByEmail(new Email(token)).orElseThrow(
-//                ()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND)
-//        );
-        Member member = memberService.findByMemberIdToken(token);
         this.validatePostOwnership(member, post);
 
         post.edit(text, newPositions);
         return post;
     }
 
-    public List<Post> getPosts(String token) {
-        /*Member member = memberRepository.findByEmail(new Email(token)).orElseThrow(
-                ()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND)
-        );*/
-        Member member = memberService.findByMemberIdToken(token);
+    public List<Post> getPosts(Member member) {
         List<ScrapedPost> scrapedPosts = member.getScrapedPosts();
         List<Post> posts = new ArrayList<>();
         for (ScrapedPost scrapedPost: scrapedPosts){
@@ -97,12 +80,8 @@ public class PostService {
         return posts;
     }
 
-    public Long scrapePost(String token, Long postId) {
+    public Long scrapePost(Member member, Long postId) {
         Post post = this.findPostById(postId);
-//        Member member = memberRepository.findByEmail(new Email(token)).orElseThrow(
-//                ()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND)
-//        );
-        Member member = memberService.findByMemberIdToken(token);
         ScrapedPost scrapedPost = new ScrapedPost(post, member);
         scrapedPostRepository.save(scrapedPost);
         return scrapedPost.getPost().getId();

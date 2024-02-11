@@ -11,50 +11,44 @@ import UMC.WithYou.repository.post.CommentRepository;
 import UMC.WithYou.repository.post.ReplyRepository;
 import UMC.WithYou.service.member.MemberService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ReplyService {
     private final ReplyRepository replyRepository;
     private final CommentService commentService;
-    private final MemberService memberService;
 
-    public ReplyService(ReplyRepository replyRepository, CommentService commentService, MemberService memberService) {
-        this.replyRepository = replyRepository;
-        this.commentService = commentService;
-        this.memberService = memberService;
-    }
 
-    public Reply writeReply(String token, Long commentId, String content) {
+    public Reply writeReply(Member member, Long commentId, String content) {
         Comment comment = commentService.findCommentById(commentId);
-        Member writer = memberService.findByMemberIdToken(token);
 
-        Reply reply =  new Reply(comment, writer, content);
+        Reply reply =  new Reply(comment, member, content);
 
         replyRepository.save(reply);
 
         return reply;
     }
 
-    public void deleteReply(String token, Long replyId) {
+    public void deleteReply(Member member, Long replyId) {
         Reply reply = this.findReplyById(replyId);
-        validateReplyOwnerShip(token, reply);
+        validateReplyOwnerShip(member, reply);
 
         replyRepository.delete(reply);
     }
 
-    public void editReply(String token, Long replyId, String content) {
+    public void editReply(Member member, Long replyId, String content) {
         Reply reply = this.findReplyById(replyId);
-        validateReplyOwnerShip(token, reply);
+        validateReplyOwnerShip(member, reply);
 
         reply.setContent(content);
     }
 
 
-    private void validateReplyOwnerShip(String token, Reply reply){
-        Member writer = memberService.findByMemberIdToken(token);
-        if (!reply.getMember().isSameId(writer.getId())) {
+    private void validateReplyOwnerShip(Member member, Reply reply){
+        if (!reply.getMember().isSameId(member.getId())) {
             throw new CommonErrorHandler(ErrorStatus.UNAUTHORIZED_ACCESS_TO_REPLY);
         }
 
