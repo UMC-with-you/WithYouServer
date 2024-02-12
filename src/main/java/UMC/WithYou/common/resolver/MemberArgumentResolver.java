@@ -1,5 +1,6 @@
 package UMC.WithYou.common.resolver;
 
+import UMC.WithYou.common.annotation.AuthorizedMember;
 import UMC.WithYou.domain.auth.UserPrincipal;
 import UMC.WithYou.domain.member.Email;
 import UMC.WithYou.domain.member.Member;
@@ -25,7 +26,7 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterAnnotation(UMC.WithYou.common.annotation.Member.class) != null &&
+        return parameter.getParameterAnnotation(AuthorizedMember.class) != null &&
                 parameter.getParameterType().equals(Member.class);
     }
 

@@ -1,5 +1,6 @@
 package UMC.WithYou.controller;
 
+import UMC.WithYou.common.annotation.AuthorizedMember;
 import UMC.WithYou.common.apiPayload.ApiResponse;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.travel.Travel;
@@ -40,7 +41,7 @@ public class TravelController {
     @PostMapping
     public ApiResponse<ConfigurationResponseDTO> createTravel(
             @RequestBody  ConfigurationRequestDTO request,
-            @UMC.WithYou.common.annotation.Member Member member){
+            @AuthorizedMember Member member){
 
         String title = request.getTitle();
         LocalDate startDate = request.getStartDate();

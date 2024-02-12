@@ -1,8 +1,10 @@
 package UMC.WithYou.controller;
 
+import UMC.WithYou.common.annotation.AuthorizedMember;
 import UMC.WithYou.common.apiPayload.ApiResponse;
 import UMC.WithYou.common.validation.annotation.ExistRewindId;
 import UMC.WithYou.converter.RewindConverter;
+import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.rewind.Rewind;
 import UMC.WithYou.dto.rewind.RewindRequest;
 import UMC.WithYou.dto.rewind.RewindResponse;
@@ -35,10 +37,10 @@ public class RewindController {
             @Parameter(name = "travelId", description = "여행 ID", required = true, schema = @Schema(type = "Long"))
     })
     @PostMapping("/api/v1/travels/{travelId}/rewinds")
-    public ApiResponse<RewindResponse.CreateRewindResultDto> createRewind(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public ApiResponse<RewindResponse.CreateRewindResultDto> createRewind(@AuthorizedMember Member member,
                                                                           @PathVariable Long travelId,
                                                                           @RequestBody @Valid RewindRequest.CreateRewindDto requestDto) {
-        Rewind rewind = rewindCommandService.createRewind(token, travelId, requestDto);
+        Rewind rewind = rewindCommandService.createRewind(member, travelId, requestDto);
         return ApiResponse.onSuccess(RewindConverter.toCreateRewindResultDto(rewind));
     }
 
@@ -49,10 +51,10 @@ public class RewindController {
             @Parameter(name = "day", description = "여행 일자", required = false, schema = @Schema(type = "Integer"), example = "1")
     })
     @GetMapping("/api/v1/travels/{travelId}/rewinds")
-    public ApiResponse<List<RewindResponse.RetrieveRewindResultDto>> retrieveAllRewindsInTravel(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public ApiResponse<List<RewindResponse.RetrieveRewindResultDto>> retrieveAllRewindsInTravel(@AuthorizedMember Member member,
                                                                                                 @PathVariable Long travelId,
                                                                                                 @RequestParam(value = "day", required = false) @Min(1) Integer day) {
-        List<Rewind> rewindList = rewindQueryService.retrieveRewindsInTravel(token, travelId, day);
+        List<Rewind> rewindList = rewindQueryService.retrieveRewindsInTravel(member, travelId, day);
         return ApiResponse.onSuccess(RewindConverter.toRetrieveRewindResultDtoList(rewindList));
     }
 
@@ -63,10 +65,10 @@ public class RewindController {
             @Parameter(name = "rewindId", description = "회고 ID", required = true, schema = @Schema(type = "Long"))
     })
     @GetMapping("/api/v1/travels/{travelId}/rewinds/{rewindId}")
-    public ApiResponse<RewindResponse.RetrieveRewindResultDto> retrieveRewindById(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public ApiResponse<RewindResponse.RetrieveRewindResultDto> retrieveRewindById(@AuthorizedMember Member member,
                                                                                   @PathVariable Long travelId,
                                                                                   @PathVariable @ExistRewindId Long rewindId) {
-        Rewind rewind = rewindQueryService.retrieveRewindById(token, travelId, rewindId);
+        Rewind rewind = rewindQueryService.retrieveRewindById(member, travelId, rewindId);
         return ApiResponse.onSuccess(RewindConverter.toRetrieveRewindResultDto(rewind));
     }
 
@@ -77,11 +79,11 @@ public class RewindController {
             @Parameter(name = "rewindId", description = "회고 ID", required = true, schema = @Schema(type = "Long"))
     })
     @PatchMapping("/api/v1/travels/{travelId}/rewinds/{rewindId}")
-    public ApiResponse<RewindResponse.UpdateRewindResultDto> updateRewindById(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public ApiResponse<RewindResponse.UpdateRewindResultDto> updateRewindById(@AuthorizedMember Member member,
                                                                               @PathVariable Long travelId,
                                                                               @PathVariable @ExistRewindId Long rewindId,
                                                                               @RequestBody @Valid RewindRequest.UpdateRewindDto requestDto) {
-        Rewind rewind = rewindCommandService.updateRewindById(token, travelId, rewindId, requestDto);
+        Rewind rewind = rewindCommandService.updateRewindById(member, travelId, rewindId, requestDto);
         return ApiResponse.onSuccess(RewindConverter.toUpdateRewindResultDto(rewind));
     }
 
@@ -92,10 +94,10 @@ public class RewindController {
             @Parameter(name = "rewindId", description = "회고 ID", required = true, schema = @Schema(type = "Long"))
     })
     @DeleteMapping("/api/v1/travels/{travelId}/rewinds/{rewindId}")
-    public ApiResponse deleteRewindById(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public ApiResponse deleteRewindById(@AuthorizedMember Member member,
                                         @PathVariable Long travelId,
                                         @PathVariable @ExistRewindId Long rewindId) {
-        rewindCommandService.deleteRewindById(token, travelId, rewindId);
+        rewindCommandService.deleteRewindById(member, travelId, rewindId);
         return ApiResponse.onSuccess_NoContent();
     }
 }
