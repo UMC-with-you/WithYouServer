@@ -1,13 +1,11 @@
 package UMC.WithYou.domain.cloud;
 
-import UMC.WithYou.domain.travel.Travel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
