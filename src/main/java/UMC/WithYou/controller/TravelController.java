@@ -39,12 +39,15 @@ public class TravelController {
             @AuthorizedMember Member member,
             @RequestBody  ConfigurationRequestDTO request){
 
+
         String title = request.getTitle();
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();
         String url = request.getUrl();
         LocalDate localDate = request.getLocalDate();
+
         Long id = travelService.createTravel(member, title, startDate, endDate, url, localDate);
+
         return ApiResponse.onSuccess(new ConfigurationResponseDTO(id));
     }
 
