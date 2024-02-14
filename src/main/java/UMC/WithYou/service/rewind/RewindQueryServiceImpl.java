@@ -58,6 +58,7 @@ public class RewindQueryServiceImpl implements RewindQueryService{
 
     @Override
     public boolean checkRewindIdExist(Long rewindId) {
+        System.out.println(rewindId);
         Optional<Rewind> rewind = rewindRepository.findById(rewindId);
         return rewind.isPresent();
     }

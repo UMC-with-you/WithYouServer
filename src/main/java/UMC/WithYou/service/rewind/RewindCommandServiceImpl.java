@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Optional;
 
 @Service
@@ -34,11 +36,10 @@ public class RewindCommandServiceImpl implements RewindCommandService {
         //travel check
         Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND));
         //check valid travel's day
-        // Duration.between으로 두 LocalDateTime 사이의 차이를 계산
-        Duration duration = Duration.between(travel.getStartDate(), travel.getEndDate());
-        // 차이를 일로 변환
-        long daysDifference = Math.abs(duration.toDays());
-        if (daysDifference < requestDto.getDay()) throw new CommonErrorHandler(ErrorStatus.TRAVEL_DAY_NOT_VALID);
+        LocalDate startDate = travel.getStartDate();
+        LocalDate endDate = travel.getEndDate();
+        int travelDuration = (endDate.getDayOfYear() - startDate.getDayOfYear()) + 1;
+        if (travelDuration < requestDto.getDay()) throw new CommonErrorHandler(ErrorStatus.TRAVEL_DAY_NOT_VALID);
         //traveler check
         Traveler traveler = travel.getTravelers().stream()
                 .filter(t -> member.equals(t.getMember()))
@@ -53,6 +54,8 @@ public class RewindCommandServiceImpl implements RewindCommandService {
         //변환&저장
         Rewind rewind = RewindConverter.toRewind(requestDto);
         rewind.setWriter(member);
+        rewind.setTravel(travel);
+        if(requestDto.getQnaList()!=null)
         requestDto.getQnaList().stream()
                 .map(createRewindQnaDto -> {
                     RewindQna rewindQna = RewindQna.builder()
@@ -76,7 +79,7 @@ public class RewindCommandServiceImpl implements RewindCommandService {
         rewind.updateRewind(requestDto.getMvpCandidateId(), requestDto.getMood(), requestDto.getComment());
         requestDto.getQnaList().stream()
                 .map(rewindQnaDto -> {
-                    RewindQna rewindQna = rewindQnaRepository.findById(rewindQnaDto.getQnaId()).get();
+                    RewindQna rewindQna = rewindQnaRepository.findById(rewindQnaDto.getQnaId()).orElseThrow(() -> new CommonErrorHandler(ErrorStatus.QUESTION_NOT_FOUND));
                     rewindQna.updateRewindQna(rewindQnaDto.getAnswer());
                     rewindQna.setRewind(rewind);
                     return rewindQna;

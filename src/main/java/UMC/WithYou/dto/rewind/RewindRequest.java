@@ -1,10 +1,13 @@
 package UMC.WithYou.dto.rewind;
 
+import UMC.WithYou.common.validation.annotation.ExistQnaId;
 import UMC.WithYou.common.validation.annotation.ExistQuestionId;
 import UMC.WithYou.domain.rewind.Mood;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -19,6 +22,7 @@ public class RewindRequest {
         Long mvpCandidateId;
         @Schema(description = "오늘의 기분", example = "SAD")
         Mood mood;
+        @Valid
         @Schema(description = "Q&A 목록")
         List<CreateRewindQnaDto> qnaList;
         @Schema(description = "오늘의 한마디", example = "좋은 날이었습니다.")
@@ -48,7 +52,7 @@ public class RewindRequest {
 
     @Getter
     public static class UpdateRewindQnaDto {
-        @ExistQuestionId
+        @ExistQnaId
         @Schema(description = "Q&A ID (질문 ID가 아닌 Q&A ID)", example = "456")
         Long qnaId;
         @Schema(description = "질문 답변", example = "기분 좋았어요.")
