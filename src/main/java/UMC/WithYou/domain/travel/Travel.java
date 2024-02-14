@@ -2,6 +2,7 @@ package UMC.WithYou.domain.travel;
 
 import UMC.WithYou.domain.BaseEntity;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.domain.rewind.Rewind;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
