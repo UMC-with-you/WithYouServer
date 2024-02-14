@@ -33,13 +33,13 @@ public class NoticeCheckCommandServiceImpl implements NoticeCheckCommandService{
                 .orElseThrow(()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
         Optional<NoticeCheck> noticeCheck=noticeCheckRepository.findByMemberAndNotice(member,notice);
-        NoticeCheck newNoticeCheck;
         if (noticeCheck.isPresent()){
-            newNoticeCheck = NoticeCheckConverter.toChangeNoticeCheck(noticeCheck.get(), member, notice);
+            noticeCheck.get().changeStatus();
+            return noticeCheckRepository.save(noticeCheck.get());
         }
-        else{
-            newNoticeCheck = NoticeCheckConverter.toJoinDTO(notice, member);
+        else {
+            NoticeCheck newNoticeCheck = NoticeCheckConverter.toJoinDTO(notice, member);
+            return noticeCheckRepository.save(newNoticeCheck);
         }
-        return noticeCheckRepository.save(newNoticeCheck);
     }
 }

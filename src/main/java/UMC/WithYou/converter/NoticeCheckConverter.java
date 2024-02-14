@@ -4,8 +4,7 @@ import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.notice.Notice;
 import UMC.WithYou.domain.notice.NoticeCheck;
 import UMC.WithYou.domain.travel.Travel;
-import UMC.WithYou.dto.NoticeCheckResponseDTO;
-import UMC.WithYou.dto.NoticeResponseDTO;
+import UMC.WithYou.dto.notice.NoticeCheckResponseDTO;
 
 public class NoticeCheckConverter {
 

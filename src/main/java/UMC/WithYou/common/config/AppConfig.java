@@ -20,7 +20,6 @@ public class AppConfig implements WebMvcConfigurer {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-
     @Bean
     JPAQueryFactory jpaQueryFactory(EntityManager em) {
         return new JPAQueryFactory(em);

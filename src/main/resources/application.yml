@@ -1,8 +1,7 @@
 server:
   port: 8080
-    #servlet:
+  #servlet:
   #context-path: /api
-
 spring:
   profiles:
     active: dev, oauth

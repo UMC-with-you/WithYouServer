@@ -3,9 +3,9 @@ package UMC.WithYou.converter;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.notice.Notice;
 import UMC.WithYou.domain.travel.Travel;
-import UMC.WithYou.dto.NoticeCheckResponseDTO;
-import UMC.WithYou.dto.NoticeRequestDTO;
-import UMC.WithYou.dto.NoticeResponseDTO;
+import UMC.WithYou.dto.notice.NoticeCheckResponseDTO;
+import UMC.WithYou.dto.notice.NoticeRequestDTO;
+import UMC.WithYou.dto.notice.NoticeResponseDTO;
 
 public class NoticeConverter {
 
@@ -22,7 +22,7 @@ public class NoticeConverter {
                 .build();
     }
 
-    public static Notice toFixNotice(NoticeRequestDTO.FixDto request,Member member,Travel travel){
+    public static Notice toFixNotice(NoticeRequestDTO.FixDto request, Member member, Travel travel){
         return Notice.builder()
                 .state(request.getState())
                 .member(member)
