@@ -2,6 +2,7 @@ package UMC.WithYou.domain.rewind;
 
 import UMC.WithYou.domain.BaseEntity;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.domain.travel.Travel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,9 +20,9 @@ public class Rewind extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "travel_id")
-//    private Travel travel;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "travel_id")
+    private Travel travel;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -43,12 +44,12 @@ public class Rewind extends BaseEntity {
     @OneToMany(mappedBy="rewind", cascade = CascadeType.ALL)
     private List<RewindQna> rewindQnaList = new ArrayList<>();
 
-//    public void setTravel(Travel travel) {
-//        if(this.travel != null)
-//            travel.getRewindList().remove(this);
-//        this.travel = travel;
-//        travel.getRewindList().add(this);
-//    }
+    public void setTravel(Travel travel) {
+        if(this.travel != null)
+            travel.getRewinds().remove(this);
+        this.travel = travel;
+        travel.getRewinds().add(this);
+    }
 
     public void setWriter(Member member) {
         if(this.writer != null)

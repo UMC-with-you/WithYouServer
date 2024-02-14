@@ -2,6 +2,7 @@ package UMC.WithYou.domain.travel;
 
 import UMC.WithYou.domain.BaseEntity;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.domain.rewind.Rewind;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -48,8 +49,8 @@ public class Travel extends BaseEntity {
 //    @OneToMany
 //    private List<PackingItem> packingItems;
 //
-//    @OneToMany
-//    private List<Rewind> rewinds;
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL)
+    private List<Rewind> rewinds;
 //
 //    @OneToMany
 //    private List<Post> posts;
