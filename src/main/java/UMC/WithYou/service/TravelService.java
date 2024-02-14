@@ -22,8 +22,9 @@ public class TravelService {
     private final TravelRepository travelRepository;
     private final MemberService memberService;
 
-    public Long createTravel(Member member,String title, LocalDate startDate, LocalDate endDate, String url, LocalDate localDate) {
-        Travel travel =  new Travel(member, title, startDate, endDate, url);
+    public Long createTravel(Member member, String title, LocalDate startDate, LocalDate endDate, String url, LocalDate localDate) {
+        Travel travel = new Travel(member, title, startDate, endDate, url);
+
 
         travel.setTravelStatus(localDate);
 
@@ -34,12 +35,11 @@ public class TravelService {
         return travel.getId();
     }
 
-    public List<Travel> getTravels(String token, LocalDate currentLocalDate) {
-        Member member = memberService.findByMemberIdToken(token);
+    public List<Travel> getTravels(Member member, LocalDate currentLocalDate) {
         List<Traveler> travelers = member.getTravelers();
         List<Travel> travels = new ArrayList<>();
 
-        for (Traveler traveler: travelers){
+        for (Traveler traveler : travelers) {
             Travel travel = traveler.getTravel();
             travel.setTravelStatus(currentLocalDate);
             travels.add(travel);
@@ -48,21 +48,20 @@ public class TravelService {
         return travels;
     }
 
-    public Long deleteTravel(String token, Long travelId) {
-        Member member = memberService.findByMemberIdToken(token);
+    public Long deleteTravel(Member member, Long travelId) {
         Travel travel = findTravelById(travelId);
 
-        if (travel.validateOwnership(member)){
+        if (travel.validateOwnership(member)) {
             throw new CommonErrorHandler(ErrorStatus.UNAUTHORIZED_ACCESS_TO_TRAVEL);
-        };
+        }
+        ;
 
         travelRepository.delete(travel);
         return travelId;
     }
 
-    public Long editTravel(String token, Long travelId, String title,
+    public Long editTravel(Member member, Long travelId, String title,
                            LocalDate startDate, LocalDate endDate, String url, LocalDate localDate) {
-        Member member = memberService.findByMemberIdToken(token);
         Travel travel = findTravelById(travelId);
 
         validateTraveler(member, travel);
@@ -71,8 +70,7 @@ public class TravelService {
         return travel.getId();
     }
 
-    public List<Member> getMembers(String token, Long travelId) {
-        Member member = memberService.findByMemberIdToken(token);
+    public List<Member> getMembers(Member member, Long travelId) {
         Travel travel = findTravelById(travelId);
 
         validateTraveler(member, travel);
@@ -80,16 +78,14 @@ public class TravelService {
         return travel.getTravelMembers();
     }
 
-    public Traveler join(String token, String invitationCode){
-        Member member = memberService.findByMemberIdToken(token);
-
+    public Traveler join(Member member, String invitationCode) {
         Travel travel = travelRepository.findByInvitationCode(invitationCode).orElseThrow(
-            ()->new CommonErrorHandler(ErrorStatus.INVITATION_CODE_NOT_FOUND)
+                () -> new CommonErrorHandler(ErrorStatus.INVITATION_CODE_NOT_FOUND)
         );
 
         Traveler traveler = new Traveler(travel, member);
 
-        if (travel.isTraveler(member)){
+        if (travel.isTraveler(member)) {
             return traveler;
         }
 
@@ -98,19 +94,18 @@ public class TravelService {
         return traveler;
     }
 
-    public String getInvitationCode(String token, Long travelId) {
-        Member member = memberService.findByMemberIdToken(token);
+    public String getInvitationCode(Member member, Long travelId) {
         Travel travel = findTravelById(travelId);
 
         validateTraveler(member, travel);
 
-        if (travel.hasInvitationCode()){
+        if (travel.hasInvitationCode()) {
             return travel.getInvitationCode();
         }
 
         String invitationCode = UUID.randomUUID().toString();
 
-        while (travelRepository.findByInvitationCode(invitationCode).isPresent()){
+        while (travelRepository.findByInvitationCode(invitationCode).isPresent()) {
             invitationCode = UUID.randomUUID().toString();
         }
         travel.setInvitationCode(invitationCode);
@@ -119,20 +114,30 @@ public class TravelService {
     }
 
 
+    public void leave(Member member, Long travelId, Long memberId) {
+        Travel travel = findTravelById(travelId);
+        validateTraveler(member, travel);
+
+        Member travelMember = memberService.findMemberById(memberId);
+        travel.leave(travelMember);
+
+    }
 
 
 
-    private void validateTraveler(Member member, Travel travel){
-        if (!travel.isTraveler(member)){
+
+
+    private void validateTraveler(Member member, Travel travel) {
+        if (!travel.isTraveler(member)) {
             throw new CommonErrorHandler(ErrorStatus.UNAUTHORIZED_ACCESS_TO_TRAVEL);
         }
     }
-    private Travel findTravelById(Long travelId){
+
+    private Travel findTravelById(Long travelId) {
         return travelRepository.findById(travelId).orElseThrow(
-                ()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND)
+                () -> new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND)
         );
     }
-
-
-
 }
+
+

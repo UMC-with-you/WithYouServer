@@ -58,14 +58,10 @@ public class TravelResponseDTO {
     }
 
     @Getter
+    @AllArgsConstructor
     public static class InvitationCodeResponseDTO{
         private Long travelId;
         private String invitationCode;
-
-        public InvitationCodeResponseDTO(Long travelId, String invitationCode) {
-            this.travelId =travelId;
-            this.invitationCode = invitationCode;
-        }
     }
 
     @Getter
@@ -74,5 +70,12 @@ public class TravelResponseDTO {
         private Long travelId;
     }
 
+    @Getter
+    @AllArgsConstructor
+    public static class LeaveResponseDTO{
+        private Long travelId;
+        private Long memberId;
+
+    }
 
 }

@@ -1,6 +1,5 @@
 package UMC.WithYou.domain.travel;
 
-
 import UMC.WithYou.domain.BaseEntity;
 import UMC.WithYou.domain.member.Member;
 import jakarta.persistence.Entity;
@@ -9,10 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 @Entity
 @Getter
@@ -22,7 +19,7 @@ public class Traveler extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
 

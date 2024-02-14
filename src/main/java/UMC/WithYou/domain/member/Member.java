@@ -34,7 +34,7 @@ public class Member extends BaseEntity {
     private MemberType memberType;
 
     @Getter
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ScrapedPost> scrapedPosts;
 

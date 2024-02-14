@@ -1,11 +1,7 @@
 package UMC.WithYou.domain.travel;
 
 import UMC.WithYou.domain.BaseEntity;
-import UMC.WithYou.domain.PackingItem;
-import UMC.WithYou.domain.Post.Post;
 import UMC.WithYou.domain.member.Member;
-import UMC.WithYou.domain.notice.Notice;
-import UMC.WithYou.domain.rewind.Rewind;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,15 +12,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 @Entity
 @AllArgsConstructor
@@ -51,7 +43,7 @@ public class Travel extends BaseEntity {
 
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL)
-    private Set<Traveler> travelers = new HashSet<>();
+    private List<Traveler> travelers = new ArrayList<>();
 
 //    @OneToMany
 //    private List<PackingItem> packingItems;
@@ -95,7 +87,6 @@ public class Travel extends BaseEntity {
 
 
     public boolean isTraveler(Member member){
-
         for (Traveler traveler: getTravelers()){
             if (traveler.isMember(member)) {
                 return true;
@@ -127,5 +118,16 @@ public class Travel extends BaseEntity {
         else{
             this.status = TravelStatus.UPCOMING;
         }
+    }
+
+    public void leave(Member travelMember) {
+
+        for (Traveler traveler : getTravelers()){
+            if (traveler.isMember(travelMember)){
+                travelers.remove(traveler);
+                break;
+            }
+        }
+
     }
 }
