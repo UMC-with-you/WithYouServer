@@ -5,6 +5,7 @@ import UMC.WithYou.domain.rewind.RewindQna;
 import UMC.WithYou.dto.rewind.RewindRequest;
 import UMC.WithYou.dto.rewind.RewindResponse;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ public class RewindConverter {
                 .day(requestDto.getDay())
                 .mvpCandidateId(requestDto.getMvpCandidateId())
                 .mood(requestDto.getMood())
+                .rewindQnaList(new ArrayList<>())
                 .comment(requestDto.getComment()).build();
     }
 
