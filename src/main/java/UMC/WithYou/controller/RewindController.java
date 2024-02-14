@@ -13,6 +13,7 @@ import UMC.WithYou.service.rewind.RewindQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -33,7 +34,8 @@ public class RewindController {
 
     @Operation(summary = "REWIND 작성", description = "해당 여행 그룹의 멤버가 특정 날짜의 여행 회고(REWIND)를 작성합니다.")
     @Parameters({
-            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter(name = "travelId", description = "여행 ID", required = true, schema = @Schema(type = "Long"))
     })
     @PostMapping("/api/v1/travels/{travelId}/rewinds")
@@ -46,7 +48,8 @@ public class RewindController {
 
     @Operation(summary = "REWIND 목록 조회", description = "해당 여행 그룹의 멤버가 해당 여행의 모든 회고(REWIND) 목록, 또는 해당 여행의 특정 날짜의 모든 회고를 조회합니다.")
     @Parameters({
-            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter(name = "travelId", description = "여행 ID", required = true, schema = @Schema(type = "Long")),
             @Parameter(name = "day", description = "여행 일자", required = false, schema = @Schema(type = "Integer"), example = "1")
     })
@@ -60,9 +63,10 @@ public class RewindController {
 
     @Operation(summary = "REWIND 단건 조회", description = "해당 여행 그룹의 멤버가 해당 여행의 특정 회고를 조회합니다.")
     @Parameters({
-            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter(name = "travelId", description = "여행 ID", required = true, schema = @Schema(type = "Long")),
-            @Parameter(name = "rewindId", description = "회고 ID", required = true, schema = @Schema(type = "Long"))
+            @Parameter(name = "rewindId", description = "회고 ID", required = true, schema = @Schema(type = "Long")),
     })
     @GetMapping("/api/v1/travels/{travelId}/rewinds/{rewindId}")
     public ApiResponse<RewindResponse.RetrieveRewindResultDto> retrieveRewindById(@AuthorizedMember Member member,
@@ -74,7 +78,8 @@ public class RewindController {
 
     @Operation(summary = "REWIND 수정", description = "해당 여행 그룹의 멤버가 해당 여행중 자신의 특정 회고를 수정합니다.")
     @Parameters({
-            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter(name = "travelId", description = "여행 ID", required = true, schema = @Schema(type = "Long")),
             @Parameter(name = "rewindId", description = "회고 ID", required = true, schema = @Schema(type = "Long"))
     })
@@ -89,7 +94,8 @@ public class RewindController {
 
     @Operation(summary = "REWIND 삭제", description = "해당 여행 그룹의 멤버가 해당 여행중 자신의 특정 회고를 삭제합니다.")
     @Parameters({
-            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String")),
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter(name = "travelId", description = "여행 ID", required = true, schema = @Schema(type = "Long")),
             @Parameter(name = "rewindId", description = "회고 ID", required = true, schema = @Schema(type = "Long"))
     })
