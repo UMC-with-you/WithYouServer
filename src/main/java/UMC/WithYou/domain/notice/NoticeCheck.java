@@ -8,6 +8,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.List;
+
 @Entity
 @Getter
 @DynamicUpdate
@@ -30,6 +32,13 @@ public class NoticeCheck extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="notice_id")
     private Notice notice;
+
+    public void changeStatus() {
+        if (!this.isChecked)
+            this.isChecked=true;
+        else
+            this.isChecked=false;
+    }
 
 }
 
