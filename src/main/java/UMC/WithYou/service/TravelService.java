@@ -51,7 +51,7 @@ public class TravelService {
     public Long deleteTravel(Member member, Long travelId) {
         Travel travel = findTravelById(travelId);
 
-        if (travel.validateOwnership(member)) {
+        if (!travel.validateOwnership(member)) {
             throw new CommonErrorHandler(ErrorStatus.UNAUTHORIZED_ACCESS_TO_TRAVEL);
         }
         ;
