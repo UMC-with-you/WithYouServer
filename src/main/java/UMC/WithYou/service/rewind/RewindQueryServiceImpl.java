@@ -4,9 +4,11 @@ import UMC.WithYou.common.apiPayload.code.status.ErrorStatus;
 import UMC.WithYou.common.apiPayload.exception.handler.CommonErrorHandler;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.rewind.Rewind;
+import UMC.WithYou.domain.rewind.RewindQuestion;
 import UMC.WithYou.domain.travel.Travel;
 import UMC.WithYou.domain.travel.Traveler;
 import UMC.WithYou.repository.TravelRepository;
+import UMC.WithYou.repository.rewind.RewindQuestionRepository;
 import UMC.WithYou.repository.rewind.RewindRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class RewindQueryServiceImpl implements RewindQueryService{
 
     private final RewindRepository rewindRepository;
     private final TravelRepository travelRepository;
+    private final RewindQuestionRepository rewindQuestionRepository;
 
     @Override
     public List<Rewind> retrieveRewindsInTravel(Member member, Long travelId, Integer day) {
@@ -58,8 +61,12 @@ public class RewindQueryServiceImpl implements RewindQueryService{
 
     @Override
     public boolean checkRewindIdExist(Long rewindId) {
-        System.out.println(rewindId);
         Optional<Rewind> rewind = rewindRepository.findById(rewindId);
         return rewind.isPresent();
+    }
+
+    @Override
+    public List<RewindQuestion> retrieveAllRewindQuestions() {
+        return rewindQuestionRepository.findAll();
     }
 }
