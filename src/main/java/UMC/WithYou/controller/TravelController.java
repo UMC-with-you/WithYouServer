@@ -11,6 +11,7 @@ import UMC.WithYou.service.TravelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
@@ -33,7 +34,10 @@ public class TravelController {
     private TravelService travelService;
 
     @Operation(summary = "트래블 로그 추가")
-
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
+    })
     @PostMapping
     public ApiResponse<ConfigurationResponseDTO> createTravel(
             @AuthorizedMember Member member,
@@ -54,6 +58,8 @@ public class TravelController {
 
     @Operation(summary = "멤버가 포함된 모든 여행 로그 조회")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter(name = "Local Time", description = "사용자의 현 위치의 Local Time", required = true),
     })
     @GetMapping
@@ -70,6 +76,8 @@ public class TravelController {
 
     @Operation(summary = "여행 로그 삭제")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "travelId" , description = "여행 로그 Id", required = true, schema = @Schema(type = "Long"))
     })
     @DeleteMapping("/{travelId}")
@@ -84,6 +92,8 @@ public class TravelController {
 
     @Operation(summary = "여행 로그 수정")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "travelId" , description = "여행 로그 Id", required = true, schema = @Schema(type = "Long"))
     })
     @PatchMapping("/{travelId}")
@@ -106,6 +116,8 @@ public class TravelController {
 
     @Operation(summary = "여행 로그에 포함된 모든 멤버 조회")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "travelId" , description = "여행 로그 Id", required = true, schema = @Schema(type = "Long"))
     })
     @GetMapping("/{travelId}/members")
@@ -121,6 +133,8 @@ public class TravelController {
 
     @Operation(summary = "여행 로그의 초대 코드 조회")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "travelId" , description = "여행 로그 Id", required = true, schema = @Schema(type = "Long"))
     })
     @GetMapping("/{travelId}/invitation_code")
@@ -132,7 +146,10 @@ public class TravelController {
 
 
     @Operation(summary = "여행 로그 합류")
-
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
+    })
     @PatchMapping("/members")
     public ApiResponse<JoinResponseDTO> join(
             @AuthorizedMember Member member,
@@ -145,6 +162,8 @@ public class TravelController {
 
     @PatchMapping("{travelId}/members/{memberId}")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "travelId" , description = "여행 로그 Id", required = true, schema = @Schema(type = "Long")),
             @Parameter( name = "memberId" , description = "여행 로그에서 탈퇴할 회원 Id", required = true, schema = @Schema(type = "Long"))
     })

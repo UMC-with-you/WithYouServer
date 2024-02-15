@@ -10,6 +10,7 @@ import UMC.WithYou.service.post.ReplyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +31,8 @@ public class ReplyController {
 
     @Operation(summary = "대댓글 추가")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "commentId" , description = "댓글 Id", required = true, schema = @Schema(type = "Long"))
     })
 
@@ -49,6 +52,8 @@ public class ReplyController {
 
     @Operation(summary = "대댓글 삭제")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "replyId" , description = "대댓글 Id", required = true, schema = @Schema(type = "Long"))
     })
     @DeleteMapping("api/v1/replies/{replyId}")
@@ -64,9 +69,10 @@ public class ReplyController {
 
     @Operation(summary = "대댓글 수정")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "replyId" , description = "대댓글 Id", required = true, schema = @Schema(type = "Long"))
     })
-
     @PatchMapping("api/v1/replies/{replyId}")
     public ApiResponse<EditResponseDTO> editReply(
             @AuthorizedMember Member member,
