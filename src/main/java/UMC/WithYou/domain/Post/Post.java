@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,10 +44,9 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "log_id")
     private Travel travel;
 
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-//    private List<ScrapedPost> scrapedPosts = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("position")
     private List<PostMedia> postMediaList;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -55,47 +55,18 @@ public class Post extends BaseEntity {
 
     private String text;
 
-    public Post(Member publisher, Travel travel, String text, List<String> urls) {
+    public Post(Member publisher, Travel travel, String text) {
         this.member = publisher;
         this.travel = travel;
         this.text = text;
-        this.postMediaList = new ArrayList<>();
-
-        for (int position = 0; position < urls.size(); position++){
-            postMediaList.add(new PostMedia(urls.get(position), this, position));
-        }
-
     }
 
-    public void edit(String text, Map<Long, Integer> newPositions) {
+    public void setPostMediaList(List<PostMedia> postMediaList) {
+        this.postMediaList = postMediaList;
+    }
 
-        System.out.println("입력");
-        newPositions.forEach((key, value) -> {
-            System.out.println("ID: " + key + ", Position: " + value);
-        });
-
-        System.out.println("기존");
-        for (PostMedia postMedia: this.getPostMediaList()){
-            System.out.println(postMedia.getId());
-        }
+    public void edit(String text) {
         this.text = text;
-        for (PostMedia postMedia: this.getPostMediaList()){
-            Long mediaId = postMedia.getId();
-            int newPosition = newPositions.get(mediaId);
-
-            // 미디어 삭제 로직
-//            if (newPosition == -1){
-//                this.getPostMediaList().remove(postMedia);
-//            }
-//            else{
-//                postMedia.setPosition(newPosition);
-//            }
-
-            postMedia.setPosition(newPosition);
-        }
-
-
-        Collections.sort(this.postMediaList);
     }
 }
 

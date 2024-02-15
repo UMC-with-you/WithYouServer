@@ -34,16 +34,16 @@ public class PostResponse {
     public static class PostResponseDTO{
         private Long postId;
         private Long memberid;
-        private List<String> urls;
         private String text;
+        private List<PostMediaDTO> postMediaDTO;
         private List<CommentDTO> commentDTOs;
 
         public PostResponseDTO(Post post){
             this.postId = post.getId();
             this.memberid = post.getMember().getId();
-            this.urls = new ArrayList<>();
+            this.postMediaDTO = new ArrayList<>();
             for (PostMedia postMedia: post.getPostMediaList()){
-                this.urls.add(postMedia.getUrl());
+                this.postMediaDTO.add(new PostMediaDTO(postMedia.getId(), postMedia.getUrl(), postMedia.getPosition()));
             }
             this.text = post.getText();
 
@@ -51,6 +51,15 @@ public class PostResponse {
             for (Comment comment: post.getComments()){
                 commentDTOs.add(new CommentDTO(comment));
             }
+        }
+
+        @Getter
+        @AllArgsConstructor
+        private static class PostMediaDTO{
+            private Long postMediaId;
+            private String url;
+            private int position;
+
         }
         @Getter
         private static class CommentDTO{
@@ -105,5 +114,6 @@ public class PostResponse {
     @AllArgsConstructor
     public static class ScrapeResponseDTO{
         private Long postId;
+        private Boolean isScraped;
     }
 }
