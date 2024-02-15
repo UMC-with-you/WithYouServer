@@ -10,7 +10,6 @@ public class TravelRequestDTO {
         private String title;
         private LocalDate startDate;
         private LocalDate endDate;
-        private String url;
         private LocalDate localDate;
     }
 

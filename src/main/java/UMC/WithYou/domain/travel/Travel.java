@@ -35,6 +35,7 @@ public class Travel extends BaseEntity {
     private LocalDate startDate;
     private LocalDate endDate;
     private String imageUrl;
+    private String imageFileName;
 
     @Enumerated(EnumType.STRING)
     private TravelStatus status;
@@ -46,31 +47,24 @@ public class Travel extends BaseEntity {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL)
     private List<Traveler> travelers = new ArrayList<>();
 
-//    @OneToMany
-//    private List<PackingItem> packingItems;
-//
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL)
     private List<Rewind> rewinds;
-//
-//    @OneToMany
-//    private List<Post> posts;
-//
-//    @OneToMany
-//    private List<Notice> notices;
 
-    public Travel(Member member, String title, LocalDate startDate, LocalDate endDate, String url) {
+    public Travel(Member member, String title, LocalDate startDate, LocalDate endDate, String url, String imageFileName) {
         this.member = member;
         this.title = title;
-        this.startDate =startDate;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.imageUrl = url;
+        this.imageFileName = imageFileName;
     }
 
-    public void edit(String title, LocalDate startDate, LocalDate endDate, String url){
+    public void edit(String title, LocalDate startDate, LocalDate endDate, String url, String imageFileName){
         this.title = title;
         this.startDate =startDate;
         this.endDate = endDate;
         this.imageUrl = url;
+        this.imageFileName = imageFileName;
     }
 
 

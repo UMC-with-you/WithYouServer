@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @AllArgsConstructor
@@ -21,10 +22,12 @@ import org.springframework.stereotype.Service;
 public class TravelService {
     private final TravelRepository travelRepository;
     private final MemberService memberService;
+    private final S3Service s3Service;
 
-    public Long createTravel(Member member, String title, LocalDate startDate, LocalDate endDate, String url, LocalDate localDate) {
-        Travel travel = new Travel(member, title, startDate, endDate, url);
-
+    public Long createTravel(Member member, String title, LocalDate startDate, LocalDate endDate, MultipartFile bannerImage, LocalDate localDate) {
+        String fileName = s3Service.createFileName(bannerImage.getOriginalFilename());
+        String url = s3Service.uploadMedia(bannerImage, fileName);
+        Travel travel = new Travel(member, title, startDate, endDate, url, fileName);
 
         travel.setTravelStatus(localDate);
 
@@ -55,17 +58,23 @@ public class TravelService {
             throw new CommonErrorHandler(ErrorStatus.UNAUTHORIZED_ACCESS_TO_TRAVEL);
         }
         ;
+        s3Service.deleteFile(travel.getImageFileName());
 
         travelRepository.delete(travel);
         return travelId;
     }
 
     public Long editTravel(Member member, Long travelId, String title,
-                           LocalDate startDate, LocalDate endDate, String url, LocalDate localDate) {
+                           LocalDate startDate, LocalDate endDate, MultipartFile bannerImage, LocalDate localDate) {
         Travel travel = findTravelById(travelId);
 
+        s3Service.deleteFile(travel.getImageFileName());
+
+        String fileName = s3Service.createFileName(bannerImage.getOriginalFilename());
+        String url = s3Service.uploadMedia(bannerImage, fileName);
+
         validateTraveler(member, travel);
-        travel.edit(title, startDate, endDate, url);
+        travel.edit(title, startDate, endDate, url, fileName);
         travel.setTravelStatus(localDate);
         return travel.getId();
     }
@@ -133,7 +142,7 @@ public class TravelService {
         }
     }
 
-    private Travel findTravelById(Long travelId) {
+    public Travel findTravelById(Long travelId) {
         return travelRepository.findById(travelId).orElseThrow(
                 () -> new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND)
         );
