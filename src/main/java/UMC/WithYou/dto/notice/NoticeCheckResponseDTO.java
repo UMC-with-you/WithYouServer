@@ -22,6 +22,7 @@ public class NoticeCheckResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ShortResponseDto{
+        Long noticeId;
         String url;       //공지 쓴 멤버 사진
         String name;      //공지 쓴 멤버 이름
         String content;
