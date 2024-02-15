@@ -6,6 +6,7 @@ import UMC.WithYou.common.validation.annotation.ExistRewindId;
 import UMC.WithYou.converter.RewindConverter;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.rewind.Rewind;
+import UMC.WithYou.domain.rewind.RewindQuestion;
 import UMC.WithYou.dto.rewind.RewindRequest;
 import UMC.WithYou.dto.rewind.RewindResponse;
 import UMC.WithYou.service.rewind.RewindCommandService;
@@ -44,6 +45,13 @@ public class RewindController {
                                                                           @RequestBody @Valid RewindRequest.CreateRewindDto requestDto) {
         Rewind rewind = rewindCommandService.createRewind(member, travelId, requestDto);
         return ApiResponse.onSuccess(RewindConverter.toCreateRewindResultDto(rewind));
+    }
+
+    @Operation(summary = "REWIND QUESTION 목록 조회", description = "회고(REWIND) 작성 시 필요한 질문을 모두 조회합니다. 프론트엔드 개발자는 이 목록에서 랜덤으로 질문을 골라 회고 작성에 이용합니다.")
+    @GetMapping("/api/v1/rewindQuestions")
+    public ApiResponse<List<RewindQuestion>> retrieveAllRewindQuestions(){
+        List<RewindQuestion> rewindQuestionList = rewindQueryService.retrieveAllRewindQuestions();
+        return ApiResponse.onSuccess(rewindQuestionList);
     }
 
     @Operation(summary = "REWIND 목록 조회", description = "해당 여행 그룹의 멤버가 해당 여행의 모든 회고(REWIND) 목록, 또는 해당 여행의 특정 날짜의 모든 회고를 조회합니다.")
