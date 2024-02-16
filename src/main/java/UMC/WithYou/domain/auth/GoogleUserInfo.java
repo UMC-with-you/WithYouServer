@@ -22,9 +22,4 @@ public class GoogleUserInfo implements UserInfo {
     public String getIdentifier() {
         return (String) attributes.get("sub");
     }
-
-    @Override
-    public Map<String, Object> toAttributes() {
-        return attributes;
-    }
 }
