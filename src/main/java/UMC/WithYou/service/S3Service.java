@@ -42,8 +42,22 @@ public class S3Service {
         return amazonS3Client.getUrl(bucket, storageFileName).toString();
     }
 
+    public String uploadMedia(MultipartFile media, String fileName){
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(media.getSize());
+        objectMetadata.setContentType(media.getContentType());
+
+        try (InputStream inputStream = media.getInputStream()) {
+            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicReadWrite));
+        } catch (IOException e) {
+            throw new CommonErrorHandler(ErrorStatus._PICTURE);
+        }
+        return amazonS3Client.getUrl(bucket, fileName).toString();
+    }
+
     // 파일 이름 생성 로직
-    private String createFileName(String originalFileName) {
+    public String createFileName(String originalFileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
     }
 

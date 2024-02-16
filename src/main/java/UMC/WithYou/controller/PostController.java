@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +19,9 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -31,7 +32,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @Operation(summary = "포스트 작성")
+    @Operation(summary = "게시글 작성")
     @Parameters({
             @Parameter( name = "travelId" , description = "여행 Id", required = true, schema = @Schema(type = "Long"))
     })
@@ -39,11 +40,12 @@ public class PostController {
     public ApiResponse<PublishResponse> publishPost(
             @AuthorizedMember Member member,
             @PathVariable("travelId") Long travelId,
-            @RequestBody @Valid PublishRequestDTO request
+            @RequestPart PublishRequestDTO request,
+            @RequestPart List<MultipartFile> mediaList
         ){
         String text = request.getText();
-        List<String> urls = request.getUrls();
-        Long postId = postService.createPost(member, travelId, text, urls);
+
+        Long postId = postService.createPost(member, travelId, text, mediaList);
         return ApiResponse.onSuccess(new PublishResponse(postId));
     }
 
@@ -54,7 +56,7 @@ public class PostController {
     })
     @GetMapping("api/v1/travels/{travelId}/posts")
     public ApiResponse<List<ThumbnailResponseDTO>> getPostThumbnails(@PathVariable("travelId") Long travelId){
-        List<Post> posts = postService.getPosts(travelId);
+        List<Post> posts = postService.getScrapedPosts(travelId);
 
         return ApiResponse.onSuccess(posts.stream()
                 .map(p -> new ThumbnailResponseDTO(p))
@@ -111,7 +113,7 @@ public class PostController {
 
 
 
-    @Operation(summary = "게시글 스크랩")
+    @Operation(summary = "스크랩")
     @Parameters({
             @Parameter( name = "postId" , description = "게시글 Id", required = true, schema = @Schema(type = "Long"))
     })
@@ -120,8 +122,8 @@ public class PostController {
             @AuthorizedMember Member member,
             @PathVariable("postId") Long postId
     ){
-        Long scrapedPostId = postService.scrapePost(member, postId);
-        return ApiResponse.onSuccess(new ScrapeResponseDTO(scrapedPostId));
+        Boolean isScraped = postService.toggleScrap(member, postId);
+        return ApiResponse.onSuccess(new ScrapeResponseDTO(postId, isScraped));
     }
 
     @Operation(summary = "회원이 스크랩한 모든 게시글 조회")
@@ -129,7 +131,7 @@ public class PostController {
     public ApiResponse<List<ThumbnailResponseDTO>> getScrapedPosts(
             @AuthorizedMember Member member
     ){
-        List<Post> posts = postService.getPosts(member);
+        List<Post> posts = postService.getScrapedPosts(member);
 
         return ApiResponse.onSuccess(
                 posts.stream()

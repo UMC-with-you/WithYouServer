@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @AllArgsConstructor
@@ -37,16 +39,18 @@ public class TravelController {
     @PostMapping
     public ApiResponse<ConfigurationResponseDTO> createTravel(
             @AuthorizedMember Member member,
-            @RequestBody  ConfigurationRequestDTO request){
+            @RequestPart MultipartFile bannerImage,
+            @RequestPart ConfigurationRequestDTO request
+
+    ){
 
 
         String title = request.getTitle();
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();
-        String url = request.getUrl();
         LocalDate localDate = request.getLocalDate();
 
-        Long id = travelService.createTravel(member, title, startDate, endDate, url, localDate);
+        Long id = travelService.createTravel(member, title, startDate, endDate, bannerImage, localDate);
 
         return ApiResponse.onSuccess(new ConfigurationResponseDTO(id));
     }
@@ -89,15 +93,16 @@ public class TravelController {
     @PatchMapping("/{travelId}")
     public ApiResponse<ConfigurationResponseDTO> editTravel(
             @AuthorizedMember Member member,
-            @PathVariable("travelId") Long travelId,
-            @RequestBody @Valid ConfigurationRequestDTO request
+            @RequestPart MultipartFile bannerImage,
+            @RequestPart @Valid ConfigurationRequestDTO request,
+            @PathVariable("travelId") Long travelId
     ){
         String title = request.getTitle();
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();
-        String url = request.getUrl();
+
         LocalDate localDate = request.getLocalDate();
-        Long id = travelService.editTravel(member, travelId, title, startDate, endDate, url, localDate);
+        Long id = travelService.editTravel(member, travelId, title, startDate, endDate, bannerImage, localDate);
 
         return ApiResponse.onSuccess(new ConfigurationResponseDTO(id));
     }
