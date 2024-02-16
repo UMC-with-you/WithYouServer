@@ -10,6 +10,7 @@ import UMC.WithYou.dto.post.PostResponse.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,8 @@ public class PostController {
 
     @Operation(summary = "게시글 작성")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "travelId" , description = "여행 Id", required = true, schema = @Schema(type = "Long"))
     })
     @PostMapping("api/v1/travels/{travelId}/posts")
@@ -81,6 +84,8 @@ public class PostController {
 
     @Operation(summary = "게시글 삭제")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "postId" , description = "게시글 Id", required = true, schema = @Schema(type = "Long"))
     })
     @DeleteMapping("api/v1/posts/{postId}")
@@ -96,6 +101,8 @@ public class PostController {
 
     @Operation(summary = "게시글 수정")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "postId" , description = "게시글 Id", required = true, schema = @Schema(type = "Long"))
     })
 
@@ -115,6 +122,8 @@ public class PostController {
 
     @Operation(summary = "스크랩")
     @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
             @Parameter( name = "postId" , description = "게시글 Id", required = true, schema = @Schema(type = "Long"))
     })
     @PostMapping("api/v1/posts/{postId}")
@@ -127,6 +136,10 @@ public class PostController {
     }
 
     @Operation(summary = "회원이 스크랩한 모든 게시글 조회")
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT token", required = true, schema = @Schema(type = "String"), in = ParameterIn.HEADER),
+            @Parameter(name = "member", hidden = true),
+    })
     @GetMapping("api/v1/posts")
     public ApiResponse<List<ThumbnailResponseDTO>> getScrapedPosts(
             @AuthorizedMember Member member
