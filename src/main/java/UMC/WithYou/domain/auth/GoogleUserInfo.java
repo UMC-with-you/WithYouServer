@@ -19,6 +19,11 @@ public class GoogleUserInfo implements UserInfo {
     }
 
     @Override
+    public String getIdentifier() {
+        return (String) attributes.get("id");
+    }
+
+    @Override
     public Map<String, Object> toAttributes() {
         return attributes;
     }

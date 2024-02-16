@@ -2,36 +2,36 @@ package UMC.WithYou.domain.member;
 
 import UMC.WithYou.domain.BaseEntity;
 import UMC.WithYou.domain.Post.ScrapedPost;
-import UMC.WithYou.domain.travel.Travel;
 import UMC.WithYou.domain.travel.Traveler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import UMC.WithYou.domain.rewind.Rewind;
 import jakarta.persistence.*;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = @Index(name = "email", columnList = "email", unique = true))
 public class Member extends BaseEntity {
-    @Getter
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     @Embedded
     private Email email;
+    @Embedded
+    private Identifier identifier;
     @Embedded
     private Name name;
 
     @Getter
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
+
+
 
     @Getter
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -45,21 +45,25 @@ public class Member extends BaseEntity {
 
     @Getter
     private String imageUrl;
+
+    @Getter
     @OneToMany(mappedBy="writer", cascade = CascadeType.ALL)
     private List<Rewind> rewindList = new ArrayList<>();
 
 
     @Builder
-    public Member(String email, String name,MemberType memberType) {
+    public Member(String email,String identifier,String name,MemberType memberType) {
         this.email=new Email(email);
+        this.identifier=new Identifier(identifier);
         this.name = new Name(name);
         this.memberType=memberType;
     }
 
-    public Long getId() {return id;}
-
     public String getEmail() {
         return this.email.getValue();
+    }
+    public String getIdentifier() {
+        return this.identifier.getValue();
     }
 
     public String getName() {
@@ -68,10 +72,6 @@ public class Member extends BaseEntity {
 
     public void changeName(String name){
         this.name = new Name(name);
-    }
-
-    public List<Rewind> getRewindList() {
-        return rewindList;
     }
 
     @Override

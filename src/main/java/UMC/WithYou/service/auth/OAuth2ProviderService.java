@@ -48,7 +48,7 @@ public class OAuth2ProviderService {
                 entity,
                 Map.class
         );
-
+        log.info("Google API response: {}", response.getBody());
         Map<String, Object> attributes = response.getBody();
         return new GoogleUserInfo(attributes);
     }
@@ -70,6 +70,7 @@ public class OAuth2ProviderService {
                 entity,
                 Map.class
         );
+        log.info("Google API response: {}", response.getBody());
 
         Map<String, Object> attributes = response.getBody();
 
