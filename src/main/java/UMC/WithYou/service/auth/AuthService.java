@@ -3,6 +3,7 @@ package UMC.WithYou.service.auth;
 import UMC.WithYou.domain.auth.RefreshToken;
 import UMC.WithYou.domain.auth.UserInfo;
 import UMC.WithYou.domain.member.Email;
+import UMC.WithYou.domain.member.Identifier;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.member.MemberType;
 import UMC.WithYou.dto.auth.LoginRequest;
@@ -23,15 +24,15 @@ public class AuthService {
     public LoginResponse authenticateOrRegisterUser(LoginRequest request) {
         // 외부 OAuth 공급자를 통해 사용자 정보를 가져옵니다.
         UserInfo userInfo = oAuth2ProviderService.getUserInfo(request.getProvider(), request.getAccessToken());
-        Email emailObject = new Email(userInfo.getEmail());
+        Identifier identifier = new Identifier(userInfo.getEmail());
 
-        // 이메일을 기반으로 기존 사용자를 찾거나 새로 등록합니다.
-        Member member = memberRepository.findByEmail(emailObject)
+        // 고유 식별자를 사용하여 기존 사용자를 찾거나 새로 등록합니다.
+        Member member = memberRepository.findByIdentifier(identifier)
                 .map(existingMember -> updateExistingMember(existingMember, userInfo))
                 .orElseGet(() -> registerNewMember(userInfo));
 
         // JWT 토큰 발급
-        String accessToken = tokenProvider.createToken(member.getEmail());
+        String accessToken = tokenProvider.createToken(member.getIdentifier());
         RefreshToken refreshToken = tokenProvider.createRefreshToken(member.getEmail());
 
         // RefreshToken 저장

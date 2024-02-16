@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 import java.util.Optional;
 
-@Slf4j
 public class KakaoUserInfo implements UserInfo {
     private final Map<String, Object> attributes;
 
@@ -23,6 +22,11 @@ public class KakaoUserInfo implements UserInfo {
     public String getName() {
         Map<String, Object> kakaoAccount = asMap(attributes.get("kakao_account"));
         return (String) kakaoAccount.get("name");
+    }
+
+    @Override
+    public String getIdentifier() {
+        return (String) attributes.get("id");
     }
 
     @Override

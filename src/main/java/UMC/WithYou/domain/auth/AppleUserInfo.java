@@ -22,6 +22,11 @@ public class AppleUserInfo implements UserInfo {
         return (firstName != null ? firstName + " " : "") + (lastName != null ? lastName : "");
     }
 
+    @Override
+    public String getIdentifier() {
+        return null;
+    }
+
     private String getFirstName() {
         Map<String, Object> nameAttributes = (Map<String, Object>) attributes.get("name");
         return nameAttributes != null ? (String) nameAttributes.get("firstName") : null;
