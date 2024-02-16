@@ -30,13 +30,3 @@ jasypt:
   encryptor:
     bean: jasyptEncryptor
     password: ${ENCRYPT_KEY}
-
-cloud:
-  aws:
-    s3:
-      bucket: ENC(PL3eeYTb8i9ifHB0csm1HrOMxGJUy31Q)
-    stack.auto: false
-    region.static: ENC(0qcAVhglKAkgkKAkH4LJZzr9Gnl9ZuhA)
-    credentials:
-      accessKey: ENC(LYSekTBrws9Ru1VLVtdbadnRb3n8IYf6pJqpTv3IpOo=)
-      secretKey: ENC(vYct9ku08uS4w0OfDsdAhY8kZLrPoAMvh2AdzEY6OMFioByGHXcFafAUEeU7ZuFpuidpJn3cNNA=)
