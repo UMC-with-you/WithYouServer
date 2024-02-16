@@ -21,13 +21,13 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenProvider tokenProvider;
 
-    public LoginResponse authenticateOrRegisterUser(LoginRequest request) {
+    public LoginResponse authenticateOrRegisterUser(LoginRequest request) throws Exception {
         UserInfo userInfo = getUserInfo(request);
         Member member = processMember(userInfo);
         return createLoginResponse(member);
     }
 
-    private UserInfo getUserInfo(LoginRequest request) {
+    private UserInfo getUserInfo(LoginRequest request) throws Exception {
         if ("apple".equals(request.getProvider())) {
             return getAppleUserInfo(request);
         } else {
@@ -35,7 +35,7 @@ public class AuthService {
         }
     }
 
-    private UserInfo getAppleUserInfo(LoginRequest request) {
+    private UserInfo getAppleUserInfo(LoginRequest request) throws Exception {
         return oAuth2ProviderService.getUserInfo(request);
     }
 
