@@ -58,6 +58,7 @@ public class AuthService {
         // 새 멤버 등록
         return memberRepository.save(Member.builder()
                 .email(userInfo.getEmail())
+                .identifier(userInfo.getIdentifier())
                 .name(userInfo.getName())
                 .memberType(MemberType.BASIC_USER)
                 .build());

@@ -20,7 +20,7 @@ public class GoogleUserInfo implements UserInfo {
 
     @Override
     public String getIdentifier() {
-        return (String) attributes.get("id");
+        return (String) attributes.get("sub");
     }
 
     @Override
