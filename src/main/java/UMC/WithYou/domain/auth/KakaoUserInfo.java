@@ -15,23 +15,21 @@ public class KakaoUserInfo implements UserInfo {
     @Override
     public String getEmail() {
         Map<String, Object> kakaoAccount = asMap(attributes.get("kakao_account"));
-        return (String) kakaoAccount.get("email");
+        Object email = kakaoAccount.get("email");
+        return String.valueOf(email);
     }
 
     @Override
     public String getName() {
         Map<String, Object> kakaoAccount = asMap(attributes.get("kakao_account"));
-        return (String) kakaoAccount.get("name");
+        Object name = kakaoAccount.get("name");
+        return String.valueOf(name);
     }
 
     @Override
     public String getIdentifier() {
-        return (String) attributes.get("id");
-    }
-
-    @Override
-    public Map<String, Object> toAttributes() {
-        return attributes;
+        Object id = attributes.get("id");
+        return String.valueOf(id);
     }
 
     private static Map<String, Object> asMap(Object obj) {

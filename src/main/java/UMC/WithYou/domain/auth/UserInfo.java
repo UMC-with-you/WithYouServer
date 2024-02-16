@@ -6,5 +6,4 @@ public interface UserInfo {
     String getEmail();
     String getName();
     String getIdentifier();
-    Map<String, Object> toAttributes();
 }

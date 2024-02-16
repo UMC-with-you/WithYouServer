@@ -1,6 +1,7 @@
 package UMC.WithYou.common.config;
 
 import UMC.WithYou.common.resolver.MemberArgumentResolver;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,11 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
     @Bean
     JPAQueryFactory jpaQueryFactory(EntityManager em) {
