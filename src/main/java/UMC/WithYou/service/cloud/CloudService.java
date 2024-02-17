@@ -10,4 +10,5 @@ import java.util.List;
 public interface CloudService {
     Cloud createCloud(CloudRequestDTO.JoinDto request, List<MultipartFile> files);
     List<CloudResponseDTO.PictureDto> getPictures(Long travelLog);
+    Cloud deletePictures(Long cloudId, List<String> files);
 }

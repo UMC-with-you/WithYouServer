@@ -1,6 +1,7 @@
 package UMC.WithYou.controller;
 
 import UMC.WithYou.common.apiPayload.ApiResponse;
+import UMC.WithYou.common.validation.annotation.ExistClouds;
 import UMC.WithYou.converter.CloudConverter;
 import UMC.WithYou.converter.NoticeConverter;
 import UMC.WithYou.domain.cloud.Cloud;
@@ -37,7 +38,7 @@ public class CloudController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4003", description = "해당 member가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<CloudResponseDTO.ResultDto> create(@RequestPart @Valid CloudRequestDTO.JoinDto request,
+    public ApiResponse<CloudResponseDTO.ResultDto> create(@ModelAttribute @Valid CloudRequestDTO.JoinDto request,
                                                           @RequestPart(value = "image", required = false) List<MultipartFile> files){
         Cloud cloud= cloudService.createCloud(request, files);
         return ApiResponse.onSuccess(CloudConverter.toResultDTO(cloud));
@@ -56,4 +57,16 @@ public class CloudController {
         List<CloudResponseDTO.PictureDto> pictures=cloudService.getPictures(travelId);
         return ApiResponse.onSuccess(pictures);
     }
+
+    @Operation(summary = "cloud 삭제 API")
+    @DeleteMapping
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE2000",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "CLOUD4003", description = "해당 cloud가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    public ApiResponse<CloudResponseDTO.ResultDto> deletePictures(@RequestBody @Valid CloudRequestDTO.DeleteDto request){
+        Cloud cloud=cloudService.deletePictures(request.getCloudId(),request.getFiles());
+        return ApiResponse.onSuccess(CloudConverter.toResultDTO(cloud));
+    }
+
 }

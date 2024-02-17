@@ -34,4 +34,8 @@ public class CloudMedia {
     public void addUrl(List<String> newUrl) {
         this.url.addAll(newUrl);
     }
+
+    public void deleteUrl(List<String> url){
+        this.url.removeAll(url);
+    }
 }
