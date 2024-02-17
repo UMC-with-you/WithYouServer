@@ -36,7 +36,7 @@ public class RewindQueryServiceImpl implements RewindQueryService{
                 .findAny()
                 .orElseThrow(() -> new CommonErrorHandler(ErrorStatus.MEMBER_NOT_IN_TRAVELER));
         if(day != null) {
-            //check valid travel's day
+            // check valid travel's day
             LocalDate startDate = travel.getStartDate();
             LocalDate endDate = travel.getEndDate();
             int travelDuration = (endDate.getDayOfYear() - startDate.getDayOfYear()) + 1;
