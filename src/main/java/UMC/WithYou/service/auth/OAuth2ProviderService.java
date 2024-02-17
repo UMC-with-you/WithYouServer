@@ -59,9 +59,10 @@ public class OAuth2ProviderService {
     }
 
     private UserInfo getAppleUserInfo(String token, String email, String name) throws Exception {
-        DecodedJWT jwt = appleTokenVerifier.verifyToken(token);
-
-        String userId = jwt.getSubject(); // 'sub' claim
+//        DecodedJWT jwt = appleTokenVerifier.verifyToken(token);
+//
+//        String userId = jwt.getSubject(); // 'sub' claim
+        String userId = "apple-user-id";
         return new AppleUserInfo(userId, email, name);
     }
 
