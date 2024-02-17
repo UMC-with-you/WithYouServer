@@ -8,6 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,17 +26,38 @@ import java.security.spec.InvalidKeySpecException;
 @Service
 @RequiredArgsConstructor
 public class AppleTokenVerifier {
+    @Value("${apple.client-id}")
+    private String clientId;
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    public DecodedJWT verifyToken(String token) throws Exception {
-        log.info("Verifying Apple token", token);
+    public DecodedJWT verifyToken(String token,String nonce) throws Exception {
         ApplePublicKeyResponse response = fetchApplePublicKeys();
-        log.info(response.getKeys().get(0).toString(),response.getKeys().get(1).toString());
         ApplePublicKeyResponse.AppleKey matchingKey = findMatchingKey(token, response);
         RSAPublicKey publicKey = generatePublicKey(matchingKey);
-        return verifyJwtToken(token, publicKey);
+
+        DecodedJWT jwt = verifyJwtToken(token, publicKey);
+
+        if (!verifyNonce(jwt, nonce)) {
+            throw new SecurityException("Nonce verification failed.");
+        }
+
+        if (!verifyClientId(jwt, clientId)) {
+            throw new SecurityException("Client ID verification failed.");
+        }
+
+        return jwt;
+    }
+
+    private boolean verifyNonce(DecodedJWT jwt, String expectedNonce) {
+        String tokenNonce = jwt.getClaim("nonce").asString();
+        return tokenNonce != null && tokenNonce.equals(expectedNonce);
+    }
+
+    private boolean verifyClientId(DecodedJWT jwt, String expectedClientId) {
+        String audience = jwt.getAudience().get(0); // ID 토큰은 보통 하나의 audience 값을 갖습니다.
+        return audience != null && audience.equals(expectedClientId);
     }
 
     private ApplePublicKeyResponse fetchApplePublicKeys() throws Exception {
@@ -71,5 +93,4 @@ public class AppleTokenVerifier {
                 .build();
         return verifier.verify(token);
     }
-
 }
