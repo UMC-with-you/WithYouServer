@@ -15,7 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
@@ -23,14 +22,11 @@ public class AuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        log.info(request.getRequestURI());
         String jwtToken = tokenProvider.resolveToken(request);
-        log.info(jwtToken);
         if (StringUtils.hasText(jwtToken) && Boolean.TRUE.equals(tokenProvider.validateToken(jwtToken))) {
             Authentication authentication = tokenProvider.getAuthentication(jwtToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        log.info("끝");
         filterChain.doFilter(request, response);
     }
 }

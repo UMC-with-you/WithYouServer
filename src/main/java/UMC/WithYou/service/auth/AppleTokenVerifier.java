@@ -7,6 +7,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,6 +21,7 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AppleTokenVerifier {
@@ -28,7 +30,9 @@ public class AppleTokenVerifier {
     private final ObjectMapper objectMapper;
 
     public DecodedJWT verifyToken(String token) throws Exception {
+        log.info("Verifying Apple token", token);
         ApplePublicKeyResponse response = fetchApplePublicKeys();
+        log.info(response.getKeys().get(0).toString(),response.getKeys().get(1).toString());
         ApplePublicKeyResponse.AppleKey matchingKey = findMatchingKey(token, response);
         RSAPublicKey publicKey = generatePublicKey(matchingKey);
         return verifyJwtToken(token, publicKey);
