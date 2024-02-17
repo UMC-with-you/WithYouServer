@@ -3,6 +3,7 @@ package UMC.WithYou.common.resolver;
 import UMC.WithYou.common.annotation.AuthorizedMember;
 import UMC.WithYou.domain.auth.UserPrincipal;
 import UMC.WithYou.domain.member.Email;
+import UMC.WithYou.domain.member.Identifier;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +42,8 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
         }
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        Email email = new Email(userPrincipal.getUsername());
-        return memberRepository.findByEmail(email)
+        Identifier identifier = new Identifier(userPrincipal.getMember().getIdentifier());
+        return memberRepository.findByIdentifier(identifier)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
