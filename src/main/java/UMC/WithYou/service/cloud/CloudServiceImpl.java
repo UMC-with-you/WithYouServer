@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class CloudServiceImpl implements CloudService{
     private final CloudRepository cloudRepository;
     private final TravelRepository travelRepository;
@@ -38,8 +38,7 @@ public class CloudServiceImpl implements CloudService{
     private final S3Service s3Service;
 
     @Override
-    @Transactional
-    public Cloud createCloud(CloudRequestDTO.JoinDto request, List<MultipartFile> files){
+    public Cloud createCloud(CloudRequestDTO.CloudJoinDto request, List<MultipartFile> files){
         Travel travel = travelRepository.findById(request.getTravelId())
                 .orElseThrow(()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND));
 
@@ -86,4 +85,17 @@ public class CloudServiceImpl implements CloudService{
         return pictureList;
     }
 
+    @Override
+    public Cloud deletePictures(Long cloudId, List<String> files){
+        Cloud cloud=cloudRepository.findById(cloudId).get();
+        List<CloudMedia> cloudMedias=cloudMediaRepository.findAllByCloud(cloud);
+
+        for(CloudMedia cloudMedia:cloudMedias){
+            cloudMedia.deleteUrl(files);
+        }
+
+        cloudMedias.forEach(cloudMediaRepository::save);
+
+        return cloud;
+    }
 }
