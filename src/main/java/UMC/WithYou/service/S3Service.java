@@ -40,14 +40,18 @@ public class S3Service {
             throw new CommonErrorHandler(ErrorStatus._PICTURE);
         }
         return amazonS3Client.getUrl(bucket, storageFileName).toString();
+        //return storageFileName;
     }
 
-    // 파일 이름 생성 로직
     private String createFileName(String originalFileName) {
+//        String uuid = UUID.randomUUID().toString();
+//        String shortenedUuid = uuid.substring(0, 8); // 첫 8글자 추출
+//        String combinedFilename = shortenedUuid + getFileExtension(originalFileName);
+//
+//        return combinedFilename;
         return UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
     }
 
-    // 파일 확장자명 가져오는 로직
     private String getFileExtension(String fileName) {
         try {
             return fileName.substring(fileName.lastIndexOf("."));

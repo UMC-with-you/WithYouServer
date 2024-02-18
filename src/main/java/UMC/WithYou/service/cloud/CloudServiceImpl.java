@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class CloudServiceImpl implements CloudService{
     private final S3Service s3Service;
 
     @Override
-    public Cloud createCloud(CloudRequestDTO.CloudJoinDto request, List<MultipartFile> files){
+    public Cloud createCloud(CloudRequestDTO.CloudJoinDto request, MultipartFile files){
         Travel travel = travelRepository.findById(request.getTravelId())
                 .orElseThrow(()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND));
 
@@ -48,19 +49,21 @@ public class CloudServiceImpl implements CloudService{
                     return cloudRepository.save(newCloud);
                 });
 
-        List<String> pictureList=files.stream()
-                .map(picture->{
-                    return s3Service.uploadImg(picture);
-                }).collect(Collectors.toList());
+        String picture=s3Service.uploadImg(files);
+//        List<String> pictureList=files.stream()
+//                .map(picture->{
+//                    return s3Service.uploadImg(picture);
+//                }).collect(Collectors.toList());
 
-        CloudMedia cloudMedia=CloudConverter.toMedia(request,cloud,pictureList);
-        List<CloudMedia> medias=cloudMediaRepository.findAllByCloud(cloud);
-        for (int i=0;i<medias.size();i++){
-            if (request.getDate().equals(medias.get(i).getDate())) {
-                cloudMedia=medias.get(i);
-                cloudMedia.addUrl(pictureList);
-            }
-        }
+        CloudMedia cloudMedia=CloudConverter.toMedia(request,cloud,picture);
+//        List<CloudMedia> medias=cloudMediaRepository.findAllByCloud(cloud);
+//        for (int i=0;i<medias.size();i++){
+//            if (request.getDate().equals(medias.get(i).getDate())) {
+//                cloudMedia=medias.get(i);
+//                cloudMedia.addUrl(picture);
+//                break;
+//            }
+//        }
         cloudMediaRepository.save(cloudMedia);
 
         return cloud;
@@ -76,12 +79,27 @@ public class CloudServiceImpl implements CloudService{
 
         Optional<Cloud> cloud=cloudRepository.findByTravel(travel);
         if (cloud.isEmpty()) return pictureList;
-        Cloud cloud1 = cloudCustomRepository.findByTravelFetchJoinCloud(cloud.get().getId());
 
-        pictureList=cloud1.getPictureDate().stream()
-                .map(picture->{
-                    return CloudConverter.toPicture(picture);
-                }).collect(Collectors.toList());
+//        Cloud cloud1 = cloudCustomRepository.findByTravelFetchJoinCloud(cloud.get().getId());
+        List<CloudMedia> cloudMedia=cloudMediaRepository.findAllByCloud(cloud.get());
+        LocalDate start=travel.getStartDate();
+
+        while (!start.isAfter(travel.getEndDate())) {
+            List<String> urls=new ArrayList<>();
+            for (CloudMedia cloudMedia1:cloudMedia){
+                if (cloudMedia1.getDate().isEqual(start)) {
+                    System.out.println("hello there");
+                    urls.add(cloudMedia1.getUrl());
+                }
+            }
+            CloudResponseDTO.PictureDto newPicture=CloudConverter.toPicture(start,urls);
+            pictureList.add(newPicture);
+            start= start.plus(1, ChronoUnit.DAYS);
+        }
+//        pictureList=cloud1.getPictureDate().stream()
+//                .map(picture->{
+//                    return CloudConverter.toPicture(picture);
+//                }).collect(Collectors.toList());
         return pictureList;
     }
 
@@ -90,11 +108,12 @@ public class CloudServiceImpl implements CloudService{
         Cloud cloud=cloudRepository.findById(cloudId).get();
         List<CloudMedia> cloudMedias=cloudMediaRepository.findAllByCloud(cloud);
 
-        for(CloudMedia cloudMedia:cloudMedias){
-            cloudMedia.deleteUrl(files);
+        for(int i=0;i<files.size();i++) {
+            for(CloudMedia cloudMedia:cloudMedias){
+                if (cloudMedia.getUrl().equals(files.get(i)))
+                    cloudMediaRepository.delete(cloudMedia);
+            }
         }
-
-        cloudMedias.forEach(cloudMediaRepository::save);
 
         return cloud;
     }

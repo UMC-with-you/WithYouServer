@@ -10,6 +10,8 @@ import UMC.WithYou.dto.cloud.CloudResponseDTO;
 import UMC.WithYou.dto.notice.NoticeCheckResponseDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 public class CloudConverter {
@@ -20,10 +22,11 @@ public class CloudConverter {
                 .build();
     }
 
-    public static CloudMedia toMedia(CloudRequestDTO.CloudJoinDto request, Cloud cloud, List<String> pictureList){
+    public static CloudMedia toMedia(CloudRequestDTO.CloudJoinDto request, Cloud cloud, String picture){
         return CloudMedia.builder()
                 .date(request.getDate())
-                .url(pictureList)
+                .url(picture)
+                //.url(Collections.singletonList(pictureList))
                 .cloud(cloud)
                 .build();
     }
@@ -34,10 +37,10 @@ public class CloudConverter {
                 .build();
     }
 
-    public static CloudResponseDTO.PictureDto toPicture(CloudMedia cloud){
+    public static CloudResponseDTO.PictureDto toPicture(LocalDate dates, List<String> urls){
         return CloudResponseDTO.PictureDto.builder()
-                .date(cloud.getDate())
-                .urlList(cloud.getUrl())
+                .date(dates)
+                .urlList(urls)
                 .build();
     }
 
