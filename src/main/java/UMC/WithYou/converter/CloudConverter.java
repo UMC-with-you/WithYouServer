@@ -20,7 +20,7 @@ public class CloudConverter {
                 .build();
     }
 
-    public static CloudMedia toMedia(CloudRequestDTO.JoinDto request, Cloud cloud, List<String> pictureList){
+    public static CloudMedia toMedia(CloudRequestDTO.CloudJoinDto request, Cloud cloud, List<String> pictureList){
         return CloudMedia.builder()
                 .date(request.getDate())
                 .url(pictureList)

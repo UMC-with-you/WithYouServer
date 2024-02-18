@@ -38,7 +38,7 @@ public class CloudServiceImpl implements CloudService{
     private final S3Service s3Service;
 
     @Override
-    public Cloud createCloud(CloudRequestDTO.JoinDto request, List<MultipartFile> files){
+    public Cloud createCloud(CloudRequestDTO.CloudJoinDto request, List<MultipartFile> files){
         Travel travel = travelRepository.findById(request.getTravelId())
                 .orElseThrow(()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND));
 
