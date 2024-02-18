@@ -6,7 +6,7 @@ import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.travel.Travel;
 import UMC.WithYou.domain.travel.Traveler;
 import UMC.WithYou.repository.TravelRepository;
-import UMC.WithYou.service.member.MemberService;
+import UMC.WithYou.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 public class TravelService {
     private final TravelRepository travelRepository;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final S3Service s3Service;
 
     public Long createTravel(Member member, String title, LocalDate startDate, LocalDate endDate, MultipartFile bannerImage, LocalDate localDate) {
@@ -127,7 +127,9 @@ public class TravelService {
         Travel travel = findTravelById(travelId);
         validateTraveler(member, travel);
 
-        Member travelMember = memberService.findMemberById(memberId);
+        Member travelMember = memberRepository.findById(memberId).orElseThrow(
+                ()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND)
+        );
         travel.leave(travelMember);
 
     }
