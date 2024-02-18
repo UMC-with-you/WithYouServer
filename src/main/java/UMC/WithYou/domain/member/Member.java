@@ -70,6 +70,10 @@ public class Member extends BaseEntity {
         return this.name.getValue();
     }
 
+    public void updateImage(String imageUrl){
+        this.imageUrl = imageUrl;
+    }
+
     public void updateName(String name){
         this.name = new Name(name);
     }
