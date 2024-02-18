@@ -40,7 +40,9 @@ public class S3Service {
             throw new CommonErrorHandler(ErrorStatus._PICTURE);
         }
         return amazonS3Client.getUrl(bucket, storageFileName).toString();
+        //return storageFileName;
     }
+
 
     public String uploadMedia(MultipartFile media, String fileName){
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -61,7 +63,6 @@ public class S3Service {
         return UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
     }
 
-    // 파일 확장자명 가져오는 로직
     private String getFileExtension(String fileName) {
         try {
             return fileName.substring(fileName.lastIndexOf("."));
