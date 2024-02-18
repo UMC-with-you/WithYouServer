@@ -73,7 +73,6 @@ public class Travel extends BaseEntity {
     }
     public List<Member> getTravelMembers(){
         List<Member> travelMembers = new ArrayList<>();
-        travelMembers.add(this.member);
         for (Traveler traveler : getTravelers()){
             travelMembers.add(traveler.getMember());
         }
