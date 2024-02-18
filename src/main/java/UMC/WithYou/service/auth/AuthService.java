@@ -3,6 +3,7 @@ package UMC.WithYou.service.auth;
 import UMC.WithYou.domain.auth.RefreshToken;
 import UMC.WithYou.domain.auth.UserInfo;
 import UMC.WithYou.domain.member.Email;
+import UMC.WithYou.domain.member.Identifier;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.domain.member.MemberType;
 import UMC.WithYou.dto.auth.LoginRequest;
@@ -20,23 +21,36 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenProvider tokenProvider;
 
-    public LoginResponse authenticateOrRegisterUser(LoginRequest request) {
-        // 외부 OAuth 공급자를 통해 사용자 정보를 가져옵니다.
-        UserInfo userInfo = oAuth2ProviderService.getUserInfo(request.getProvider(), request.getAccessToken());
-        Email emailObject = new Email(userInfo.getEmail());
+    public LoginResponse authenticateOrRegisterUser(LoginRequest request) throws Exception {
+        UserInfo userInfo = getUserInfo(request);
+        Member member = processMember(userInfo);
+        return createLoginResponse(member);
+    }
 
-        // 이메일을 기반으로 기존 사용자를 찾거나 새로 등록합니다.
-        Member member = memberRepository.findByEmail(emailObject)
+    private UserInfo getUserInfo(LoginRequest request) throws Exception {
+        if ("apple".equals(request.getProvider())) {
+            return getAppleUserInfo(request);
+        } else {
+            return oAuth2ProviderService.getUserInfo(request);
+        }
+    }
+
+    private UserInfo getAppleUserInfo(LoginRequest request) throws Exception {
+        return oAuth2ProviderService.getUserInfo(request);
+    }
+
+
+    private Member processMember(UserInfo userInfo) {
+        Identifier identifier = new Identifier(userInfo.getIdentifier());
+        return memberRepository.findByIdentifier(identifier)
                 .map(existingMember -> updateExistingMember(existingMember, userInfo))
                 .orElseGet(() -> registerNewMember(userInfo));
+    }
 
-        // JWT 토큰 발급
-        String accessToken = tokenProvider.createToken(member.getEmail());
-        RefreshToken refreshToken = tokenProvider.createRefreshToken(member.getEmail());
-
-        // RefreshToken 저장
+    private LoginResponse createLoginResponse(Member member) {
+        String accessToken = tokenProvider.createToken(member.getIdentifier());
+        RefreshToken refreshToken = tokenProvider.createRefreshToken(member.getIdentifier());
         refreshTokenRepository.save(refreshToken);
-
         return LoginResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getValue())
@@ -57,6 +71,7 @@ public class AuthService {
         // 새 멤버 등록
         return memberRepository.save(Member.builder()
                 .email(userInfo.getEmail())
+                .identifier(userInfo.getIdentifier())
                 .name(userInfo.getName())
                 .memberType(MemberType.BASIC_USER)
                 .build());

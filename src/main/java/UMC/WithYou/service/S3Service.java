@@ -43,12 +43,23 @@ public class S3Service {
         //return storageFileName;
     }
 
-    private String createFileName(String originalFileName) {
-//        String uuid = UUID.randomUUID().toString();
-//        String shortenedUuid = uuid.substring(0, 8); // 첫 8글자 추출
-//        String combinedFilename = shortenedUuid + getFileExtension(originalFileName);
-//
-//        return combinedFilename;
+
+    public String uploadMedia(MultipartFile media, String fileName){
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(media.getSize());
+        objectMetadata.setContentType(media.getContentType());
+
+        try (InputStream inputStream = media.getInputStream()) {
+            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicReadWrite));
+        } catch (IOException e) {
+            throw new CommonErrorHandler(ErrorStatus._PICTURE);
+        }
+        return amazonS3Client.getUrl(bucket, fileName).toString();
+    }
+
+    // 파일 이름 생성 로직
+    public String createFileName(String originalFileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
     }
 

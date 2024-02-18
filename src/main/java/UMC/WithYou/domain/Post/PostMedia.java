@@ -33,11 +33,13 @@ public class PostMedia extends BaseEntity implements Comparable<PostMedia>{
     private Post post;
     private int position;
     private String url;
+    private String fineName;
 
-    public PostMedia(String url, Post post, int position){
+    public PostMedia(Post post, int position, String url, String fineName){
         this.url = url;
         this.post = post;
         this.position = position;
+        this.fineName = fineName;
     }
 
 
@@ -48,6 +50,5 @@ public class PostMedia extends BaseEntity implements Comparable<PostMedia>{
     public int compareTo(PostMedia postMedia) {
         return Integer.compare(this.getPosition(), postMedia.getPosition());
     }
-
 
 }

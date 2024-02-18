@@ -9,4 +9,7 @@ public class LoginRequest {
     private String accessToken;
     @NotBlank(message = "provider is mandatory")
     private String provider;
+
+    private String email;
+    private String name;
 }

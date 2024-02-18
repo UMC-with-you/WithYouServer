@@ -9,7 +9,6 @@ public class PostRequest {
     @Getter
     public static class PublishRequestDTO {
         private String text;
-        private List<String> urls;
     }
 
     @Getter
@@ -17,7 +16,5 @@ public class PostRequest {
         private String text;
         private Map<Long, Integer> newPositions;
     }
-
-
 
 }

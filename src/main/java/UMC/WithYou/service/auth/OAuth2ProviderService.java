@@ -1,8 +1,12 @@
 package UMC.WithYou.service.auth;
 
+import UMC.WithYou.domain.auth.AppleUserInfo;
 import UMC.WithYou.domain.auth.GoogleUserInfo;
 import UMC.WithYou.domain.auth.KakaoUserInfo;
 import UMC.WithYou.domain.auth.UserInfo;
+import UMC.WithYou.dto.auth.LoginRequest;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +16,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.Map;
 
 @Slf4j
@@ -20,6 +23,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OAuth2ProviderService {
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+    private final AppleTokenVerifier appleTokenVerifier;
 
     @Value("${kakao.client-id}")
     private String kakaoClientId;
@@ -28,12 +33,13 @@ public class OAuth2ProviderService {
     private String kakaoRedirectUri;
 
     // 각 공급자 API와 통신하는 메소드 구현
-    public UserInfo getUserInfo(String provider, String token) {
-        return switch (provider) {
+    public UserInfo getUserInfo(LoginRequest request) throws Exception {
+        String token = request.getAccessToken();
+        return switch (request.getProvider()) {
             case "google" -> getGoogleUserInfo(token);
-            case "apple" -> getAppleUserInfo(token);
+            case "apple" -> getAppleUserInfo(token, request.getEmail(), request.getName());
             case "kakao" -> getKakaoUserInfo(token);
-            default -> throw new IllegalArgumentException("Unsupported provider: " + provider);
+            default -> throw new IllegalArgumentException("Unsupported provider: " + request.getProvider());
         };
     }
 
@@ -48,14 +54,16 @@ public class OAuth2ProviderService {
                 entity,
                 Map.class
         );
-
         Map<String, Object> attributes = response.getBody();
         return new GoogleUserInfo(attributes);
     }
 
-    private UserInfo getAppleUserInfo(String token) {
-        // Apple API를 호출하여 사용자 정보를 가져옵니다.
-        return null;
+    private UserInfo getAppleUserInfo(String token, String email, String name) throws Exception {
+//        DecodedJWT jwt = appleTokenVerifier.verifyToken(token);
+//
+//        String userId = jwt.getSubject(); // 'sub' claim
+        String userId = "apple-user-id";
+        return new AppleUserInfo(userId, email, name);
     }
 
     private UserInfo getKakaoUserInfo(String token) {

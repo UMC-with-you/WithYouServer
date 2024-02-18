@@ -2,6 +2,7 @@ package UMC.WithYou.service.auth;
 
 import UMC.WithYou.domain.auth.UserPrincipal;
 import UMC.WithYou.domain.member.Email;
+import UMC.WithYou.domain.member.Identifier;
 import UMC.WithYou.domain.member.Member;
 import UMC.WithYou.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final MemberRepository memberRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Email email=new Email(username);
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+        Identifier identifier = new Identifier(username);
+        Member member = memberRepository.findByIdentifier(identifier)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         return UserPrincipal.create(member);
     }
