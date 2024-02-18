@@ -70,7 +70,7 @@ public class Member extends BaseEntity {
         return this.name.getValue();
     }
 
-    public void changeName(String name){
+    public void updateName(String name){
         this.name = new Name(name);
     }
 

@@ -3,6 +3,7 @@ package UMC.WithYou.service.member;
 import UMC.WithYou.common.apiPayload.code.status.ErrorStatus;
 import UMC.WithYou.common.apiPayload.exception.handler.CommonErrorHandler;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.dto.member.NameRequest;
 import UMC.WithYou.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,7 @@ public class MemberService {
                 ()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND)
         );
     }
-    public Member findByMemberIdToken(String token){
-
-        return this.findMemberById(Long.parseLong(token));
+    public void updateName(Member member, NameRequest request){
+        member.updateName(request.getName());
     }
 }
