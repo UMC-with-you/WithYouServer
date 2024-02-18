@@ -38,9 +38,9 @@ public class CloudController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "TRAVEL003", description = "해당 travel가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<CloudResponseDTO.ResultDto> create(@RequestPart CloudRequestDTO.CloudJoinDto request,
-                                                          @RequestPart(value = "image", required = false) MultipartFile files){
-        Cloud cloud= cloudService.createCloud(request, files);
+    public ApiResponse<CloudResponseDTO.ResultDto> create(@RequestPart @Valid CloudRequestDTO.CloudJoinDto request,
+                                                          @RequestPart MultipartFile image){
+        Cloud cloud= cloudService.createCloud(request, image);
         return ApiResponse.onSuccess(CloudConverter.toResultDTO(cloud));
     }
 
