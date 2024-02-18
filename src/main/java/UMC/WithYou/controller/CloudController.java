@@ -36,9 +36,9 @@ public class CloudController {
     @Operation(summary="cloud 생성 API")
     @PostMapping
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4003", description = "해당 member가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "TRAVEL003", description = "해당 travel가 없습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<CloudResponseDTO.ResultDto> create(@ModelAttribute @Valid CloudRequestDTO.JoinDto request,
+    public ApiResponse<CloudResponseDTO.ResultDto> create(@RequestPart @Valid CloudRequestDTO.JoinDto request,
                                                           @RequestPart(value = "image", required = false) List<MultipartFile> files){
         Cloud cloud= cloudService.createCloud(request, files);
         return ApiResponse.onSuccess(CloudConverter.toResultDTO(cloud));
