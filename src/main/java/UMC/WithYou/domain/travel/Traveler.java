@@ -31,6 +31,6 @@ public class Traveler extends BaseEntity {
         this.travel = travel;
     }
     public boolean isMember(Member member){
-        return member.isSameId(member.getId());
+        return this.member.isSameId(member.getId());
     }
 }
