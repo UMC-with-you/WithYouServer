@@ -39,7 +39,7 @@ public class CloudServiceImpl implements CloudService{
     private final S3Service s3Service;
 
     @Override
-    public Cloud createCloud(CloudRequestDTO.CloudJoinDto request, MultipartFile files){
+    public Cloud createCloud(CloudRequestDTO.CloudJoinDto request, List<MultipartFile> files){
         Travel travel = travelRepository.findById(request.getTravelId())
                 .orElseThrow(()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND));
 
@@ -49,13 +49,18 @@ public class CloudServiceImpl implements CloudService{
                     return cloudRepository.save(newCloud);
                 });
 
-        String picture=s3Service.uploadImg(files);
-//        List<String> pictureList=files.stream()
-//                .map(picture->{
-//                    return s3Service.uploadImg(picture);
-//                }).collect(Collectors.toList());
+        //String picture=s3Service.uploadImg(files);
+        List<String> pictureList=files.stream()
+                .map(picture->{
+                    return s3Service.uploadImg(picture);
+                }).collect(Collectors.toList());
 
-        CloudMedia cloudMedia=CloudConverter.toMedia(request,cloud,picture);
+        for (String picture:pictureList){
+            CloudMedia cloudMedia=CloudConverter.toMedia(request,cloud,picture);
+            cloudMediaRepository.save(cloudMedia);
+        }
+
+//        CloudMedia cloudMedia=CloudConverter.toMedia(request,cloud,picture);
 //        List<CloudMedia> medias=cloudMediaRepository.findAllByCloud(cloud);
 //        for (int i=0;i<medias.size();i++){
 //            if (request.getDate().equals(medias.get(i).getDate())) {
@@ -64,7 +69,7 @@ public class CloudServiceImpl implements CloudService{
 //                break;
 //            }
 //        }
-        cloudMediaRepository.save(cloudMedia);
+//        cloudMediaRepository.save(cloudMedia);
 
         return cloud;
     }
@@ -88,7 +93,6 @@ public class CloudServiceImpl implements CloudService{
             List<String> urls=new ArrayList<>();
             for (CloudMedia cloudMedia1:cloudMedia){
                 if (cloudMedia1.getDate().isEqual(start)) {
-                    System.out.println("hello there");
                     urls.add(cloudMedia1.getUrl());
                 }
             }
