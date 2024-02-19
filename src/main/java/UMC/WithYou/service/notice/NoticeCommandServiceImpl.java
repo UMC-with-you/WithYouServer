@@ -43,13 +43,11 @@ public class NoticeCommandServiceImpl implements NoticeCommandService{
         Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(()->new CommonErrorHandler(ErrorStatus.TRAVEL_LOG_NOT_FOUND));
         int states=travel.getStatus().ordinal();
-        System.out.println(states);
 
         List<NoticeCheckResponseDTO.ShortResponseDto> results = new ArrayList<>();
         List<Notice> notices=noticeRepositoryCustom.findByTravelLogFetchJoinMember(travelId);
 
         for(Notice notice : notices){
-            System.out.println(notice.getState());
             if (notice.getState()!=states)
                 continue;
 
@@ -66,7 +64,6 @@ public class NoticeCommandServiceImpl implements NoticeCommandService{
     public List<NoticeCheckResponseDTO.ShortResponseDto> getTravelNotice(Long travelId){
         List<NoticeCheckResponseDTO.ShortResponseDto> results = new ArrayList<>();
         List<Notice> notices=noticeRepositoryCustom.findByTravelLogFetchJoinMember(travelId);
-        System.out.println(notices);
 
         for(Notice notice : notices){
             List<NoticeCheck> noticeChecks=noticeCheckRepository
