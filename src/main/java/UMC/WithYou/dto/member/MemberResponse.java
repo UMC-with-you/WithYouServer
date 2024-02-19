@@ -1,4 +1,4 @@
-package UMC.WithYou.dto.auth;
+package UMC.WithYou.dto.member;
 
 
 import lombok.Builder;
