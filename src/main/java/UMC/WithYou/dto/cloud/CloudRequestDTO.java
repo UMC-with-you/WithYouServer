@@ -13,9 +13,8 @@ import java.util.List;
 
 public class CloudRequestDTO {
 
-    @Data
+    @Getter
     public static class CloudJoinDto{
-        @NotNull
         LocalDate date;
         Long travelId;
     }
