@@ -57,6 +57,7 @@ public class Member extends BaseEntity {
         this.identifier=new Identifier(identifier);
         this.name = new Name(name);
         this.memberType=memberType;
+        this.imageUrl="";
     }
 
     public String getEmail() {
@@ -70,7 +71,11 @@ public class Member extends BaseEntity {
         return this.name.getValue();
     }
 
-    public void changeName(String name){
+    public void updateImage(String imageUrl){
+        this.imageUrl = imageUrl;
+    }
+
+    public void updateName(String name){
         this.name = new Name(name);
     }
 

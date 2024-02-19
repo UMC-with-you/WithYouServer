@@ -58,10 +58,6 @@ public class AuthService {
     }
 
     private Member updateExistingMember(Member existingMember, UserInfo userInfo) {
-        // 기존 멤버 정보 업데이트 (필요한 경우)
-        if (!existingMember.getName().equals(userInfo.getName())) {
-            existingMember.changeName(userInfo.getName());
-        }
         // 기타 필요한 정보 업데이트 로직 추가
 
         return memberRepository.save(existingMember);
