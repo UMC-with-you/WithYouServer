@@ -44,11 +44,6 @@ public class MemberController {
 
     @Operation(summary = "회원 정보 조회")
     @GetMapping
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공"),
-            @ApiResponse(responseCode = "400", description = "회원 정보 조회 실패", content = @Content(schema = @Schema(implementation = String.class))
-            )
-    })
     public ResponseEntity<MemberResponse> getMember(@AuthorizedMember Member member) {
         return ResponseEntity.ok().body(memberService.getMember(member));
     }
