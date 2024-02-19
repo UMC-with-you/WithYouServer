@@ -2,14 +2,13 @@ package UMC.WithYou.controller;
 
 import UMC.WithYou.common.annotation.AuthorizedMember;
 import UMC.WithYou.domain.member.Member;
-import UMC.WithYou.dto.auth.MemberResponse;
+import UMC.WithYou.dto.member.MemberResponse;
 import UMC.WithYou.dto.member.NameRequest;
 import UMC.WithYou.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +43,7 @@ public class MemberController {
 
     @Operation(summary = "회원 정보 조회")
     @GetMapping
-    public ResponseEntity<MemberResponse> getMember(@AuthorizedMember Member member) {
-        return ResponseEntity.ok().body(memberService.getMember(member));
+    public UMC.WithYou.common.apiPayload.ApiResponse<MemberResponse> getMember(@AuthorizedMember Member member) {
+        return UMC.WithYou.common.apiPayload.ApiResponse.onSuccess(memberService.getMember(member));
     }
 }

@@ -15,7 +15,7 @@ spring:
       maximum-pool-size: 22
   data:
     redis:
-      host: loaclhost
+      host: ENC(BmVFNh6evAsOpejjYfA35Q==)
       port: 6379
 
 jwt:
