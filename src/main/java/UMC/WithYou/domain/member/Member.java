@@ -57,6 +57,7 @@ public class Member extends BaseEntity {
         this.identifier=new Identifier(identifier);
         this.name = new Name(name);
         this.memberType=memberType;
+        this.imageUrl="";
     }
 
     public String getEmail() {

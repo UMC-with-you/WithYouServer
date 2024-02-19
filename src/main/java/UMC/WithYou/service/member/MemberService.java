@@ -7,6 +7,7 @@ import UMC.WithYou.dto.auth.MemberResponse;
 import UMC.WithYou.dto.member.NameRequest;
 import UMC.WithYou.repository.member.MemberRepository;
 import UMC.WithYou.service.S3Service;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,18 +22,17 @@ public class MemberService {
                 ()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND)
         );
     }
-
     public MemberResponse getMember(Member member){
         return MemberResponse.builder()
                 .imageUrl(member.getImageUrl())
                 .name(member.getName()).build();
     }
-
+    @Transactional
     public void updateImage(Member member, MultipartFile imageFile){
         String imageUrl = s3Service.uploadImg(imageFile);
         member.updateImage(imageUrl);
     }
-
+    @Transactional
     public void updateName(Member member, NameRequest request){
         member.updateName(request.getName());
     }
