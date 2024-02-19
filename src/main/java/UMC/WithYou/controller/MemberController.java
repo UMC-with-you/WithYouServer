@@ -50,6 +50,6 @@ public class MemberController {
             )
     })
     public ResponseEntity<MemberResponse> getMember(@AuthorizedMember Member member) {
-        return ResponseEntity.ok(memberService.getMember(member));
+        return ResponseEntity.ok().body(memberService.getMember(member));
     }
 }
