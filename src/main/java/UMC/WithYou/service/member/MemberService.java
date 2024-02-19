@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+
     private final MemberRepository memberRepository;
     private final S3Service s3Service;
     public Member findMemberById(Long memberId){
