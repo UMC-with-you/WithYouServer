@@ -3,6 +3,7 @@ package UMC.WithYou.service.member;
 import UMC.WithYou.common.apiPayload.code.status.ErrorStatus;
 import UMC.WithYou.common.apiPayload.exception.handler.CommonErrorHandler;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.dto.auth.MemberResponse;
 import UMC.WithYou.dto.member.NameRequest;
 import UMC.WithYou.repository.member.MemberRepository;
 import UMC.WithYou.service.S3Service;
@@ -19,6 +20,12 @@ public class MemberService {
         return memberRepository.findById(memberId).orElseThrow(
                 ()->new CommonErrorHandler(ErrorStatus.MEMBER_NOT_FOUND)
         );
+    }
+
+    public MemberResponse getMember(Member member){
+        return MemberResponse.builder()
+                .imageUrl(member.getImageUrl())
+                .name(member.getName()).build();
     }
 
     public void updateImage(Member member, MultipartFile imageFile){

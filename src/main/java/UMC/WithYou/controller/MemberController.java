@@ -2,12 +2,14 @@ package UMC.WithYou.controller;
 
 import UMC.WithYou.common.annotation.AuthorizedMember;
 import UMC.WithYou.domain.member.Member;
+import UMC.WithYou.dto.auth.MemberResponse;
 import UMC.WithYou.dto.member.NameRequest;
 import UMC.WithYou.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +40,16 @@ public class MemberController {
                                     content = @Content(mediaType = "multipart/form-data", schema = @Schema(type = "string", format = "binary"))) MultipartFile imageFile) {
         memberService.updateImage(member, imageFile);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "회원 정보 조회")
+    @GetMapping
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공"),
+            @ApiResponse(responseCode = "400", description = "회원 정보 조회 실패", content = @Content(schema = @Schema(implementation = String.class))
+            )
+    })
+    public ResponseEntity<MemberResponse> getMember(@AuthorizedMember Member member) {
+        return ResponseEntity.ok(memberService.getMember(member));
     }
 }
