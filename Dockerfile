@@ -47,7 +47,7 @@ COPY --from=builder-jre /jre $JAVA_HOME
 RUN mkdir /app
 
 # 빌드된 애플리케이션과 필요한 리소스만 복사
-COPY --from=build /app/build/libs/app-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY --from=build /app/build/libs/WithYou-0.0.1-SNAPSHOT.jar /app/app.jar
 
 WORKDIR /app
 
