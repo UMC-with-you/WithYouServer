@@ -6,9 +6,6 @@ WORKDIR /app
 COPY build.gradle settings.gradle /build/
 RUN gradle build -x test --parallel --continue > /dev/null 2>&1 || true
 
-COPY . /build
-RUN gradle build -x test --parallel
-
 
 # 실행 스테이지
 FROM openjdk:17.0-slim
