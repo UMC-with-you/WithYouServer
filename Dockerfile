@@ -14,7 +14,7 @@ RUN gradle build -x test --parallel
 FROM openjdk:17.0-slim
 WORKDIR /app
 # 애플리케이션 파일을 컨테이너에 복사
-COPY --from=builder /build/build/libs/WithYou-0.0.1-SNAPSHOTjar /app.jar
+COPY --from=builder /build/libs/WithYou-0.0.1-SNAPSHOTjar /app.jar
 
 # 컨테이너 시작 시 실행할 명령어
 ENTRYPOINT ["java","-jar","/app.jar"]
