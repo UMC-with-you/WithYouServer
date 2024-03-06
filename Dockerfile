@@ -3,7 +3,7 @@ FROM gradle:7.4-jdk17-alpine as builder
 
 WORKDIR /build
 
-COPY build.gradle.kts settings.gradle.kts /build/
+COPY build.gradle settings.gradle /build/
 RUN gradle build -x test --parallel --continue > /dev/null 2>&1 || true
 
 COPY . /build
