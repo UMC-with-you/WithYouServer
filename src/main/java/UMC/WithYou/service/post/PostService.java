@@ -105,7 +105,7 @@ public class PostService {
     }
 
     public List<Post> getScrapedPosts(Member member) {
-        List<ScrapedPost> scrapedPosts = member.getScrapedPosts();
+        List<ScrapedPost> scrapedPosts = scrapedPostRepository.findScrapedPostsByMember(member);
         List<Post> posts = new ArrayList<>();
         for (ScrapedPost scrapedPost: scrapedPosts){
             posts.add(scrapedPost.getPost());
