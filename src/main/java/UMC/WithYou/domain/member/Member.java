@@ -1,20 +1,16 @@
 package UMC.WithYou.domain.member;
 
 import UMC.WithYou.domain.BaseEntity;
-import UMC.WithYou.domain.Post.ScrapedPost;
 import UMC.WithYou.domain.travel.Traveler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import UMC.WithYou.domain.rewind.Rewind;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(indexes = @Index(name = "email", columnList = "email", unique = true))
 public class Member extends BaseEntity {
     @Id
     @Getter
@@ -31,13 +27,6 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
 
-
-
-    @Getter
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<ScrapedPost> scrapedPosts;
-
     @Getter
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -45,10 +34,6 @@ public class Member extends BaseEntity {
 
     @Getter
     private String imageUrl;
-
-    @Getter
-    @OneToMany(mappedBy="writer", cascade = CascadeType.ALL)
-    private List<Rewind> rewindList = new ArrayList<>();
 
 
     @Builder
@@ -79,8 +64,15 @@ public class Member extends BaseEntity {
         this.name = new Name(name);
     }
 
+    public boolean isSameId(Long memberId) {
+        return this.id.equals(memberId);
+    }
+
+    public void addTraveler(Traveler traveler) {
+        this.travelers.add(traveler);
+    }
+
     @Override
-    @Generated
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -89,20 +81,13 @@ public class Member extends BaseEntity {
             return false;
         }
         Member member = (Member) o;
-        return  Objects.equals(name, member.name)
-                && Objects.equals(email, member.email);
+        return  Objects.equals(id, member.id)
+                && Objects.equals(identifier.getValue(), member.identifier.getValue());
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, name );
-    }
-
-    public boolean isSameId(Long memberId) {
-        return this.id.equals(memberId);
-    }
-
-    public void addTraveler(Traveler traveler) {
-        this.travelers.add(traveler);
+        return Objects.hash(id, identifier.getValue());
     }
 }

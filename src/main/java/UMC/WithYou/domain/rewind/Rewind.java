@@ -52,10 +52,7 @@ public class Rewind extends BaseEntity {
     }
 
     public void setWriter(Member member) {
-        if(this.writer != null)
-            member.getRewindList().remove(this);
         this.writer = member;
-        member.getRewindList().add(this);
     }
 
     public void updateRewind(Long mvpCandidateId, Mood mood, String comment) {
