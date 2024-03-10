@@ -42,6 +42,8 @@ public class MemberController {
     }
 
     @Operation(summary = "회원 정보 조회")
+    @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공")
+    @ApiResponse(responseCode = "400", description = "회원 정보 조회 실패", content = @Content(schema = @Schema(implementation = String.class)))
     @GetMapping
     public UMC.WithYou.common.apiPayload.ApiResponse<MemberResponse> getMember(@AuthorizedMember Member member) {
         return UMC.WithYou.common.apiPayload.ApiResponse.onSuccess(memberService.getMember(member));
