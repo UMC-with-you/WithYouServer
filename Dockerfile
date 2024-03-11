@@ -16,7 +16,7 @@ RUN gradle build -x test --no-daemon
 
 
 # Custom JRE 이미지 사용
-FROM hojinida/custom-jre:tag as jre
+FROM hojinida/custom-jre:latest as jre
 
 # 환경 변수 설정
 ENV JAVA_HOME=/jre
