@@ -43,6 +43,9 @@ jobs:
       - name: ✨ 테스트 진행
         run: ./gradlew test
 
+      - name: ✨ 빌드 진행
+        run: ./gradlew build
+
       - name: ✨ 테스트 결과 Report
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: ${{ always() }}
