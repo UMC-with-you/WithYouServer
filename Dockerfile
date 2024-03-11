@@ -1,22 +1,3 @@
-# Custom JRE 생성을 위한 베이스 이미지
-FROM amazoncorretto:17-alpine3.18 as builder-jre
-
-# 필요한 도구 설치
-RUN apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main/ binutils
-
-# Custom JRE 생성
-RUN $JAVA_HOME/bin/jlink \
-    --module-path "$JAVA_HOME/jmods" \
-    --verbose \
-    --add-modules ALL-MODULE-PATH \
-    --strip-debug \
-    --no-man-pages \
-    --no-header-files \
-    --compress=2 \
-    --output /jre
-
-#=========================================================================
-
 # Gradle 빌드를 위한 스테이지
 FROM gradle:7.4-jdk17-alpine as build
 
@@ -34,14 +15,12 @@ RUN gradle build -x test --no-daemon
 
 
 
-# 최종 실행 이미지
-FROM alpine:3.18.4
+# Custom JRE 이미지 사용
+FROM hojinida/custom-jre:tag as jre
 
 # 환경 변수 설정
 ENV JAVA_HOME=/jre
 ENV PATH="$JAVA_HOME/bin:$PATH"
-
-COPY --from=builder-jre /jre $JAVA_HOME
 
 # 애플리케이션 디렉토리 생성
 RUN mkdir /app
